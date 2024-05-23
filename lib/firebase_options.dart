@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAj1pvAXf8-9HgLZi645TjUrMJdU27tUxw',
-    appId: '1:626568914227:android:2dd2c3d861878be0c1ca46',
+    appId: '1:626568914227:android:c06a5b9d8bd6d0a7c1ca46',
     messagingSenderId: '626568914227',
     projectId: 'mind-labify',
     storageBucket: 'mind-labify.appspot.com',
@@ -66,10 +66,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDuc-lLay-ogzOLy26pRMlGOMXzGun15P4',
-    appId: '1:626568914227:ios:9c0a676cd62ab309c1ca46',
+    appId: '1:626568914227:ios:d06a84d1d71eafeac1ca46',
     messagingSenderId: '626568914227',
     projectId: 'mind-labify',
     storageBucket: 'mind-labify.appspot.com',
-    iosBundleId: 'com.example.mindLabify',
+    iosBundleId: 'com.mindlabify.app',
   );
+
 }

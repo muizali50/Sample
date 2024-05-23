@@ -1,4 +1,4 @@
-package com.example.mind_labify
+package com.mindlabify.app
 
 import io.flutter.embedding.android.FlutterActivity
 

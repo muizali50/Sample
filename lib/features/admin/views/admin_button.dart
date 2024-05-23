@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 
-class AppPrimaryButton extends StatefulWidget {
-  const AppPrimaryButton({
+class AdminButton extends StatefulWidget {
+  const AdminButton({
     super.key,
     required this.text,
     required this.onTap,
-    this.buttonColor = 0xFFD5DFD2,
   });
 
   final String text;
   final VoidCallback onTap;
-  final int? buttonColor;
 
   @override
-  State<AppPrimaryButton> createState() => _AppPrimaryButtonState();
+  State<AdminButton> createState() => _AdminButtonState();
 }
 
-class _AppPrimaryButtonState extends State<AppPrimaryButton> {
+class _AdminButtonState extends State<AdminButton> {
   bool _isHovering = false;
   @override
   Widget build(BuildContext context) {
@@ -36,16 +34,16 @@ class _AppPrimaryButtonState extends State<AppPrimaryButton> {
         height: 56,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(
-            50,
+            10,
           ),
           color: _isHovering
-              ? Color(
-                  widget.buttonColor!.toInt(),
+              ? const Color(
+                  0xFF000000,
                 ).withOpacity(
                   0.8,
                 )
-              : Color(
-                  widget.buttonColor!.toInt(),
+              : const Color(
+                  0xFF000000,
                 ),
         ),
         child: Center(
@@ -56,7 +54,7 @@ class _AppPrimaryButtonState extends State<AppPrimaryButton> {
               fontSize: 20,
               fontWeight: FontWeight.w600,
               color: Color(
-                0xFF000000,
+                0xFFffffff,
               ),
             ),
           ),

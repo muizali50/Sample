@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mind_labify/features/admin/admin_bloc/admin_bloc.dart';
+import 'package:mind_labify/features/admin/views/sub_features/dashboard/views/admin_dashboard.dart';
 import 'package:mind_labify/features/authentication/bloc/authentication_bloc.dart';
-import 'package:mind_labify/features/authentication/views/sub_features/onboarding/views/onboarding_screen.dart';
+import 'package:mind_labify/features/authentication/views/login_screen.dart';
 import 'package:mind_labify/features/user/user_bloc/user_bloc.dart';
 import 'package:mind_labify/features/user/views/home_screen.dart';
 import 'package:mind_labify/firebase_options.dart';
@@ -36,6 +39,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => UserBloc(),
         ),
+        BlocProvider(
+          create: (context) => AdminBloc(),
+        ),
       ],
       child: MultiProvider(
         providers: [
@@ -44,20 +50,23 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
-            title: 'Mind Labify',
-            navigatorKey: navigatorKey,
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              colorScheme: const ColorScheme.light(
-                surface: Color(0xFFF4F2E9),
-                onSurface: Color(0xFF2B2B2B),
-                primary: Color(0xFFC6B728),
-                secondary: Color(0xFFC0BA59),
-              ),
+          title: 'Mind Labify',
+          navigatorKey: navigatorKey,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            colorScheme: const ColorScheme.light(
+              surface: Color(0xFFF4F2E9),
+              onSurface: Color(0xFF2B2B2B),
+              primary: Color(0xFFC6B728),
+              secondary: Color(0xFFC0BA59),
             ),
-            home: FirebaseAuth.instance.currentUser != null
-                ? const HomeScreen()
-                : const OnboardingScreen(),),
+          ),
+          home: FirebaseAuth.instance.currentUser == null
+              ? const LoginScreen()
+              : kIsWeb
+                  ? const AdminDashboard()
+                  : const HomeScreen(),
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mind_labify/features/authentication/bloc/authentication_bloc.dart';
@@ -66,8 +67,8 @@ class _LoginScreenState extends State<LoginScreen> {
               Gaps.hGap45,
               Padding(
                 padding: const EdgeInsets.only(
-                  left: 25.0,
-                  right: 43,
+                  left: kIsWeb ? 350 : 25.0,
+                  right: kIsWeb ? 350 : 43,
                 ),
                 child: AppTextField(
                   controller: _emailController,
@@ -77,8 +78,8 @@ class _LoginScreenState extends State<LoginScreen> {
               Gaps.hGap15,
               Padding(
                 padding: const EdgeInsets.only(
-                  left: 25.0,
-                  right: 43,
+                  left: kIsWeb ? 350 : 25.0,
+                  right: kIsWeb ? 350 : 43,
                 ),
                 child: AppTextField(
                   controller: _passwordController,
@@ -87,35 +88,36 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               Gaps.hGap15,
-              Padding(
-                padding: const EdgeInsets.only(
-                  right: 43.0,
-                ),
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ForgotPasswordScreen(),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      'Forget Password?',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color(
-                          0xFF000000,
+              if (kIsWeb != true)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: 43.0,
+                  ),
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ForgotPasswordScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'Forget Password?',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Color(
+                            0xFF000000,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
               Gaps.hGap40,
               BlocConsumer<AuthenticationBloc, AuthenticationState>(
                 listener: (context, state) {
@@ -142,8 +144,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                   return Padding(
                     padding: const EdgeInsets.only(
-                      left: 25.0,
-                      right: 43.0,
+                      left: kIsWeb ? 500 : 25.0,
+                      right: kIsWeb ? 500 : 43.0,
                     ),
                     child: AppPrimaryButton(
                       text: 'Sign in',
@@ -160,44 +162,45 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
               Gaps.hGap15,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Don’t have an account?',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Color(
-                        0xFF000000,
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SignUpScreen(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      'Sign up',
+              if (kIsWeb != true)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Don’t have an account?',
                       style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        decorationColor:
-                            Theme.of(context).colorScheme.secondary,
                         fontFamily: 'Inter',
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: Color(
+                          0xFF000000,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SignUpScreen(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Sign up',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          decorationColor:
+                              Theme.of(context).colorScheme.secondary,
+                          fontFamily: 'Inter',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
             ],
           ),
         ),

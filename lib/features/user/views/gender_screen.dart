@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mind_labify/features/user/user_bloc/user_bloc.dart';
-import 'package:mind_labify/features/user/views/home_screen.dart';
+import 'package:mind_labify/features/user/views/sub_features/select_mood/views/select_mood.dart';
 import 'package:mind_labify/widgets/app_primary_button.dart';
 
 class GenderScreen extends StatefulWidget {
@@ -170,10 +170,10 @@ class _GenderScreenState extends State<GenderScreen> {
                 BlocConsumer<UserBloc, UserState>(
                   listener: (context, state) {
                     if (state is GenderSuccess) {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
+                          builder: (context) => const SelectMoodScreen(),
                         ),
                       );
                     } else if (state is GenderFailed) {
