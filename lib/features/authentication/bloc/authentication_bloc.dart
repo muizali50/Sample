@@ -11,19 +11,16 @@ import 'package:provider/provider.dart';
 part 'authentication_event.dart';
 part 'authentication_state.dart';
 
-class AuthenticationBloc
-    extends Bloc<AuthenticationEvent, AuthenticationState> {
+class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
   AuthenticationBloc() : super(AuthenticationInitial()) {
-    final UserProvider userProvider =
-        navigatorKey.currentContext!.read<UserProvider>();
+    final UserProvider userProvider = navigatorKey.currentContext!.read<UserProvider>();
     on<RegisterEvent>(
       (event, emit) async {
         emit(
           const Registering(),
         );
         try {
-          final userCreds =
-              await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          final userCreds = await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: event.email,
             password: event.password,
           );
@@ -83,8 +80,7 @@ class AuthenticationBloc
           const AuthenticationLoading(),
         );
         try {
-          final userCreds =
-              await FirebaseAuth.instance.signInWithEmailAndPassword(
+          final userCreds = await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: event.email,
             password: event.password,
           );
@@ -110,9 +106,7 @@ class AuthenticationBloc
           if (e is FirebaseAuthException) {
             emit(
               AuthenticationFailure(
-                message: e.code == 'invalid-login-credentials'
-                    ? 'Invalid login credentials'
-                    : e.message ?? '',
+                message: e.code == 'invalid-login-credentials' ? 'Invalid login credentials' : e.message ?? '',
               ),
             );
           } else if (e is FirebaseException) {

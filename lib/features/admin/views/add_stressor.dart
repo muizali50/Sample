@@ -23,14 +23,14 @@ class AddStressor extends StatefulWidget {
 class _AddStressorState extends State<AddStressor> {
   late StressorModel stressor;
   String status = 'Inactive';
-  String? icon;
+  String? stresserIcon;
   final TextEditingController _nameController = TextEditingController();
 
   @override
   void initState() {
     if (widget.stressor != null) {
       _nameController.text = widget.stressor!.title ?? '';
-      icon = widget.stressor!.icon ?? '';
+      stresserIcon = widget.stressor!.icon ?? '';
       status = widget.stressor!.status ?? '';
     }
     super.initState();
@@ -194,7 +194,7 @@ class _AddStressorState extends State<AddStressor> {
                                 final iconUrl = pickedFile.path;
                                 setState(
                                   () {
-                                    icon = iconUrl;
+                                    stresserIcon = iconUrl;
                                   },
                                 );
                               }
@@ -224,9 +224,7 @@ class _AddStressorState extends State<AddStressor> {
                     const SizedBox(
                       width: 20,
                     ),
-                    icon != null
-                        ? Image.network(icon!, width: 50, height: 50)
-                        : Container(),
+                    stresserIcon != null ? Image.network(stresserIcon!, width: 50, height: 50) : Container(),
                   ],
                 ),
                 Gaps.hGap35,
@@ -273,8 +271,7 @@ class _AddStressorState extends State<AddStressor> {
                     }
                   },
                   builder: (context, state) {
-                    if (state is CreatingStressor ||
-                        state is UpdatingStressor) {
+                    if (state is CreatingStressor || state is UpdatingStressor) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
@@ -294,7 +291,7 @@ class _AddStressorState extends State<AddStressor> {
                             );
                             return;
                           }
-                          if (icon!.isEmpty) {
+                          if (stresserIcon!.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
@@ -311,9 +308,9 @@ class _AddStressorState extends State<AddStressor> {
                                   stressorId: widget.stressor!.stressorId,
                                   title: _nameController.text,
                                   status: status,
-                                  icon: icon,
+                                  icon: stresserIcon,
                                 ),
-                                icon.toString(),
+                                stresserIcon == widget.stressor?.icon ? null : XFile(stresserIcon!),
                               ),
                             );
                           } else {
@@ -323,9 +320,9 @@ class _AddStressorState extends State<AddStressor> {
                                   stressorId: DateTime.now().toIso8601String(),
                                   title: _nameController.text,
                                   status: status,
-                                  icon: icon,
+                                  icon: stresserIcon,
                                 ),
-                                icon.toString(),
+                                XFile(stresserIcon!),
                               ),
                             );
                           }

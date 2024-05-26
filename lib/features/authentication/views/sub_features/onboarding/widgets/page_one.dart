@@ -23,14 +23,16 @@ class _PageOneState extends State<PageOne> {
                 ),
               ),
               Positioned(
-                top: 45,
+                top: 0,
                 left: 0,
                 right: 0,
-                child: Center(
-                  child: Image(
-                    height: 110,
-                    image: AssetImage(
-                      'assets/images/logo.png',
+                child: SafeArea(
+                  child: Center(
+                    child: Image(
+                      height: 110,
+                      image: AssetImage(
+                        'assets/images/logo.png',
+                      ),
                     ),
                   ),
                 ),
@@ -38,10 +40,12 @@ class _PageOneState extends State<PageOne> {
             ],
           ),
           Gaps.hGap20,
-          const Image(
-            height: 278,
-            image: AssetImage(
-              'assets/images/face.png',
+          const Expanded(
+            child: Image(
+              height: 278,
+              image: AssetImage(
+                'assets/images/face.png',
+              ),
             ),
           ),
           Gaps.hGap20,

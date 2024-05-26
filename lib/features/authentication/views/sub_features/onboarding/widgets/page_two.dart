@@ -15,31 +15,35 @@ class _PageTwoState extends State<PageTwo> {
       color: Theme.of(context).colorScheme.surface,
       child: Column(
         children: [
-          const Expanded(
+          Expanded(
             child: Stack(
               children: [
-                Image(
+                const Image(
                   image: AssetImage(
                     'assets/images/bg1.png',
                   ),
+                  height: 400,
+                  fit: BoxFit.cover,
                 ),
                 Positioned(
-                  top: 20,
+                  top: 0,
                   left: 0,
                   right: 0,
                   child: Center(
                     child: Column(
                       children: [
-                        Image(
-                          height: 61,
-                          image: AssetImage(
-                            'assets/images/logo.png',
+                        const SafeArea(
+                          child: Image(
+                            height: 61,
+                            image: AssetImage(
+                              'assets/images/logo.png',
+                            ),
                           ),
                         ),
-                        Gaps.hGap45,
+                        Gaps.hGap30,
                         Image(
-                          height: 400,
-                          image: AssetImage(
+                          height: MediaQuery.sizeOf(context).height * 0.4,
+                          image: const AssetImage(
                             'assets/images/brain.png',
                           ),
                         ),

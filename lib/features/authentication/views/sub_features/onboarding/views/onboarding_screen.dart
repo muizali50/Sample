@@ -102,26 +102,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     },
                   ),
             Gaps.hGap15,
-            isLastPage 
-            ?
-            const SizedBox()
-            :
-            TextButton(
-              onPressed: () {
-                controller.jumpToPage(
-                  2,
-                );
-              },
-              child: Text(
-                'Skip',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 18.11,
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-              ),
-            ),
+            isLastPage
+                ? const SizedBox()
+                : TextButton(
+                    onPressed: () {
+                      controller.jumpToPage(
+                        2,
+                      );
+                    },
+                    child: Text(
+                      'Skip',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 18.11,
+                        fontWeight: FontWeight.w700,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                    ),
+                  ),
           ],
         ),
       ),

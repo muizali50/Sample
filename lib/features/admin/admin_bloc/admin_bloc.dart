@@ -1,8 +1,10 @@
 import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mind_labify/models/app_user.dart';
 import 'package:mind_labify/models/stressor_model.dart';
 
@@ -23,17 +25,12 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           CreatingStressor(),
         );
         try {
-          final ref = FirebaseStorage.instance
-              .ref()
-              .child(
-                'stressor_icons',
-              )
-              .child(
-                '${event.stressor.title}',
+          final ref = FirebaseStorage.instance.ref().child(
+                'stressor_icons/${event.iconFile.path.split('/').last}',
               );
-              
-          await ref.putString(
-            event.iconFile,
+
+          await ref.putData(
+            await event.iconFile.readAsBytes(),
           );
           final iconUrl = await ref.getDownloadURL();
           event.stressor.icon = iconUrl;
@@ -137,19 +134,16 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           UpdatingStressor(),
         );
         try {
-          final ref = FirebaseStorage.instance
-              .ref()
-              .child(
-                'stressor_icons',
-              )
-              .child(
-                '${event.stressor.title}',
-              );
-          await ref.putString(
-            event.iconFile,
-          );
-          final iconUrl = await ref.getDownloadURL();
-          event.stressor.icon = iconUrl;
+          if (event.iconFile != null) {
+            final ref = FirebaseStorage.instance.ref().child(
+                  'stressor_icons/${event.iconFile!.path.split('/').last}',
+                );
+            await ref.putData(
+              await event.iconFile!.readAsBytes(),
+            );
+            final iconUrl = await ref.getDownloadURL();
+            event.stressor.icon = iconUrl;
+          }
           final stressorCollection = FirebaseFirestore.instance.collection(
             'stressor',
           );

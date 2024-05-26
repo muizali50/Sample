@@ -31,6 +31,7 @@ class _EmojiBoxState extends State<EmojiBox> {
       ),
       child: Center(
         child: IconButton(
+          padding: EdgeInsets.zero,
           onPressed: widget.onTap,
           icon: ImageIcon(
             size: 70,

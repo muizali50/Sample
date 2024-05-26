@@ -98,11 +98,7 @@ class _SelectStressorsState extends State<SelectStressors> {
                         ),
                         childrenDelegate: SliverChildBuilderDelegate(
                           childCount: adminBloc.activeStressors.length,
-                          (
-                            context,
-                            index,
-                          ) =>
-                              Container(
+                          (context, index) => Container(
                             decoration: BoxDecoration(
                               color: const Color(0xFFEAEAEA),
                               borderRadius: BorderRadius.circular(
@@ -117,21 +113,26 @@ class _SelectStressorsState extends State<SelectStressors> {
                                   Container(
                                     height: 20,
                                     width: 20,
-                                    decoration: const BoxDecoration(
+                                    decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                          'assets/icons/s_happy.png',
-                                        ),
-                                      ),
+                                      image: adminBloc.activeStressors[index].icon != null && adminBloc.activeStressors[index].icon!.isNotEmpty
+                                          ? DecorationImage(
+                                              image: NetworkImage(
+                                                adminBloc.activeStressors[index].icon!,
+                                              ),
+                                            )
+                                          : const DecorationImage(
+                                              image: AssetImage(
+                                                'assets/icons/s_happy.png',
+                                              ),
+                                            ),
                                     ),
                                   ),
                                   const SizedBox(
                                     width: 10,
                                   ),
                                   Text(
-                                    adminBloc.activeStressors[index].title
-                                        .toString(),
+                                    adminBloc.activeStressors[index].title.toString(),
                                   ),
                                 ],
                               ),

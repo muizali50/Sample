@@ -9,7 +9,7 @@ sealed class AdminEvent extends Equatable {
 
 class CreateStressor extends AdminEvent {
   final StressorModel stressor;
-  final String iconFile;
+  final XFile iconFile;
   const CreateStressor(
     this.stressor,
     this.iconFile,
@@ -26,17 +26,14 @@ final class GetStressor extends AdminEvent {}
 
 final class UpdateStressor extends AdminEvent {
   final StressorModel stressor;
-  final String iconFile;
+  final XFile? iconFile;
   const UpdateStressor(
     this.stressor,
     this.iconFile,
   );
 
   @override
-  List<Object> get props => [
-        stressor,
-        iconFile
-      ];
+  List<Object> get props => [stressor];
 }
 
 final class DeleteEvent extends AdminEvent {
@@ -50,4 +47,4 @@ final class DeleteEvent extends AdminEvent {
       ];
 }
 
-class GetUserData extends AdminEvent{}
+class GetUserData extends AdminEvent {}
