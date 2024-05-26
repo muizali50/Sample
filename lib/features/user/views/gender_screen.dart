@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mind_labify/features/user/user_bloc/user_bloc.dart';
 import 'package:mind_labify/features/user/views/sub_features/select_mood/views/select_mood.dart';
 import 'package:mind_labify/widgets/app_primary_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GenderScreen extends StatefulWidget {
   const GenderScreen({super.key});
@@ -197,6 +198,10 @@ class _GenderScreenState extends State<GenderScreen> {
                       child: AppPrimaryButton(
                         text: 'Continue',
                         onTap: () {
+                          _saveGender(
+                            context,
+                            selectedGender,
+                          );
                           userBloc.add(
                             GenderEvent(
                               gender: selectedGender,
@@ -212,6 +217,17 @@ class _GenderScreenState extends State<GenderScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void _saveGender(
+    BuildContext context,
+    String gender,
+  ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+      'gender',
+      gender,
     );
   }
 }

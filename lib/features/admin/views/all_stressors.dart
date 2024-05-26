@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mind_labify/features/admin/admin_bloc/admin_bloc.dart';
 import 'package:mind_labify/features/admin/views/add_stressor.dart';
 import 'package:mind_labify/features/admin/views/sub_features/all_users/widgets/search_field.dart';
+import 'package:mind_labify/models/stressor_model.dart';
 import 'package:mind_labify/utils/gaps.dart';
 
 class AllStressors extends StatefulWidget {
@@ -14,6 +15,9 @@ class AllStressors extends StatefulWidget {
 
 class _AllStressorsState extends State<AllStressors> {
   late final AdminBloc adminBloc;
+  List<StressorModel> filterstressorData = [];
+  final TextEditingController searchController = TextEditingController();
+  String _searchText = '';
 
   @override
   void initState() {
@@ -23,10 +27,42 @@ class _AllStressorsState extends State<AllStressors> {
         GetStressor(),
       );
     }
+
+    searchController.addListener(
+      _onSearchChanged,
+    );
     super.initState();
   }
 
-  final TextEditingController _searchController = TextEditingController();
+  void _onSearchChanged() {
+    setState(
+      () {
+        _searchText = searchController.text;
+        _filterUsers();
+      },
+    );
+  }
+
+  void _filterUsers() {
+    if (_searchText.isEmpty) {
+      filterstressorData = adminBloc.stressors;
+    } else {
+      filterstressorData = adminBloc.stressors
+          .where(
+            (stressor) => stressor.title!.toLowerCase().contains(
+                  _searchText.toLowerCase(),
+                ),
+          )
+          .toList();
+    }
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,7 +147,7 @@ class _AllStressorsState extends State<AllStressors> {
                     SizedBox(
                       width: 277,
                       child: SearchField(
-                        controller: _searchController,
+                        controller: searchController,
                       ),
                     ),
                   ],
@@ -168,42 +204,252 @@ class _AllStressorsState extends State<AllStressors> {
                                 ),
                               ),
                             ],
-                            rows: adminBloc.stressors
-                                .map(
-                                  (stressor) => DataRow(
-                                    cells: [
-                                      DataCell(
-                                        Text(
-                                          stressor.title ?? '',
-                                        ),
-                                      ),
-                                      DataCell(
-                                        Text(
-                                          stressor.status ?? '',
-                                        ),
-                                      ),
-                                      DataCell(
-                                        TextButton(
-                                          onPressed: () {},
-                                          child: const Text(
-                                            'Edit',
-                                            style: TextStyle(
-                                              fontFamily: 'Inter',
-                                              decoration:
-                                                  TextDecoration.underline,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w700,
-                                              color: Color(
-                                                0xFF131313,
-                                              ),
+                            rows: filterstressorData.isNotEmpty
+                                ? filterstressorData
+                                    .map(
+                                      (stressor) => DataRow(
+                                        cells: [
+                                          DataCell(
+                                            Text(
+                                              stressor.title ?? '',
                                             ),
                                           ),
-                                        ),
+                                          DataCell(
+                                            Text(
+                                              stressor.status ?? '',
+                                            ),
+                                          ),
+                                          DataCell(
+                                            Row(
+                                              children: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            AddStressor(
+                                                          stressor: stressor,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: const Text(
+                                                    'Edit',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Inter',
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: Color(
+                                                        0xFF131313,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return AlertDialog(
+                                                          title: const Text(
+                                                            'Delete Stressor',
+                                                          ),
+                                                          content: const Text(
+                                                            'Are you sure you want to delete this event?',
+                                                          ),
+                                                          actions: [
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                  context,
+                                                                );
+                                                              },
+                                                              child: const Text(
+                                                                'Cancel',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Color(
+                                                                    0xFF131313,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                adminBloc.add(
+                                                                  DeleteEvent(
+                                                                    stressor.stressorId ??
+                                                                        '',
+                                                                  ),
+                                                                );
+                                                                Navigator.pop(
+                                                                  context,
+                                                                );
+                                                              },
+                                                              child: const Text(
+                                                                'Delete',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Color(
+                                                                    0xFF131313,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                  child: const Text(
+                                                    'Delete',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Inter',
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: Color(
+                                                        0xFF131313,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                )
-                                .toList(),);
+                                    )
+                                    .toList()
+                                : adminBloc.stressors
+                                    .map(
+                                      (stressor) => DataRow(
+                                        cells: [
+                                          DataCell(
+                                            Text(
+                                              stressor.title ?? '',
+                                            ),
+                                          ),
+                                          DataCell(
+                                            Text(
+                                              stressor.status ?? '',
+                                            ),
+                                          ),
+                                          DataCell(
+                                            Row(
+                                              children: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            AddStressor(
+                                                          stressor: stressor,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: const Text(
+                                                    'Edit',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Inter',
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: Color(
+                                                        0xFF131313,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return AlertDialog(
+                                                          title: const Text(
+                                                            'Delete Stressor',
+                                                          ),
+                                                          content: const Text(
+                                                            'Are you sure you want to delete this event?',
+                                                          ),
+                                                          actions: [
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                  context,
+                                                                );
+                                                              },
+                                                              child: const Text(
+                                                                'Cancel',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Color(
+                                                                    0xFF131313,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                adminBloc.add(
+                                                                  DeleteEvent(
+                                                                    stressor.stressorId ??
+                                                                        '',
+                                                                  ),
+                                                                );
+                                                                Navigator.pop(
+                                                                  context,
+                                                                );
+                                                              },
+                                                              child: const Text(
+                                                                'Delete',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Color(
+                                                                    0xFF131313,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                  child: const Text(
+                                                    'Delete',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Inter',
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: Color(
+                                                        0xFF131313,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                    .toList(),
+                          );
                   },
                 ),
               ],

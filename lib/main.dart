@@ -7,8 +7,11 @@ import 'package:mind_labify/features/admin/admin_bloc/admin_bloc.dart';
 import 'package:mind_labify/features/admin/views/sub_features/dashboard/views/admin_dashboard.dart';
 import 'package:mind_labify/features/authentication/bloc/authentication_bloc.dart';
 import 'package:mind_labify/features/authentication/views/login_screen.dart';
+import 'package:mind_labify/features/authentication/views/sub_features/onboarding/views/onboarding_screen.dart';
 import 'package:mind_labify/features/user/user_bloc/user_bloc.dart';
-import 'package:mind_labify/features/user/views/home_screen.dart';
+import 'package:mind_labify/features/user/views/age_screen.dart';
+import 'package:mind_labify/features/user/views/gender_screen.dart';
+import 'package:mind_labify/features/user/views/sub_features/select_mood/views/select_mood.dart';
 import 'package:mind_labify/firebase_options.dart';
 import 'package:mind_labify/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +34,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String age = prefs.getString('age') ?? '';
+    String gender = prefs.getString('gender') ?? '';
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -62,10 +67,16 @@ class MyApp extends StatelessWidget {
             ),
           ),
           home: FirebaseAuth.instance.currentUser == null
-              ? const LoginScreen()
+              ? kIsWeb
+                  ? const LoginScreen()
+                  : const OnboardingScreen()
               : kIsWeb
                   ? const AdminDashboard()
-                  : const HomeScreen(),
+                  : age.isEmpty
+                      ? const AgeScreen()
+                      : gender.isEmpty
+                          ? const GenderScreen()
+                          : const SelectMoodScreen(),
         ),
       ),
     );

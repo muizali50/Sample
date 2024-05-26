@@ -4,9 +4,11 @@ class SearchField extends StatefulWidget {
   const SearchField({
     super.key,
     required this.controller,
+    this.onChanged,
   });
 
   final TextEditingController? controller;
+  final Function(String?)? onChanged;
 
   @override
   State<SearchField> createState() => _SearchFieldState();
@@ -16,6 +18,7 @@ class _SearchFieldState extends State<SearchField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onChanged: widget.onChanged,
       controller: widget.controller,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(

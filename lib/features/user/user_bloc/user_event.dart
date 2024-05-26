@@ -25,3 +25,14 @@ final class AgeSelect extends UserEvent {
         age,
       ];
 }
+
+final class SelectMood extends UserEvent {
+  final String mood;
+  const SelectMood({
+    required this.mood,
+  });
+  @override
+  List<Object?> get props => [
+        mood,
+      ];
+}

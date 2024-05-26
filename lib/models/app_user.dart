@@ -8,6 +8,7 @@ class AppUser {
   UserType userType;
   String? age;
   String? gender;
+  String? mood;
 
   AppUser({
     required this.uid,
@@ -17,16 +18,17 @@ class AppUser {
     required this.userType,
     this.age,
     this.gender,
+    this.mood,
   });
 
-  AppUser copyWith({
-    String? name,
-    String? email,
-    String? phoneNumber,
-    UserType? userType,
-    String? age,
-    String? gender,
-  }) {
+  AppUser copyWith(
+      {String? name,
+      String? email,
+      String? phoneNumber,
+      UserType? userType,
+      String? age,
+      String? gender,
+      String? mood}) {
     return AppUser(
       uid: uid ?? uid,
       name: name ?? this.name,
@@ -35,6 +37,7 @@ class AppUser {
       userType: userType ?? this.userType,
       age: age ?? this.age,
       gender: gender ?? this.gender,
+      mood: mood ?? this.mood,
     );
   }
 
@@ -51,6 +54,7 @@ class AppUser {
           : UserType.admin,
       age: map['age'] ?? '',
       gender: map['gender'] ?? '',
+      mood: map['mood'] ?? '',
     );
   }
   Map<String, dynamic> toMap() {
@@ -62,6 +66,7 @@ class AppUser {
       'userType': userType.toString(),
       'age': age,
       'gender': gender,
+      'mood': mood,
     };
   }
 }

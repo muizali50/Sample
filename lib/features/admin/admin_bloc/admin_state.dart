@@ -86,3 +86,65 @@ final class UpdateStressorSuccess extends AdminState {
         stressor,
       ];
 }
+
+final class DeletingStressorFailed extends AdminState {
+  final String message;
+  const DeletingStressorFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class DeletingStressor extends AdminState {
+  final String stressorId;
+  const DeletingStressor(
+    this.stressorId,
+  );
+
+  @override
+  List<Object> get props => [
+        stressorId,
+      ];
+}
+
+final class DeletingStressorSuccess extends AdminState {
+  final String stressorId;
+  const DeletingStressorSuccess(
+    this.stressorId,
+  );
+
+  @override
+  List<Object> get props => [
+        stressorId,
+      ];
+}
+
+final class GetUserDataFailed extends AdminState {
+  final String message;
+  const GetUserDataFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class GetUserDataLoading extends AdminState {}
+
+final class GetUserDataSuccess extends AdminState {
+  final List<AppUser> userData;
+  const GetUserDataSuccess(
+    this.userData,
+  );
+
+  @override
+  List<Object> get props => [
+        userData,
+      ];
+}

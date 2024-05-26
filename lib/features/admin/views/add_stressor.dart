@@ -10,8 +10,10 @@ import 'package:mind_labify/utils/gaps.dart';
 import 'package:mind_labify/widgets/app_text_fields.dart';
 
 class AddStressor extends StatefulWidget {
+  final StressorModel? stressor;
   const AddStressor({
     super.key,
+    this.stressor,
   });
 
   @override
@@ -19,9 +21,21 @@ class AddStressor extends StatefulWidget {
 }
 
 class _AddStressorState extends State<AddStressor> {
+  late StressorModel stressor;
   String status = 'Inactive';
   String? icon;
   final TextEditingController _nameController = TextEditingController();
+
+  @override
+  void initState() {
+    if (widget.stressor != null) {
+      _nameController.text = widget.stressor!.title ?? '';
+      icon = widget.stressor!.icon ?? '';
+      status = widget.stressor!.status ?? '';
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final adminBloc = context.watch<AdminBloc>();
@@ -41,8 +55,8 @@ class _AddStressorState extends State<AddStressor> {
             0xFF000000,
           ),
         ),
-        title: const Text(
-          'Add Stressor',
+        title: Text(
+          widget.stressor != null ? "Edit Stressor" : 'Add Stressor',
         ),
         leading: IconButton(
           onPressed: () {
@@ -226,6 +240,7 @@ class _AddStressorState extends State<AddStressor> {
                           ),
                         ),
                       );
+                      _nameController.clear();
                       Navigator.pop(
                         context,
                       );
@@ -237,16 +252,37 @@ class _AddStressorState extends State<AddStressor> {
                           ),
                         ),
                       );
+                    } else if (state is UpdateStressorSuccess) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Stressor Updated',
+                          ),
+                        ),
+                      );
+                      _nameController.clear();
+                      Navigator.pop(context);
+                    } else if (state is UpdateStressorFailed) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            state.message,
+                          ),
+                        ),
+                      );
                     }
                   },
                   builder: (context, state) {
-                    if (state is CreatingStressor) {
-                      return const CircularProgressIndicator();
+                    if (state is CreatingStressor ||
+                        state is UpdatingStressor) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
                     }
                     return SizedBox(
                       width: 250,
                       child: AdminButton(
-                        text: 'Add',
+                        text: widget.stressor != null ? 'Update' : 'Add',
                         onTap: () {
                           if (_nameController.text.trim().isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -268,17 +304,31 @@ class _AddStressorState extends State<AddStressor> {
                             );
                             return;
                           }
-                          adminBloc.add(
-                            CreateStressor(
-                              StressorModel(
-                                stressorId: DateTime.now().toIso8601String(),
-                                title: _nameController.text,
-                                status: status,
-                                icon: icon,
+                          if (widget.stressor != null) {
+                            adminBloc.add(
+                              UpdateStressor(
+                                StressorModel(
+                                  stressorId: widget.stressor!.stressorId,
+                                  title: _nameController.text,
+                                  status: status,
+                                  icon: icon,
+                                ),
+                                icon.toString(),
                               ),
-                              icon.toString(),
-                            ),
-                          );
+                            );
+                          } else {
+                            adminBloc.add(
+                              CreateStressor(
+                                StressorModel(
+                                  stressorId: DateTime.now().toIso8601String(),
+                                  title: _nameController.text,
+                                  status: status,
+                                  icon: icon,
+                                ),
+                                icon.toString(),
+                              ),
+                            );
+                          }
                         },
                       ),
                     );

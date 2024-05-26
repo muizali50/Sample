@@ -48,3 +48,25 @@ final class AgeSelectedFailed extends UserState {
         message,
       ];
 }
+
+final class MoodSelecting extends UserState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class MoodSelected extends UserState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class MoodSelectedFailed extends UserState {
+  final String message;
+  const MoodSelectedFailed({
+    required this.message,
+  });
+
+  @override
+  List<Object?> get props => [
+        message,
+      ];
+}

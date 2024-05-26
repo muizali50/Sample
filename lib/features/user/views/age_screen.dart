@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mind_labify/features/user/user_bloc/user_bloc.dart';
 import 'package:mind_labify/features/user/views/gender_screen.dart';
 import 'package:mind_labify/widgets/app_primary_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AgeScreen extends StatefulWidget {
   const AgeScreen({super.key});
@@ -164,6 +165,10 @@ class _AgeScreenState extends State<AgeScreen> {
                       child: AppPrimaryButton(
                         text: 'Continue',
                         onTap: () {
+                          _saveAge(
+                            context,
+                            selectedAge.toString(),
+                          );
                           userBloc.add(
                             AgeSelect(
                               age: selectedAge.toString(),
@@ -179,6 +184,17 @@ class _AgeScreenState extends State<AgeScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void _saveAge(
+    BuildContext context,
+    String age,
+  ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+      'age',
+      age,
     );
   }
 }

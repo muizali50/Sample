@@ -9,7 +9,10 @@ part 'user_state.dart';
 class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc() : super(UserInitial()) {
     on<GenderEvent>(
-      (event, emit) async {
+      (
+        event,
+        emit,
+      ) async {
         String userId = FirebaseAuth.instance.currentUser!.uid;
         emit(
           GenderLoading(),
@@ -54,7 +57,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       },
     );
     on<AgeSelect>(
-      (event, emit) async {
+      (
+        event,
+        emit,
+      ) async {
         String userId = FirebaseAuth.instance.currentUser!.uid;
         emit(
           AgeSelecting(),
@@ -91,6 +97,54 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           } else {
             emit(
               AgeSelectedFailed(
+                message: e.toString(),
+              ),
+            );
+          }
+        }
+      },
+    );
+    on<SelectMood>(
+      (
+        event,
+        emit,
+      ) async {
+        String userId = FirebaseAuth.instance.currentUser!.uid;
+        emit(
+          MoodSelecting(),
+        );
+        try {
+          await FirebaseFirestore.instance
+              .collection(
+                'users',
+              )
+              .doc(
+                userId,
+              )
+              .update(
+            {
+              'mood': event.mood,
+            },
+          );
+          emit(
+            MoodSelected(),
+          );
+        } catch (e) {
+          if (e is FirebaseAuthException) {
+            emit(
+              MoodSelectedFailed(
+                message: e.message ?? '',
+              ),
+            );
+          } else if (e is FirebaseException) {
+            emit(
+              MoodSelectedFailed(
+                message: e.message ?? '',
+              ),
+            );
+          } else {
+            emit(
+              MoodSelectedFailed(
                 message: e.toString(),
               ),
             );

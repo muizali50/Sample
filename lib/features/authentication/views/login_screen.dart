@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mind_labify/features/admin/views/sub_features/dashboard/views/admin_dashboard.dart';
 import 'package:mind_labify/features/authentication/bloc/authentication_bloc.dart';
 import 'package:mind_labify/features/authentication/views/forgot_password_screen.dart';
 import 'package:mind_labify/features/authentication/views/signup_screen.dart';
-import 'package:mind_labify/features/user/views/home_screen.dart';
+import 'package:mind_labify/features/user/views/sub_features/select_mood/views/select_mood.dart';
 import 'package:mind_labify/utils/gaps.dart';
 import 'package:mind_labify/widgets/app_primary_button.dart';
 import 'package:mind_labify/widgets/app_text_fields.dart';
@@ -38,7 +39,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   horizontal: 45,
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: kIsWeb
+                      ? CrossAxisAlignment.center
+                      : CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Welcome Back',
@@ -125,7 +128,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
+                        builder: (context) => kIsWeb
+                            ? const AdminDashboard()
+                            : const SelectMoodScreen(),
                       ),
                     );
                   } else if (state is AuthenticationFailure) {

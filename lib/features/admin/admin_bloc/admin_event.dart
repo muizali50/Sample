@@ -26,12 +26,28 @@ final class GetStressor extends AdminEvent {}
 
 final class UpdateStressor extends AdminEvent {
   final StressorModel stressor;
+  final String iconFile;
   const UpdateStressor(
     this.stressor,
+    this.iconFile,
   );
 
   @override
   List<Object> get props => [
         stressor,
+        iconFile
       ];
 }
+
+final class DeleteEvent extends AdminEvent {
+  final String stressorId;
+  const DeleteEvent(
+    this.stressorId,
+  );
+  @override
+  List<Object> get props => [
+        stressorId,
+      ];
+}
+
+class GetUserData extends AdminEvent{}
