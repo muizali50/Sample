@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mind_labify/main.dart';
 import 'package:mind_labify/models/app_user.dart';
 import 'package:mind_labify/user_provider.dart';
@@ -92,16 +93,18 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
                 userCreds.user!.uid,
               )
               .get();
-          AppUser user = AppUser.fromMap(
-            userDoc.data()!,
-          );
-          user.uid = userCreds.user!.uid;
-          userProvider.setUser(
-            user,
-          );
-          emit(
-            const AuthenticationSuccess(),
-          );
+          AppUser? user;
+          if (kIsWeb != true) {
+            user = AppUser.fromMap(
+              userDoc.data()!,
+            );
+            user.uid = userCreds.user!.uid;
+            userProvider.setUser(
+              user,
+            );
+          }
+
+          emit(const AuthenticationSuccess());
         } catch (e) {
           if (e is FirebaseAuthException) {
             emit(
