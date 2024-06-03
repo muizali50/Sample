@@ -22,9 +22,13 @@ class _BreathworkDetailpageSubmitState
         elevation: 0,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 20.0,
+            ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   margin: const EdgeInsets.symmetric(
@@ -148,10 +152,6 @@ class _BreathworkDetailpageSubmitState
                       ),
                     ],
                   ),
-                ),
-                Gaps.hGap30,
-                const SizedBox(
-                  height: 144,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(

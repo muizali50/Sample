@@ -218,6 +218,7 @@ class _MeditationState extends State<Meditation> with TickerProviderStateMixin {
                     ),
                   ),
                   child: TabBar(
+                    tabAlignment: TabAlignment.start,
                     isScrollable: true,
                     indicatorSize: TabBarIndicatorSize.tab,
                     dividerColor: Colors.transparent,

@@ -219,6 +219,7 @@ class _BreathworkState extends State<Breathwork> with TickerProviderStateMixin {
                   ),
                   child: TabBar(
                     isScrollable: true,
+                    tabAlignment: TabAlignment.start,
                     indicatorSize: TabBarIndicatorSize.tab,
                     dividerColor: Colors.transparent,
                     indicator: BoxDecoration(

@@ -6,10 +6,12 @@ class MeditationDetailpageSubmit extends StatefulWidget {
   const MeditationDetailpageSubmit({super.key});
 
   @override
-  State<MeditationDetailpageSubmit> createState() => _MeditationDetailpageSubmitState();
+  State<MeditationDetailpageSubmit> createState() =>
+      _MeditationDetailpageSubmitState();
 }
 
-class _MeditationDetailpageSubmitState extends State<MeditationDetailpageSubmit> {
+class _MeditationDetailpageSubmitState
+    extends State<MeditationDetailpageSubmit> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,9 +22,13 @@ class _MeditationDetailpageSubmitState extends State<MeditationDetailpageSubmit>
         elevation: 0,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 20.0,
+            ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   margin: const EdgeInsets.symmetric(
@@ -146,10 +152,6 @@ class _MeditationDetailpageSubmitState extends State<MeditationDetailpageSubmit>
                       ),
                     ],
                   ),
-                ),
-                Gaps.hGap30,
-                const SizedBox(
-                  height: 144,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
