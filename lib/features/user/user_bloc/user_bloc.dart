@@ -152,5 +152,53 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         }
       },
     );
+    on<SelectStressor>(
+      (
+        event,
+        emit,
+      ) async {
+        String userId = FirebaseAuth.instance.currentUser!.uid;
+        emit(
+          SelectingStressor(),
+        );
+        try {
+          await FirebaseFirestore.instance
+              .collection(
+                'users',
+              )
+              .doc(
+                userId,
+              )
+              .update(
+            {
+              'stressorsName': event.stressorsName,
+            },
+          );
+          emit(
+            StressorSelected(),
+          );
+        } catch (e) {
+          if (e is FirebaseAuthException) {
+            emit(
+              StressorSelectedFailed(
+                message: e.message ?? '',
+              ),
+            );
+          } else if (e is FirebaseException) {
+            emit(
+              StressorSelectedFailed(
+                message: e.message ?? '',
+              ),
+            );
+          } else {
+            emit(
+              StressorSelectedFailed(
+                message: e.toString(),
+              ),
+            );
+          }
+        }
+      },
+    );
   }
 }

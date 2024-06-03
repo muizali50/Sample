@@ -70,3 +70,25 @@ final class MoodSelectedFailed extends UserState {
         message,
       ];
 }
+
+final class SelectingStressor extends UserState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class StressorSelected extends UserState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class StressorSelectedFailed extends UserState {
+  final String message;
+  const StressorSelectedFailed({
+    required this.message,
+  });
+
+  @override
+  List<Object?> get props => [
+        message,
+      ];
+}

@@ -36,3 +36,14 @@ final class SelectMood extends UserEvent {
         mood,
       ];
 }
+
+final class SelectStressor extends UserEvent {
+  final List<String?>? stressorsName;
+  const SelectStressor({
+    required this.stressorsName,
+  });
+  @override
+  List<Object?> get props => [
+        stressorsName,
+      ];
+}

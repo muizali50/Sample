@@ -9,6 +9,7 @@ class AppUser {
   String? age;
   String? gender;
   String? mood;
+  List<String?>? stressorsName;
 
   AppUser({
     required this.uid,
@@ -19,16 +20,19 @@ class AppUser {
     this.age,
     this.gender,
     this.mood,
+    this.stressorsName,
   });
 
-  AppUser copyWith(
-      {String? name,
-      String? email,
-      String? phoneNumber,
-      UserType? userType,
-      String? age,
-      String? gender,
-      String? mood}) {
+  AppUser copyWith({
+    String? name,
+    String? email,
+    String? phoneNumber,
+    UserType? userType,
+    String? age,
+    String? gender,
+    String? mood,
+    List<String?>? stressorsName,
+  }) {
     return AppUser(
       uid: uid ?? uid,
       name: name ?? this.name,
@@ -38,6 +42,7 @@ class AppUser {
       age: age ?? this.age,
       gender: gender ?? this.gender,
       mood: mood ?? this.mood,
+      stressorsName: stressorsName ?? this.stressorsName,
     );
   }
 
@@ -55,6 +60,11 @@ class AppUser {
       age: map['age'] ?? '',
       gender: map['gender'] ?? '',
       mood: map['mood'] ?? '',
+      stressorsName: map['stressorsName'] != null
+          ? List<String>.from(
+              map['stressorsName'],
+            )
+          : [],
     );
   }
   Map<String, dynamic> toMap() {
@@ -67,6 +77,7 @@ class AppUser {
       'age': age,
       'gender': gender,
       'mood': mood,
+      'stressorsName': stressorsName,
     };
   }
 }

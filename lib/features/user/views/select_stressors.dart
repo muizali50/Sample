@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mind_labify/features/admin/admin_bloc/admin_bloc.dart';
-import 'package:mind_labify/features/user/views/home_screen.dart';
+import 'package:mind_labify/features/user/user_bloc/user_bloc.dart';
+import 'package:mind_labify/features/user/views/sub_features/home/views/home_screen.dart';
+import 'package:mind_labify/features/user/views/navigation_menu.dart';
 import 'package:mind_labify/utils/gaps.dart';
 import 'package:mind_labify/widgets/app_primary_button.dart';
 
@@ -16,6 +18,8 @@ class SelectStressors extends StatefulWidget {
 
 class _SelectStressorsState extends State<SelectStressors> {
   late final AdminBloc adminBloc;
+  late final UserBloc userBloc;
+  final List<String> _stressorsName = [];
 
   @override
   void initState() {
@@ -24,6 +28,8 @@ class _SelectStressorsState extends State<SelectStressors> {
       adminBloc.add(
         GetStressor(),
       );
+
+      userBloc = context.read<UserBloc>();
     }
     super.initState();
   }
@@ -98,43 +104,98 @@ class _SelectStressorsState extends State<SelectStressors> {
                         ),
                         childrenDelegate: SliverChildBuilderDelegate(
                           childCount: adminBloc.activeStressors.length,
-                          (context, index) => Container(
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFEAEAEA),
-                              borderRadius: BorderRadius.circular(
-                                50,
+                          (context, index) => InkWell(
+                            onTap: () {
+                              setState(
+                                () {
+                                  if (_stressorsName.contains(
+                                        adminBloc.activeStressors[index].title
+                                            .toString(),
+                                      ) ==
+                                      true) {
+                                    _stressorsName.remove(
+                                      adminBloc.activeStressors[index].title
+                                          .toString(),
+                                    );
+                                  } else {
+                                    _stressorsName.add(
+                                      adminBloc.activeStressors[index].title
+                                          .toString(),
+                                    );
+                                  }
+                                },
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: _stressorsName.contains(
+                                          adminBloc.activeStressors[index].title
+                                              .toString(),
+                                        ) ==
+                                        true
+                                    ? const Color(
+                                        0xFFB9BF88,
+                                      )
+                                    : const Color(
+                                        0xFFEAEAEA,
+                                      ),
+                                borderRadius: BorderRadius.circular(
+                                  50,
+                                ),
                               ),
-                            ),
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 20,
-                                    width: 20,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: adminBloc.activeStressors[index].icon != null && adminBloc.activeStressors[index].icon!.isNotEmpty
-                                          ? DecorationImage(
-                                              image: NetworkImage(
-                                                adminBloc.activeStressors[index].icon!,
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: 20,
+                                      width: 20,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: adminBloc.activeStressors[index]
+                                                        .icon !=
+                                                    null &&
+                                                adminBloc.activeStressors[index]
+                                                    .icon!.isNotEmpty
+                                            ? DecorationImage(
+                                                image: NetworkImage(
+                                                  adminBloc
+                                                      .activeStressors[index]
+                                                      .icon!,
+                                                ),
+                                              )
+                                            : const DecorationImage(
+                                                image: AssetImage(
+                                                  'assets/icons/s_happy.png',
+                                                ),
                                               ),
-                                            )
-                                          : const DecorationImage(
-                                              image: AssetImage(
-                                                'assets/icons/s_happy.png',
-                                              ),
-                                            ),
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    adminBloc.activeStressors[index].title.toString(),
-                                  ),
-                                ],
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      adminBloc.activeStressors[index].title
+                                          .toString(),
+                                      style: TextStyle(
+                                        color: _stressorsName.contains(
+                                                  adminBloc
+                                                      .activeStressors[index]
+                                                      .title
+                                                      .toString(),
+                                                ) ==
+                                                true
+                                            ? const Color(
+                                                0xFFffffff,
+                                              )
+                                            : const Color(
+                                                0xFF000000,
+                                              ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -158,18 +219,42 @@ class _SelectStressorsState extends State<SelectStressors> {
                 padding: const EdgeInsets.symmetric(
                   horizontal: 15,
                 ),
-                child: AppPrimaryButton(
-                  buttonColor: 0xFFF4F2E8,
-                  text: 'Continue',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (
-                          context,
-                        ) =>
-                            const HomeScreen(),
-                      ),
+                child: BlocConsumer<UserBloc, UserState>(
+                  listener: (context, state) {
+                    if (state is StressorSelected) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (
+                            context,
+                          ) =>
+                              const BottomNavBar(),
+                        ),
+                      );
+                    } else if (state is StressorSelectedFailed) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            state.message,
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is SelectingStressor) {
+                      return const CircularProgressIndicator();
+                    }
+                    return AppPrimaryButton(
+                      buttonColor: 0xFFF4F2E8,
+                      text: 'Continue',
+                      onTap: () {
+                        userBloc.add(
+                          SelectStressor(
+                            stressorsName: _stressorsName,
+                          ),
+                        );
+                      },
                     );
                   },
                 ),

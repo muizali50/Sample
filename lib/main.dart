@@ -66,7 +66,8 @@ class MyApp extends StatelessWidget {
               secondary: Color(0xFFC0BA59),
             ),
           ),
-          home: FirebaseAuth.instance.currentUser == null
+          home: 
+          FirebaseAuth.instance.currentUser == null
               ? kIsWeb
                   ? const LoginScreen()
                   : const OnboardingScreen()
