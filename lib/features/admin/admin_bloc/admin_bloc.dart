@@ -1,11 +1,12 @@
 import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mind_labify/models/app_user.dart';
+import 'package:mind_labify/models/breathwork_model.dart';
+import 'package:mind_labify/models/meditation_model.dart';
 import 'package:mind_labify/models/stressor_model.dart';
 
 part 'admin_event.dart';
@@ -15,6 +16,10 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
   List<AppUser> userData = [];
   List<StressorModel> stressors = [];
   List<StressorModel> activeStressors = [];
+  List<BreathWorkModel> breathWorks = [];
+  List<BreathWorkModel> activeBreathWorks = [];
+  List<MeditationModel> meditations = [];
+  List<MeditationModel> activeMeditations = [];
   AdminBloc() : super(AdminInitial()) {
     on<CreateStressor>(
       (
@@ -261,6 +266,388 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           );
           emit(
             GetUserDataFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<CreateBreathWorkCategory>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          CreatingBreathWorkCategory(),
+        );
+        try {
+          final ref = FirebaseStorage.instance.ref().child(
+                'breathwork_icons/${event.iconFile.path.split('/').last}',
+              );
+          await ref.putData(
+            await event.iconFile.readAsBytes(),
+          );
+          final iconUrl = await ref.getDownloadURL();
+          event.breathWork.icon = iconUrl;
+          final breathworkCollection = FirebaseFirestore.instance.collection(
+            'breathwork',
+          );
+          final result = await breathworkCollection.add(
+            event.breathWork.toMap(),
+          );
+          event.breathWork.breathworkId = result.id;
+          breathWorks.add(
+            event.breathWork,
+          );
+          emit(
+            CreateBreathWorkCategorySuccess(
+              event.breathWork,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            CreateBreathWorkCategoryFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            CreateBreathWorkCategoryFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<GetBreathWorkCategory>(
+      (
+        event,
+        emit,
+      ) async {
+        GettingBreathWorkCategory();
+        try {
+          final breathworkCollection = FirebaseFirestore.instance.collection(
+            'breathwork',
+          );
+          final result = await breathworkCollection.get();
+          breathWorks = result.docs.map(
+            (e) {
+              final breathWork = BreathWorkModel.fromMap(
+                e.data(),
+              );
+              breathWork.breathworkId = e.id;
+              return breathWork;
+            },
+          ).toList();
+          emit(
+            GetBreathWorkCategorySuccess(
+              breathWorks,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            GetBreathWorkCategoryFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            GetBreathWorkCategoryFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<UpdateBreathWorkCategory>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          UpdatingBreathWorkCategory(),
+        );
+        try {
+          if (event.iconFile != null) {
+            final ref = FirebaseStorage.instance.ref().child(
+                  'breathwork_icons/${event.iconFile!.path.split('/').last}',
+                );
+            await ref.putData(
+              await event.iconFile!.readAsBytes(),
+            );
+            final iconUrl = await ref.getDownloadURL();
+            event.breathWork.icon = iconUrl;
+          }
+          final breathWorkCollection = FirebaseFirestore.instance.collection(
+            'breathwork',
+          );
+          await breathWorkCollection
+              .doc(
+                event.breathWork.breathworkId,
+              )
+              .update(
+                event.breathWork.toMap(),
+              );
+          final index = breathWorks.indexWhere(
+            (element) => element.breathworkId == event.breathWork.breathworkId,
+          );
+          breathWorks[index] = event.breathWork;
+          emit(
+            UpdateBreathWorkCategorySuccess(
+              event.breathWork,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            UpdateBreathWorkCategoryFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            UpdateBreathWorkCategoryFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<DeleteBreathWorkCategory>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          DeletingBreathorkCategory(
+            event.breathworkId,
+          ),
+        );
+        try {
+          final breathworkCollection = FirebaseFirestore.instance.collection(
+            'breathwork',
+          );
+          await breathworkCollection.doc(event.breathworkId).delete();
+          breathWorks.removeWhere(
+            (element) => element.breathworkId == event.breathworkId,
+          );
+          emit(
+            DeletingBreathorkCategorySuccess(
+              event.breathworkId,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            DeletingBreathworkCategoryFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            DeletingBreathworkCategoryFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<CreateMeditationCategory>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          CreatingMeditationCategory(),
+        );
+        try {
+          final ref = FirebaseStorage.instance.ref().child(
+                'meditation_icons/${event.iconFile.path.split('/').last}',
+              );
+          await ref.putData(
+            await event.iconFile.readAsBytes(),
+          );
+          final iconUrl = await ref.getDownloadURL();
+          event.meditation.icon = iconUrl;
+          final meditationCollection = FirebaseFirestore.instance.collection(
+            'meditation',
+          );
+          final result = await meditationCollection.add(
+            event.meditation.toMap(),
+          );
+          event.meditation.meditationId = result.id;
+          meditations.add(
+            event.meditation,
+          );
+          emit(
+            CreateMeditationCategorySuccess(
+              event.meditation,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            CreateMeditationCategoryFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            CreateMeditationCategoryFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<UpdateMeditationCategory>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          UpdatingMeditationCategory(),
+        );
+        try {
+          if (event.iconFile != null) {
+            final ref = FirebaseStorage.instance.ref().child(
+                  'meditation_icons/${event.iconFile!.path.split('/').last}',
+                );
+            await ref.putData(
+              await event.iconFile!.readAsBytes(),
+            );
+            final iconUrl = await ref.getDownloadURL();
+            event.meditation.icon = iconUrl;
+          }
+          final meditationCollection = FirebaseFirestore.instance.collection(
+            'meditation',
+          );
+          await meditationCollection
+              .doc(
+                event.meditation.meditationId,
+              )
+              .update(
+                event.meditation.toMap(),
+              );
+          final index = meditations.indexWhere(
+            (element) => element.meditationId == event.meditation.meditationId,
+          );
+          meditations[index] = event.meditation;
+          emit(
+            UpdateMeditationCategorySuccess(
+              event.meditation,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            UpdateMeditationCategoryFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            UpdateMeditationCategoryFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<GetMeditationCategory>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          GettingMeditationCategory(),
+        );
+        try {
+          final meditationCollection = FirebaseFirestore.instance.collection(
+            'meditation',
+          );
+          final result = await meditationCollection.get();
+          meditations = result.docs.map(
+            (e) {
+              final meditation = MeditationModel.fromMap(
+                e.data(),
+              );
+              meditation.meditationId = e.id;
+              return meditation;
+            },
+          ).toList();
+          emit(
+            GetMeditationCategorySuccess(
+              meditations,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            GetMeditationCategoryFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            GetMeditationCategoryFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<DeleteMeditationCategory>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          DeletingMeditationCategory(
+            event.meditationId,
+          ),
+        );
+        try {
+          final meditationCollection = FirebaseFirestore.instance.collection(
+            'meditation',
+          );
+          await meditationCollection.doc(event.meditationId).delete();
+          meditations.removeWhere(
+            (element) => element.meditationId == event.meditationId,
+          );
+          emit(
+            DeletingMeditationCategorySuccess(
+              event.meditationId,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            DeletingMeditationCategoryFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            DeletingMeditationCategoryFailed(
               e.toString(),
             ),
           );

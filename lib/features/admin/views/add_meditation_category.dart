@@ -5,33 +5,33 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mind_labify/features/admin/admin_bloc/admin_bloc.dart';
 import 'package:mind_labify/features/admin/views/admin_button.dart';
-import 'package:mind_labify/models/stressor_model.dart';
+import 'package:mind_labify/models/meditation_model.dart';
 import 'package:mind_labify/utils/gaps.dart';
 import 'package:mind_labify/widgets/app_text_fields.dart';
 
-class AddStressor extends StatefulWidget {
-  final StressorModel? stressor;
-  const AddStressor({
+class AddMeditationCategory extends StatefulWidget {
+  final MeditationModel? meditation;
+  const AddMeditationCategory({
     super.key,
-    this.stressor,
+    this.meditation,
   });
 
   @override
-  State<AddStressor> createState() => _AddStressorState();
+  State<AddMeditationCategory> createState() => _AddMeditationCategoryState();
 }
 
-class _AddStressorState extends State<AddStressor> {
-  late StressorModel stressor;
-  String status = 'Inactive';
-  String? stresserIcon;
+class _AddMeditationCategoryState extends State<AddMeditationCategory> {
+  late MeditationModel meditation;
   final TextEditingController _nameController = TextEditingController();
+  String status = 'Inactive';
+  String? meditationIcon;
 
   @override
   void initState() {
-    if (widget.stressor != null) {
-      _nameController.text = widget.stressor!.title ?? '';
-      stresserIcon = widget.stressor!.icon ?? '';
-      status = widget.stressor!.status ?? '';
+    if (widget.meditation != null) {
+      _nameController.text = widget.meditation!.title ?? '';
+      meditationIcon = widget.meditation!.icon ?? '';
+      status = widget.meditation!.status ?? '';
     }
     super.initState();
   }
@@ -56,7 +56,9 @@ class _AddStressorState extends State<AddStressor> {
           ),
         ),
         title: Text(
-          widget.stressor != null ? "Edit Stressor" : 'Add Stressor',
+          widget.meditation != null
+              ? "Edit Meditation Category"
+              : 'Add Meditation Category',
         ),
         leading: IconButton(
           onPressed: () {
@@ -161,7 +163,7 @@ class _AddStressorState extends State<AddStressor> {
                 ),
                 Gaps.hGap35,
                 const Text(
-                  'Stressor Icon',
+                  'Meditation Icon',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 15,
@@ -194,7 +196,7 @@ class _AddStressorState extends State<AddStressor> {
                                 final iconUrl = pickedFile.path;
                                 setState(
                                   () {
-                                    stresserIcon = iconUrl;
+                                    meditationIcon = iconUrl;
                                   },
                                 );
                               }
@@ -224,19 +226,19 @@ class _AddStressorState extends State<AddStressor> {
                     const SizedBox(
                       width: 20,
                     ),
-                    stresserIcon != null
-                        ? Image.network(stresserIcon!, width: 50, height: 50)
+                    meditationIcon != null
+                        ? Image.network(meditationIcon!, width: 50, height: 50)
                         : Container(),
                   ],
                 ),
                 Gaps.hGap35,
                 BlocConsumer<AdminBloc, AdminState>(
                   listener: (context, state) {
-                    if (state is CreateStressorSuccess) {
+                    if (state is CreateMeditationCategorySuccess) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
-                            'Stressor added successfully',
+                            'Meditation category added successfully',
                           ),
                         ),
                       );
@@ -244,25 +246,27 @@ class _AddStressorState extends State<AddStressor> {
                       Navigator.pop(
                         context,
                       );
-                    } else if (state is CreateStressorFailed) {
-                      ScaffoldMessenger.of(context).showSnackBar(
+                    } else if (state is CreateMeditationCategoryFailed) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(
                         SnackBar(
                           content: Text(
                             state.message,
                           ),
                         ),
                       );
-                    } else if (state is UpdateStressorSuccess) {
+                    } else if (state is UpdateMeditationCategorySuccess) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
-                            'Stressor Updated',
+                            'Meditation Category Updated',
                           ),
                         ),
                       );
                       _nameController.clear();
                       Navigator.pop(context);
-                    } else if (state is UpdateStressorFailed) {
+                    } else if (state is UpdateMeditationCategoryFailed) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
@@ -273,8 +277,8 @@ class _AddStressorState extends State<AddStressor> {
                     }
                   },
                   builder: (context, state) {
-                    if (state is CreatingStressor ||
-                        state is UpdatingStressor) {
+                    if (state is CreatingMeditationCategory ||
+                        state is UpdatingMeditationCategory) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
@@ -282,7 +286,7 @@ class _AddStressorState extends State<AddStressor> {
                     return SizedBox(
                       width: 250,
                       child: AdminButton(
-                        text: widget.stressor != null ? 'Update' : 'Add',
+                        text: widget.meditation != null ? 'Update' : 'Add',
                         onTap: () {
                           if (_nameController.text.trim().isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -294,7 +298,7 @@ class _AddStressorState extends State<AddStressor> {
                             );
                             return;
                           }
-                          if (stresserIcon!.isEmpty) {
+                          if (meditationIcon!.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
@@ -304,30 +308,31 @@ class _AddStressorState extends State<AddStressor> {
                             );
                             return;
                           }
-                          if (widget.stressor != null) {
+                          if (widget.meditation != null) {
                             adminBloc.add(
-                              UpdateStressor(
-                                StressorModel(
-                                  stressorId: widget.stressor!.stressorId,
+                              UpdateMeditationCategory(
+                                MeditationModel(
+                                  meditationId: widget.meditation!.meditationId,
                                   title: _nameController.text,
                                   status: status,
-                                  icon: stresserIcon,
+                                  icon: meditationIcon,
                                 ),
-                                stresserIcon == widget.stressor?.icon
+                                meditationIcon == widget.meditation?.icon
                                     ? null
-                                    : XFile(stresserIcon!),
+                                    : XFile(meditationIcon!),
                               ),
                             );
                           } else {
                             adminBloc.add(
-                              CreateStressor(
-                                StressorModel(
-                                  stressorId: DateTime.now().toIso8601String(),
+                              CreateMeditationCategory(
+                                MeditationModel(
+                                  meditationId:
+                                      DateTime.now().toIso8601String(),
                                   title: _nameController.text,
                                   status: status,
-                                  icon: stresserIcon,
+                                  icon: meditationIcon,
                                 ),
-                                XFile(stresserIcon!),
+                                XFile(meditationIcon!),
                               ),
                             );
                           }

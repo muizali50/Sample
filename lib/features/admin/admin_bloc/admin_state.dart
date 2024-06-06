@@ -148,3 +148,231 @@ final class GetUserDataSuccess extends AdminState {
         userData,
       ];
 }
+
+final class CreateBreathWorkCategoryFailed extends AdminState {
+  final String message;
+  const CreateBreathWorkCategoryFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class CreatingBreathWorkCategory extends AdminState {}
+
+final class CreateBreathWorkCategorySuccess extends AdminState {
+  final BreathWorkModel breathWork;
+  const CreateBreathWorkCategorySuccess(
+    this.breathWork,
+  );
+
+  @override
+  List<Object> get props => [
+        breathWork,
+      ];
+}
+
+final class UpdateBreathWorkCategoryFailed extends AdminState {
+  final String message;
+  const UpdateBreathWorkCategoryFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class UpdatingBreathWorkCategory extends AdminState {}
+
+final class UpdateBreathWorkCategorySuccess extends AdminState {
+  final BreathWorkModel breathWork;
+  const UpdateBreathWorkCategorySuccess(
+    this.breathWork,
+  );
+
+  @override
+  List<Object> get props => [
+        breathWork,
+      ];
+}
+
+final class GetBreathWorkCategoryFailed extends AdminState {
+  final String message;
+  const GetBreathWorkCategoryFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class GettingBreathWorkCategory extends AdminState {}
+
+final class GetBreathWorkCategorySuccess extends AdminState {
+  final List<BreathWorkModel> breathWorks;
+  const GetBreathWorkCategorySuccess(
+    this.breathWorks,
+  );
+
+  @override
+  List<Object> get props => [
+        breathWorks,
+      ];
+}
+
+final class DeletingBreathworkCategoryFailed extends AdminState {
+  final String message;
+  const DeletingBreathworkCategoryFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class DeletingBreathorkCategory extends AdminState {
+  final String breathworkId;
+  const DeletingBreathorkCategory(
+    this.breathworkId,
+  );
+
+  @override
+  List<Object> get props => [
+        breathworkId,
+      ];
+}
+
+final class DeletingBreathorkCategorySuccess extends AdminState {
+  final String breathworkId;
+  const DeletingBreathorkCategorySuccess(
+    this.breathworkId,
+  );
+
+  @override
+  List<Object> get props => [
+        breathworkId,
+      ];
+}
+
+final class CreateMeditationCategoryFailed extends AdminState {
+  final String message;
+  const CreateMeditationCategoryFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class CreatingMeditationCategory extends AdminState {}
+
+final class CreateMeditationCategorySuccess extends AdminState {
+  final MeditationModel meditation;
+  const CreateMeditationCategorySuccess(
+    this.meditation,
+  );
+
+  @override
+  List<Object> get props => [
+        meditation,
+      ];
+}
+
+final class UpdateMeditationCategoryFailed extends AdminState {
+  final String message;
+  const UpdateMeditationCategoryFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class UpdatingMeditationCategory extends AdminState {}
+
+final class UpdateMeditationCategorySuccess extends AdminState {
+  final MeditationModel meditation;
+  const UpdateMeditationCategorySuccess(
+    this.meditation,
+  );
+
+  @override
+  List<Object> get props => [
+        meditation,
+      ];
+}
+
+final class GetMeditationCategoryFailed extends AdminState {
+  final String message;
+  const GetMeditationCategoryFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class GettingMeditationCategory extends AdminState {}
+
+final class GetMeditationCategorySuccess extends AdminState {
+  final List<MeditationModel> meditations;
+  const GetMeditationCategorySuccess(
+    this.meditations,
+  );
+
+  @override
+  List<Object> get props => [
+        meditations,
+      ];
+}
+
+final class DeletingMeditationCategoryFailed extends AdminState {
+  final String message;
+  const DeletingMeditationCategoryFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class DeletingMeditationCategory extends AdminState {
+  final String meditationId;
+  const DeletingMeditationCategory(
+    this.meditationId,
+  );
+
+  @override
+  List<Object> get props => [
+        meditationId,
+      ];
+}
+
+final class DeletingMeditationCategorySuccess extends AdminState {
+  final String meditationId;
+  const DeletingMeditationCategorySuccess(
+    this.meditationId,
+  );
+
+  @override
+  List<Object> get props => [
+        meditationId,
+      ];
+}

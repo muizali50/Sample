@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mind_labify/features/admin/admin_bloc/admin_bloc.dart';
-import 'package:mind_labify/features/admin/views/add_stressor.dart';
+import 'package:mind_labify/features/admin/views/add_meditation_category.dart';
 import 'package:mind_labify/features/admin/views/sub_features/all_users/widgets/search_field.dart';
-import 'package:mind_labify/models/stressor_model.dart';
+import 'package:mind_labify/models/meditation_model.dart';
 import 'package:mind_labify/utils/gaps.dart';
 
-class AllStressors extends StatefulWidget {
-  const AllStressors({super.key});
+class MeditationCategories extends StatefulWidget {
+  const MeditationCategories({super.key});
 
   @override
-  State<AllStressors> createState() => _AllStressorsState();
+  State<MeditationCategories> createState() => _MeditationCategoriesState();
 }
 
-class _AllStressorsState extends State<AllStressors> {
+class _MeditationCategoriesState extends State<MeditationCategories> {
   late final AdminBloc adminBloc;
-  List<StressorModel> filterstressorData = [];
+  List<MeditationModel> filterMeditationData = [];
   final TextEditingController searchController = TextEditingController();
   String _searchText = '';
 
   @override
   void initState() {
     adminBloc = context.read<AdminBloc>();
-    if (adminBloc.stressors.isEmpty) {
+    if (adminBloc.meditations.isEmpty) {
       adminBloc.add(
-        GetStressor(),
+        GetMeditationCategory(),
       );
     }
 
@@ -45,11 +45,11 @@ class _AllStressorsState extends State<AllStressors> {
 
   void _filterUsers() {
     if (_searchText.isEmpty) {
-      filterstressorData = adminBloc.stressors;
+      filterMeditationData = adminBloc.meditations;
     } else {
-      filterstressorData = adminBloc.stressors
+      filterMeditationData = adminBloc.meditations
           .where(
-            (stressor) => stressor.title!.toLowerCase().contains(
+            (meditation) => meditation.title!.toLowerCase().contains(
                   _searchText.toLowerCase(),
                 ),
           )
@@ -95,7 +95,7 @@ class _AllStressorsState extends State<AllStressors> {
                 Row(
                   children: [
                     const Text(
-                      'All Stressors',
+                      'All Meditation Categories',
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 25,
@@ -113,7 +113,7 @@ class _AllStressorsState extends State<AllStressors> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const AddStressor(),
+                            builder: (context) => const AddMeditationCategory(),
                           ),
                         );
                       },
@@ -131,7 +131,7 @@ class _AllStressorsState extends State<AllStressors> {
                           ),
                         ),
                         child: const Text(
-                          '+ Add Stressor',
+                          '+ Add Category',
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 14,
@@ -155,19 +155,19 @@ class _AllStressorsState extends State<AllStressors> {
                 Gaps.hGap30,
                 BlocBuilder<AdminBloc, AdminState>(
                   builder: (context, state) {
-                    if (state is GettingStressor) {
+                    if (state is GettingMeditationCategory) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
-                    } else if (state is GetStressorFailed) {
+                    } else if (state is GetBreathWorkCategoryFailed) {
                       return Center(
                         child: Text(state.message),
                       );
                     }
-                    return adminBloc.stressors.isEmpty
+                    return adminBloc.meditations.isEmpty
                         ? const Center(
                             child: Text(
-                              'No Stressors',
+                              'No Meditation Categories',
                             ),
                           )
                         : DataTable(
@@ -204,19 +204,19 @@ class _AllStressorsState extends State<AllStressors> {
                                 ),
                               ),
                             ],
-                            rows: filterstressorData.isNotEmpty
-                                ? filterstressorData
+                            rows: filterMeditationData.isNotEmpty
+                                ? filterMeditationData
                                     .map(
-                                      (stressor) => DataRow(
+                                      (meditations) => DataRow(
                                         cells: [
                                           DataCell(
                                             Text(
-                                              stressor.title ?? '',
+                                              meditations.title ?? '',
                                             ),
                                           ),
                                           DataCell(
                                             Text(
-                                              stressor.status ?? '',
+                                              meditations.status ?? '',
                                             ),
                                           ),
                                           DataCell(
@@ -228,8 +228,9 @@ class _AllStressorsState extends State<AllStressors> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            AddStressor(
-                                                          stressor: stressor,
+                                                            AddMeditationCategory(
+                                                          meditation:
+                                                              meditations,
                                                         ),
                                                       ),
                                                     );
@@ -256,10 +257,10 @@ class _AllStressorsState extends State<AllStressors> {
                                                       builder: (context) {
                                                         return AlertDialog(
                                                           title: const Text(
-                                                            'Delete Stressor',
+                                                            'Delete Meditation Category',
                                                           ),
                                                           content: const Text(
-                                                            'Are you sure you want to delete this stressor?',
+                                                            'Are you sure you want to delete this meditation category?',
                                                           ),
                                                           actions: [
                                                             TextButton(
@@ -281,8 +282,9 @@ class _AllStressorsState extends State<AllStressors> {
                                                             TextButton(
                                                               onPressed: () {
                                                                 adminBloc.add(
-                                                                  DeleteEvent(
-                                                                    stressor.stressorId ??
+                                                                  DeleteMeditationCategory(
+                                                                    meditations
+                                                                            .meditationId ??
                                                                         '',
                                                                   ),
                                                                 );
@@ -327,18 +329,18 @@ class _AllStressorsState extends State<AllStressors> {
                                       ),
                                     )
                                     .toList()
-                                : adminBloc.stressors
+                                : adminBloc.meditations
                                     .map(
-                                      (stressor) => DataRow(
+                                      (meditations) => DataRow(
                                         cells: [
                                           DataCell(
                                             Text(
-                                              stressor.title ?? '',
+                                              meditations.title ?? '',
                                             ),
                                           ),
                                           DataCell(
                                             Text(
-                                              stressor.status ?? '',
+                                              meditations.status ?? '',
                                             ),
                                           ),
                                           DataCell(
@@ -350,8 +352,9 @@ class _AllStressorsState extends State<AllStressors> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            AddStressor(
-                                                          stressor: stressor,
+                                                            AddMeditationCategory(
+                                                          meditation:
+                                                              meditations,
                                                         ),
                                                       ),
                                                     );
@@ -378,10 +381,10 @@ class _AllStressorsState extends State<AllStressors> {
                                                       builder: (context) {
                                                         return AlertDialog(
                                                           title: const Text(
-                                                            'Delete Stressor',
+                                                            'Delete Meditation Category',
                                                           ),
                                                           content: const Text(
-                                                            'Are you sure you want to delete this stressor?',
+                                                            'Are you sure you want to delete this meditation category?',
                                                           ),
                                                           actions: [
                                                             TextButton(
@@ -403,8 +406,9 @@ class _AllStressorsState extends State<AllStressors> {
                                                             TextButton(
                                                               onPressed: () {
                                                                 adminBloc.add(
-                                                                  DeleteEvent(
-                                                                    stressor.stressorId ??
+                                                                  DeleteMeditationCategory(
+                                                                    meditations
+                                                                            .meditationId ??
                                                                         '',
                                                                   ),
                                                                 );

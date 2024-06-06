@@ -5,33 +5,33 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mind_labify/features/admin/admin_bloc/admin_bloc.dart';
 import 'package:mind_labify/features/admin/views/admin_button.dart';
-import 'package:mind_labify/models/stressor_model.dart';
+import 'package:mind_labify/models/breathwork_model.dart';
 import 'package:mind_labify/utils/gaps.dart';
 import 'package:mind_labify/widgets/app_text_fields.dart';
 
-class AddStressor extends StatefulWidget {
-  final StressorModel? stressor;
-  const AddStressor({
+class AddBreathworkCategory extends StatefulWidget {
+  final BreathWorkModel? breathWork;
+  const AddBreathworkCategory({
     super.key,
-    this.stressor,
+    this.breathWork,
   });
 
   @override
-  State<AddStressor> createState() => _AddStressorState();
+  State<AddBreathworkCategory> createState() => _AddBreathworkCategoryState();
 }
 
-class _AddStressorState extends State<AddStressor> {
-  late StressorModel stressor;
-  String status = 'Inactive';
-  String? stresserIcon;
+class _AddBreathworkCategoryState extends State<AddBreathworkCategory> {
+  late BreathWorkModel breathWork;
   final TextEditingController _nameController = TextEditingController();
+  String status = 'Inactive';
+  String? breathworkIcon;
 
   @override
   void initState() {
-    if (widget.stressor != null) {
-      _nameController.text = widget.stressor!.title ?? '';
-      stresserIcon = widget.stressor!.icon ?? '';
-      status = widget.stressor!.status ?? '';
+    if (widget.breathWork != null) {
+      _nameController.text = widget.breathWork!.title ?? '';
+      breathworkIcon = widget.breathWork!.icon ?? '';
+      status = widget.breathWork!.status ?? '';
     }
     super.initState();
   }
@@ -56,7 +56,9 @@ class _AddStressorState extends State<AddStressor> {
           ),
         ),
         title: Text(
-          widget.stressor != null ? "Edit Stressor" : 'Add Stressor',
+          widget.breathWork != null
+              ? "Edit Breathwork Category"
+              : 'Add Breathwork Category',
         ),
         leading: IconButton(
           onPressed: () {
@@ -161,7 +163,7 @@ class _AddStressorState extends State<AddStressor> {
                 ),
                 Gaps.hGap35,
                 const Text(
-                  'Stressor Icon',
+                  'Breathwork Icon',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 15,
@@ -194,7 +196,7 @@ class _AddStressorState extends State<AddStressor> {
                                 final iconUrl = pickedFile.path;
                                 setState(
                                   () {
-                                    stresserIcon = iconUrl;
+                                    breathworkIcon = iconUrl;
                                   },
                                 );
                               }
@@ -224,19 +226,19 @@ class _AddStressorState extends State<AddStressor> {
                     const SizedBox(
                       width: 20,
                     ),
-                    stresserIcon != null
-                        ? Image.network(stresserIcon!, width: 50, height: 50)
+                    breathworkIcon != null
+                        ? Image.network(breathworkIcon!, width: 50, height: 50)
                         : Container(),
                   ],
                 ),
                 Gaps.hGap35,
                 BlocConsumer<AdminBloc, AdminState>(
                   listener: (context, state) {
-                    if (state is CreateStressorSuccess) {
+                    if (state is CreateBreathWorkCategorySuccess) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
-                            'Stressor added successfully',
+                            'Breathwork category added successfully',
                           ),
                         ),
                       );
@@ -244,25 +246,27 @@ class _AddStressorState extends State<AddStressor> {
                       Navigator.pop(
                         context,
                       );
-                    } else if (state is CreateStressorFailed) {
-                      ScaffoldMessenger.of(context).showSnackBar(
+                    } else if (state is CreateBreathWorkCategoryFailed) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(
                         SnackBar(
                           content: Text(
                             state.message,
                           ),
                         ),
                       );
-                    } else if (state is UpdateStressorSuccess) {
+                    } else if (state is UpdateBreathWorkCategorySuccess) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
-                            'Stressor Updated',
+                            'Breathwork Category Updated',
                           ),
                         ),
                       );
                       _nameController.clear();
                       Navigator.pop(context);
-                    } else if (state is UpdateStressorFailed) {
+                    } else if (state is UpdateBreathWorkCategoryFailed) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
@@ -273,8 +277,8 @@ class _AddStressorState extends State<AddStressor> {
                     }
                   },
                   builder: (context, state) {
-                    if (state is CreatingStressor ||
-                        state is UpdatingStressor) {
+                    if (state is CreatingBreathWorkCategory ||
+                        state is UpdatingBreathWorkCategory) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
@@ -282,7 +286,7 @@ class _AddStressorState extends State<AddStressor> {
                     return SizedBox(
                       width: 250,
                       child: AdminButton(
-                        text: widget.stressor != null ? 'Update' : 'Add',
+                        text: widget.breathWork != null ? 'Update' : 'Add',
                         onTap: () {
                           if (_nameController.text.trim().isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -294,7 +298,7 @@ class _AddStressorState extends State<AddStressor> {
                             );
                             return;
                           }
-                          if (stresserIcon!.isEmpty) {
+                          if (breathworkIcon!.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
@@ -304,30 +308,31 @@ class _AddStressorState extends State<AddStressor> {
                             );
                             return;
                           }
-                          if (widget.stressor != null) {
+                          if (widget.breathWork != null) {
                             adminBloc.add(
-                              UpdateStressor(
-                                StressorModel(
-                                  stressorId: widget.stressor!.stressorId,
+                              UpdateBreathWorkCategory(
+                                BreathWorkModel(
+                                  breathworkId: widget.breathWork!.breathworkId,
                                   title: _nameController.text,
                                   status: status,
-                                  icon: stresserIcon,
+                                  icon: breathworkIcon,
                                 ),
-                                stresserIcon == widget.stressor?.icon
+                                breathworkIcon == widget.breathWork?.icon
                                     ? null
-                                    : XFile(stresserIcon!),
+                                    : XFile(breathworkIcon!),
                               ),
                             );
                           } else {
                             adminBloc.add(
-                              CreateStressor(
-                                StressorModel(
-                                  stressorId: DateTime.now().toIso8601String(),
+                              CreateBreathWorkCategory(
+                                BreathWorkModel(
+                                  breathworkId:
+                                      DateTime.now().toIso8601String(),
                                   title: _nameController.text,
                                   status: status,
-                                  icon: stresserIcon,
+                                  icon: breathworkIcon,
                                 ),
-                                XFile(stresserIcon!),
+                                XFile(breathworkIcon!),
                               ),
                             );
                           }

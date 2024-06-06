@@ -33,7 +33,9 @@ class _DashboardFieldsState extends State<DashboardFields> {
         color: Color(
           widget.containerColor!.toInt(),
         ),
-        borderRadius: BorderRadius.circular(9,),
+        borderRadius: BorderRadius.circular(
+          9,
+        ),
       ),
       child: ListTile(
         dense: true,
@@ -46,12 +48,13 @@ class _DashboardFieldsState extends State<DashboardFields> {
         title: Text(
           widget.title.toString(),
           style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-              color: Color(
-                widget.titleColor!.toInt(),
-              )),
+            fontFamily: 'Inter',
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            color: Color(
+              widget.titleColor!.toInt(),
+            ),
+          ),
         ),
         onTap: widget.onTap,
       ),

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_labify/features/admin/views/all_stressors.dart';
+import 'package:mind_labify/features/admin/views/breathwork_categories.dart';
+import 'package:mind_labify/features/admin/views/meditation_categories.dart';
 import 'package:mind_labify/features/admin/views/sub_features/all_users/views/all_users.dart';
 import 'package:mind_labify/features/admin/views/sub_features/dashboard/widgets/dashboard_fields.dart';
 import 'package:mind_labify/utils/gaps.dart';
@@ -17,6 +19,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
   final List<Widget> _screens = [
     const AllUsers(),
     const AllStressors(),
+    const BreathworkCategories(),
+    const MeditationCategories()
   ];
 
   void _onItemTapped(
@@ -75,6 +79,24 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   title: 'Stressors',
                   titleColor: _selectedIndex == 1 ? 0xFF000000 : 0xFFffffff,
                   containerColor: _selectedIndex == 1 ? 0xFFffffff : 0xFF000000,
+                ),
+                Gaps.hGap20,
+                DashboardFields(
+                  icon: Icons.dashboard_rounded,
+                  onTap: () => _onItemTapped(2),
+                  iconColor: _selectedIndex == 2 ? 0xFF000000 : 0xFFffffff,
+                  title: 'Breathwork Category',
+                  titleColor: _selectedIndex == 2 ? 0xFF000000 : 0xFFffffff,
+                  containerColor: _selectedIndex == 2 ? 0xFFffffff : 0xFF000000,
+                ),
+                Gaps.hGap20,
+                DashboardFields(
+                  icon: Icons.dashboard_rounded,
+                  onTap: () => _onItemTapped(3),
+                  iconColor: _selectedIndex == 3 ? 0xFF000000 : 0xFFffffff,
+                  title: 'Meditation Category',
+                  titleColor: _selectedIndex == 3 ? 0xFF000000 : 0xFFffffff,
+                  containerColor: _selectedIndex == 3 ? 0xFFffffff : 0xFF000000,
                 ),
               ],
             ),

@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mind_labify/features/admin/admin_bloc/admin_bloc.dart';
-import 'package:mind_labify/features/admin/views/add_stressor.dart';
+import 'package:mind_labify/features/admin/views/add_breathwork_category.dart';
 import 'package:mind_labify/features/admin/views/sub_features/all_users/widgets/search_field.dart';
-import 'package:mind_labify/models/stressor_model.dart';
+import 'package:mind_labify/models/breathwork_model.dart';
 import 'package:mind_labify/utils/gaps.dart';
 
-class AllStressors extends StatefulWidget {
-  const AllStressors({super.key});
+class BreathworkCategories extends StatefulWidget {
+  const BreathworkCategories({super.key});
 
   @override
-  State<AllStressors> createState() => _AllStressorsState();
+  State<BreathworkCategories> createState() => _BreathworkCategoriesState();
 }
 
-class _AllStressorsState extends State<AllStressors> {
+class _BreathworkCategoriesState extends State<BreathworkCategories> {
   late final AdminBloc adminBloc;
-  List<StressorModel> filterstressorData = [];
+  List<BreathWorkModel> filterBreathworkData = [];
   final TextEditingController searchController = TextEditingController();
   String _searchText = '';
 
   @override
   void initState() {
     adminBloc = context.read<AdminBloc>();
-    if (adminBloc.stressors.isEmpty) {
+    if (adminBloc.breathWorks.isEmpty) {
       adminBloc.add(
-        GetStressor(),
+        GetBreathWorkCategory(),
       );
     }
 
@@ -45,11 +45,11 @@ class _AllStressorsState extends State<AllStressors> {
 
   void _filterUsers() {
     if (_searchText.isEmpty) {
-      filterstressorData = adminBloc.stressors;
+      filterBreathworkData = adminBloc.breathWorks;
     } else {
-      filterstressorData = adminBloc.stressors
+      filterBreathworkData = adminBloc.breathWorks
           .where(
-            (stressor) => stressor.title!.toLowerCase().contains(
+            (breathwork) => breathwork.title!.toLowerCase().contains(
                   _searchText.toLowerCase(),
                 ),
           )
@@ -95,7 +95,7 @@ class _AllStressorsState extends State<AllStressors> {
                 Row(
                   children: [
                     const Text(
-                      'All Stressors',
+                      'All Breathwork Categories',
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 25,
@@ -113,7 +113,7 @@ class _AllStressorsState extends State<AllStressors> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const AddStressor(),
+                            builder: (context) => const AddBreathworkCategory(),
                           ),
                         );
                       },
@@ -131,7 +131,7 @@ class _AllStressorsState extends State<AllStressors> {
                           ),
                         ),
                         child: const Text(
-                          '+ Add Stressor',
+                          '+ Add Category',
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 14,
@@ -155,19 +155,19 @@ class _AllStressorsState extends State<AllStressors> {
                 Gaps.hGap30,
                 BlocBuilder<AdminBloc, AdminState>(
                   builder: (context, state) {
-                    if (state is GettingStressor) {
+                    if (state is GettingBreathWorkCategory) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
-                    } else if (state is GetStressorFailed) {
+                    } else if (state is GetBreathWorkCategoryFailed) {
                       return Center(
                         child: Text(state.message),
                       );
                     }
-                    return adminBloc.stressors.isEmpty
+                    return adminBloc.breathWorks.isEmpty
                         ? const Center(
                             child: Text(
-                              'No Stressors',
+                              'No Breathwork Categories',
                             ),
                           )
                         : DataTable(
@@ -204,19 +204,19 @@ class _AllStressorsState extends State<AllStressors> {
                                 ),
                               ),
                             ],
-                            rows: filterstressorData.isNotEmpty
-                                ? filterstressorData
+                            rows: filterBreathworkData.isNotEmpty
+                                ? filterBreathworkData
                                     .map(
-                                      (stressor) => DataRow(
+                                      (breathWorks) => DataRow(
                                         cells: [
                                           DataCell(
                                             Text(
-                                              stressor.title ?? '',
+                                              breathWorks.title ?? '',
                                             ),
                                           ),
                                           DataCell(
                                             Text(
-                                              stressor.status ?? '',
+                                              breathWorks.status ?? '',
                                             ),
                                           ),
                                           DataCell(
@@ -228,8 +228,9 @@ class _AllStressorsState extends State<AllStressors> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            AddStressor(
-                                                          stressor: stressor,
+                                                            AddBreathworkCategory(
+                                                          breathWork:
+                                                              breathWorks,
                                                         ),
                                                       ),
                                                     );
@@ -256,10 +257,10 @@ class _AllStressorsState extends State<AllStressors> {
                                                       builder: (context) {
                                                         return AlertDialog(
                                                           title: const Text(
-                                                            'Delete Stressor',
+                                                            'Delete Breathwork Category',
                                                           ),
                                                           content: const Text(
-                                                            'Are you sure you want to delete this stressor?',
+                                                            'Are you sure you want to delete this breathwork category?',
                                                           ),
                                                           actions: [
                                                             TextButton(
@@ -281,8 +282,9 @@ class _AllStressorsState extends State<AllStressors> {
                                                             TextButton(
                                                               onPressed: () {
                                                                 adminBloc.add(
-                                                                  DeleteEvent(
-                                                                    stressor.stressorId ??
+                                                                  DeleteBreathWorkCategory(
+                                                                    breathWorks
+                                                                            .breathworkId ??
                                                                         '',
                                                                   ),
                                                                 );
@@ -327,18 +329,18 @@ class _AllStressorsState extends State<AllStressors> {
                                       ),
                                     )
                                     .toList()
-                                : adminBloc.stressors
+                                : adminBloc.breathWorks
                                     .map(
-                                      (stressor) => DataRow(
+                                      (breathWorks) => DataRow(
                                         cells: [
                                           DataCell(
                                             Text(
-                                              stressor.title ?? '',
+                                              breathWorks.title ?? '',
                                             ),
                                           ),
                                           DataCell(
                                             Text(
-                                              stressor.status ?? '',
+                                              breathWorks.status ?? '',
                                             ),
                                           ),
                                           DataCell(
@@ -350,8 +352,9 @@ class _AllStressorsState extends State<AllStressors> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            AddStressor(
-                                                          stressor: stressor,
+                                                            AddBreathworkCategory(
+                                                          breathWork:
+                                                              breathWorks,
                                                         ),
                                                       ),
                                                     );
@@ -378,10 +381,10 @@ class _AllStressorsState extends State<AllStressors> {
                                                       builder: (context) {
                                                         return AlertDialog(
                                                           title: const Text(
-                                                            'Delete Stressor',
+                                                            'Delete Breathwork Category',
                                                           ),
                                                           content: const Text(
-                                                            'Are you sure you want to delete this stressor?',
+                                                            'Are you sure you want to delete this breathwork category?',
                                                           ),
                                                           actions: [
                                                             TextButton(
@@ -403,8 +406,9 @@ class _AllStressorsState extends State<AllStressors> {
                                                             TextButton(
                                                               onPressed: () {
                                                                 adminBloc.add(
-                                                                  DeleteEvent(
-                                                                    stressor.stressorId ??
+                                                                  DeleteBreathWorkCategory(
+                                                                    breathWorks
+                                                                            .breathworkId ??
                                                                         '',
                                                                   ),
                                                                 );
