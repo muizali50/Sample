@@ -8,14 +8,15 @@ class Blog extends StatefulWidget {
 }
 
 class _BlogState extends State<Blog> {
+
+
+
+
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
-      body: Center(
-        child: Text(
-          'blog',
-        ),
-      ),
+   
+    return Scaffold(
+     body: Center(child: Text('blog'),),
     );
   }
 }

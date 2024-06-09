@@ -134,3 +134,97 @@ final class DeleteMeditationCategory extends AdminEvent {
         meditationId,
       ];
 }
+
+class CreateBreathWorkVideo extends AdminEvent {
+  final BreathworkVideo breathWorkVideo;
+  final XFile videoIconFile;
+  final XFile video;
+  const CreateBreathWorkVideo(
+    this.breathWorkVideo,
+    this.videoIconFile,
+    this.video,
+  );
+
+  @override
+  List<Object> get props => [
+        breathWorkVideo,
+        videoIconFile,
+        video,
+      ];
+}
+
+class UpdateBreathWorkVideo extends AdminEvent {
+  final BreathworkVideo breathWorkVideo;
+  final XFile? videoIconFile;
+  final XFile? video;
+  const UpdateBreathWorkVideo(
+    this.breathWorkVideo,
+    this.videoIconFile,
+    this.video,
+  );
+
+  @override
+  List<Object> get props => [
+        breathWorkVideo,
+      ];
+}
+
+final class GetBreathworkVideo extends AdminEvent {}
+
+final class DeleteBreathworkVideo extends AdminEvent {
+  final String breathworkVideoId;
+  const DeleteBreathworkVideo(
+    this.breathworkVideoId,
+  );
+  @override
+  List<Object> get props => [
+        breathworkVideoId,
+      ];
+}
+
+class CreateMeditationVideo extends AdminEvent {
+  final MeditationVideo meditationVideo;
+  final XFile videoIconFile;
+  final XFile video;
+  const CreateMeditationVideo(
+    this.meditationVideo,
+    this.videoIconFile,
+    this.video,
+  );
+
+  @override
+  List<Object> get props => [
+        meditationVideo,
+        videoIconFile,
+        video,
+      ];
+}
+
+class UpdateMeditationVideo extends AdminEvent {
+  final MeditationVideo meditationVideo;
+  final XFile? videoIconFile;
+  final XFile? video;
+  const UpdateMeditationVideo(
+    this.meditationVideo,
+    this.videoIconFile,
+    this.video,
+  );
+
+  @override
+  List<Object> get props => [
+        meditationVideo,
+      ];
+}
+
+final class GetMeditationVideo extends AdminEvent {}
+
+final class DeleteMeditationVideo extends AdminEvent {
+  final String meditationVideoId;
+  const DeleteMeditationVideo(
+    this.meditationVideoId,
+  );
+  @override
+  List<Object> get props => [
+        meditationVideoId,
+      ];
+}

@@ -376,3 +376,231 @@ final class DeletingMeditationCategorySuccess extends AdminState {
         meditationId,
       ];
 }
+
+final class CreateBreathWorkVideoFailed extends AdminState {
+  final String message;
+  const CreateBreathWorkVideoFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class CreatingBreathWorkVideo extends AdminState {}
+
+final class CreateBreathWorkVideoSuccess extends AdminState {
+  final BreathworkVideo breathWorkVideo;
+  const CreateBreathWorkVideoSuccess(
+    this.breathWorkVideo,
+  );
+
+  @override
+  List<Object> get props => [
+        breathWorkVideo,
+      ];
+}
+
+final class UpdateBreathWorkVideoFailed extends AdminState {
+  final String message;
+  const UpdateBreathWorkVideoFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class UpdatingBreathWorkVideo extends AdminState {}
+
+final class UpdateBreathWorkVideoSuccess extends AdminState {
+  final BreathworkVideo breathWorkVideo;
+  const UpdateBreathWorkVideoSuccess(
+    this.breathWorkVideo,
+  );
+
+  @override
+  List<Object> get props => [
+        breathWorkVideo,
+      ];
+}
+
+final class GetBreathworkVideoFailed extends AdminState {
+  final String message;
+  const GetBreathworkVideoFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class GettingBreathworkVideo extends AdminState {}
+
+final class GetBreathworkVideoSuccess extends AdminState {
+  final List<BreathworkVideo> breathworkVideos;
+  const GetBreathworkVideoSuccess(
+    this.breathworkVideos,
+  );
+
+  @override
+  List<Object> get props => [
+        breathworkVideos,
+      ];
+}
+
+final class DeletingBreathworkVideoFailed extends AdminState {
+  final String message;
+  const DeletingBreathworkVideoFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class DeletingBreathorkVideo extends AdminState {
+  final String breathworkVideoId;
+  const DeletingBreathorkVideo(
+    this.breathworkVideoId,
+  );
+
+  @override
+  List<Object> get props => [
+        breathworkVideoId,
+      ];
+}
+
+final class DeletingBreathorkVideoSuccess extends AdminState {
+  final String breathworkVideoId;
+  const DeletingBreathorkVideoSuccess(
+    this.breathworkVideoId,
+  );
+
+  @override
+  List<Object> get props => [
+        breathworkVideoId,
+      ];
+}
+
+final class CreateMeditationVideoFailed extends AdminState {
+  final String message;
+  const CreateMeditationVideoFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class CreatingMeditationVideo extends AdminState {}
+
+final class CreateMeditationVideoSuccess extends AdminState {
+  final MeditationVideo meditationVideo;
+  const CreateMeditationVideoSuccess(
+    this.meditationVideo,
+  );
+
+  @override
+  List<Object> get props => [
+        meditationVideo,
+      ];
+}
+
+final class UpdateMeditationVideoFailed extends AdminState {
+  final String message;
+  const UpdateMeditationVideoFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class UpdatingMeditationVideo extends AdminState {}
+
+final class UpdateMeditationVideoSuccess extends AdminState {
+  final MeditationVideo meditationVideo;
+  const UpdateMeditationVideoSuccess(
+    this.meditationVideo,
+  );
+
+  @override
+  List<Object> get props => [
+        meditationVideo,
+      ];
+}
+
+final class GetMeditationVideoFailed extends AdminState {
+  final String message;
+  const GetMeditationVideoFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class GettingMeditationVideo extends AdminState {}
+
+final class GetMeditationVideoSuccess extends AdminState {
+  final List<MeditationVideo> meditationVideos;
+  const GetMeditationVideoSuccess(
+    this.meditationVideos,
+  );
+
+  @override
+  List<Object> get props => [
+        meditationVideos,
+      ];
+}
+
+final class DeletingMeditationVideoFailed extends AdminState {
+  final String message;
+  const DeletingMeditationVideoFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class DeletingMeditationVideo extends AdminState {
+  final String meditationVideoId;
+  const DeletingMeditationVideo(
+    this.meditationVideoId,
+  );
+
+  @override
+  List<Object> get props => [
+        meditationVideoId,
+      ];
+}
+
+final class DeletingMeditationVideoSuccess extends AdminState {
+  final String meditationVideoId;
+  const DeletingMeditationVideoSuccess(
+    this.meditationVideoId,
+  );
+
+  @override
+  List<Object> get props => [
+        meditationVideoId,
+      ];
+}

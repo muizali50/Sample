@@ -6,7 +6,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mind_labify/models/app_user.dart';
 import 'package:mind_labify/models/breathwork_model.dart';
+import 'package:mind_labify/models/breathwork_video.dart';
 import 'package:mind_labify/models/meditation_model.dart';
+import 'package:mind_labify/models/meditation_video.dart';
 import 'package:mind_labify/models/stressor_model.dart';
 
 part 'admin_event.dart';
@@ -17,9 +19,11 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
   List<StressorModel> stressors = [];
   List<StressorModel> activeStressors = [];
   List<BreathWorkModel> breathWorks = [];
-  List<BreathWorkModel> activeBreathWorks = [];
+  // List<BreathWorkModel> activeBreathWorks = [];
   List<MeditationModel> meditations = [];
-  List<MeditationModel> activeMeditations = [];
+  // List<MeditationModel> activeMeditations = [];
+  List<BreathworkVideo> breathworkVideos = [];
+  List<MeditationVideo> meditationVideos = [];
   AdminBloc() : super(AdminInitial()) {
     on<CreateStressor>(
       (
@@ -648,6 +652,432 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           );
           emit(
             DeletingMeditationCategoryFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<CreateBreathWorkVideo>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          CreatingBreathWorkVideo(),
+        );
+        try {
+          final ref = FirebaseStorage.instance.ref().child(
+                'breathwork_video_icons/${event.videoIconFile.path.split('/').last}',
+              );
+          await ref.putData(
+            await event.videoIconFile.readAsBytes(),
+          );
+          final iconUrl = await ref.getDownloadURL();
+          event.breathWorkVideo.videoIcon = iconUrl;
+
+          final videoRef = FirebaseStorage.instance.ref().child(
+                'breathwork_videos/${event.video.path.split('/').last}',
+              );
+          await videoRef.putData(
+            await event.video.readAsBytes(),
+          );
+          final videoUrl = await videoRef.getDownloadURL();
+          event.breathWorkVideo.video = videoUrl;
+          final breathworkVideoCollection =
+              FirebaseFirestore.instance.collection(
+            'breathwork_videos',
+          );
+          final result = await breathworkVideoCollection.add(
+            event.breathWorkVideo.toMap(),
+          );
+          event.breathWorkVideo.videoId = result.id;
+          breathworkVideos.add(
+            event.breathWorkVideo,
+          );
+          emit(
+            CreateBreathWorkVideoSuccess(
+              event.breathWorkVideo,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            CreateBreathWorkVideoFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            CreateBreathWorkVideoFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<UpdateBreathWorkVideo>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          UpdatingBreathWorkVideo(),
+        );
+        try {
+          if (event.videoIconFile != null) {
+            final ref = FirebaseStorage.instance.ref().child(
+                  'breathwork_video_icons/${event.videoIconFile!.path.split('/').last}',
+                );
+            await ref.putData(
+              await event.videoIconFile!.readAsBytes(),
+            );
+            final iconUrl = await ref.getDownloadURL();
+            event.breathWorkVideo.videoIcon = iconUrl;
+          }
+          if (event.video != null) {
+            final videoRef = FirebaseStorage.instance.ref().child(
+                  'breathwork_videos/${event.video!.path.split('/').last}',
+                );
+            await videoRef.putData(
+              await event.video!.readAsBytes(),
+            );
+            final videoUrl = await videoRef.getDownloadURL();
+            event.breathWorkVideo.video = videoUrl;
+          }
+          final breathworkVideoCollection =
+              FirebaseFirestore.instance.collection(
+            'breathwork_videos',
+          );
+          await breathworkVideoCollection
+              .doc(
+                event.breathWorkVideo.videoId,
+              )
+              .update(
+                event.breathWorkVideo.toMap(),
+              );
+          final index = breathworkVideos.indexWhere(
+            (element) => element.videoId == event.breathWorkVideo.videoId,
+          );
+          breathworkVideos[index] = event.breathWorkVideo;
+          emit(
+            UpdateBreathWorkVideoSuccess(
+              event.breathWorkVideo,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            UpdateBreathWorkVideoFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            UpdateBreathWorkVideoFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<GetBreathworkVideo>(
+      (
+        event,
+        emit,
+      ) async {
+        GettingBreathworkVideo();
+        try {
+          final breathworkVideosCollection =
+              FirebaseFirestore.instance.collection(
+            'breathwork_videos',
+          );
+          final result = await breathworkVideosCollection.get();
+          breathworkVideos = result.docs.map(
+            (e) {
+              final breathworkVideo = BreathworkVideo.fromMap(
+                e.data(),
+              );
+              breathworkVideo.videoId = e.id;
+              return breathworkVideo;
+            },
+          ).toList();
+          emit(
+            GetBreathworkVideoSuccess(
+              breathworkVideos,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            GetBreathworkVideoFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            GetBreathworkVideoFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<DeleteBreathworkVideo>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          DeletingBreathorkVideo(
+            event.breathworkVideoId,
+          ),
+        );
+        try {
+          final breathworkVideoCollection =
+              FirebaseFirestore.instance.collection(
+            'breathwork_videos',
+          );
+          await breathworkVideoCollection.doc(event.breathworkVideoId).delete();
+          breathworkVideos.removeWhere(
+            (element) => element.videoId == event.breathworkVideoId,
+          );
+          emit(
+            DeletingBreathorkVideoSuccess(
+              event.breathworkVideoId,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            DeletingBreathworkVideoFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            DeletingBreathworkVideoFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<CreateMeditationVideo>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          CreatingMeditationVideo(),
+        );
+        try {
+          final ref = FirebaseStorage.instance.ref().child(
+                'meditation_video_icons/${event.videoIconFile.path.split('/').last}',
+              );
+          await ref.putData(
+            await event.videoIconFile.readAsBytes(),
+          );
+          final iconUrl = await ref.getDownloadURL();
+          event.meditationVideo.videoIcon = iconUrl;
+
+          final videoRef = FirebaseStorage.instance.ref().child(
+                'meditation_videos/${event.video.path.split('/').last}',
+              );
+          await videoRef.putData(
+            await event.video.readAsBytes(),
+          );
+          final videoUrl = await videoRef.getDownloadURL();
+          event.meditationVideo.video = videoUrl;
+          final meditationVideoCollection =
+              FirebaseFirestore.instance.collection(
+            'meditation_videos',
+          );
+          final result = await meditationVideoCollection.add(
+            event.meditationVideo.toMap(),
+          );
+          event.meditationVideo.videoId = result.id;
+          meditationVideos.add(
+            event.meditationVideo,
+          );
+          emit(
+            CreateMeditationVideoSuccess(
+              event.meditationVideo,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            CreateMeditationVideoFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            CreateMeditationVideoFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<UpdateMeditationVideo>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          UpdatingMeditationVideo(),
+        );
+        try {
+          if (event.videoIconFile != null) {
+            final ref = FirebaseStorage.instance.ref().child(
+                  'meditation_video_icons/${event.videoIconFile!.path.split('/').last}',
+                );
+            await ref.putData(
+              await event.videoIconFile!.readAsBytes(),
+            );
+            final iconUrl = await ref.getDownloadURL();
+            event.meditationVideo.videoIcon = iconUrl;
+          }
+          if (event.video != null) {
+            final videoRef = FirebaseStorage.instance.ref().child(
+                  'meditation_videos/${event.video!.path.split('/').last}',
+                );
+            await videoRef.putData(
+              await event.video!.readAsBytes(),
+            );
+            final videoUrl = await videoRef.getDownloadURL();
+            event.meditationVideo.video = videoUrl;
+          }
+          final meditationVideoCollection =
+              FirebaseFirestore.instance.collection(
+            'meditation_videos',
+          );
+          await meditationVideoCollection
+              .doc(
+                event.meditationVideo.videoId,
+              )
+              .update(
+                event.meditationVideo.toMap(),
+              );
+          final index = meditationVideos.indexWhere(
+            (element) => element.videoId == event.meditationVideo.videoId,
+          );
+          meditationVideos[index] = event.meditationVideo;
+          emit(
+            UpdateMeditationVideoSuccess(
+              event.meditationVideo,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            UpdateMeditationVideoFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            UpdateMeditationVideoFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<GetMeditationVideo>(
+      (
+        event,
+        emit,
+      ) async {
+        GettingMeditationVideo();
+        try {
+          final meditationVideosCollection =
+              FirebaseFirestore.instance.collection(
+            'meditation_videos',
+          );
+          final result = await meditationVideosCollection.get();
+          meditationVideos = result.docs.map(
+            (e) {
+              final meditationVideo = MeditationVideo.fromMap(
+                e.data(),
+              );
+              meditationVideo.videoId = e.id;
+              return meditationVideo;
+            },
+          ).toList();
+          emit(
+            GetMeditationVideoSuccess(
+              meditationVideos,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            GetMeditationVideoFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            GetMeditationVideoFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<DeleteMeditationVideo>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          DeletingMeditationVideo(
+            event.meditationVideoId,
+          ),
+        );
+        try {
+          final meditationVideoCollection =
+              FirebaseFirestore.instance.collection(
+            'meditation_videos',
+          );
+          await meditationVideoCollection.doc(event.meditationVideoId).delete();
+          meditationVideos.removeWhere(
+            (element) => element.videoId == event.meditationVideoId,
+          );
+          emit(
+            DeletingMeditationVideoSuccess(
+              event.meditationVideoId,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            DeletingMeditationVideoFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            DeletingMeditationVideoFailed(
               e.toString(),
             ),
           );

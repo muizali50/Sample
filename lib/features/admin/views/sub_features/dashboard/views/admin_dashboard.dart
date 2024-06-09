@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_labify/features/admin/views/all_stressors.dart';
 import 'package:mind_labify/features/admin/views/breathwork_categories.dart';
+import 'package:mind_labify/features/admin/views/breathwork_videos.dart';
 import 'package:mind_labify/features/admin/views/meditation_categories.dart';
+import 'package:mind_labify/features/admin/views/meditation_videos.dart';
 import 'package:mind_labify/features/admin/views/sub_features/all_users/views/all_users.dart';
 import 'package:mind_labify/features/admin/views/sub_features/dashboard/widgets/dashboard_fields.dart';
 import 'package:mind_labify/utils/gaps.dart';
@@ -20,7 +22,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
     const AllUsers(),
     const AllStressors(),
     const BreathworkCategories(),
-    const MeditationCategories()
+    const MeditationCategories(),
+    const BreathworkVideos(),
+    const MeditationVideos(),
   ];
 
   void _onItemTapped(
@@ -97,6 +101,24 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   title: 'Meditation Category',
                   titleColor: _selectedIndex == 3 ? 0xFF000000 : 0xFFffffff,
                   containerColor: _selectedIndex == 3 ? 0xFFffffff : 0xFF000000,
+                ),
+                Gaps.hGap20,
+                DashboardFields(
+                  icon: Icons.play_arrow_outlined,
+                  onTap: () => _onItemTapped(4),
+                  iconColor: _selectedIndex == 4 ? 0xFF000000 : 0xFFffffff,
+                  title: 'Breathwork Videos',
+                  titleColor: _selectedIndex == 4 ? 0xFF000000 : 0xFFffffff,
+                  containerColor: _selectedIndex == 4 ? 0xFFffffff : 0xFF000000,
+                ),
+                Gaps.hGap20,
+                DashboardFields(
+                  icon: Icons.play_arrow_outlined,
+                  onTap: () => _onItemTapped(5),
+                  iconColor: _selectedIndex == 5 ? 0xFF000000 : 0xFFffffff,
+                  title: 'Meditation Videos',
+                  titleColor: _selectedIndex == 5 ? 0xFF000000 : 0xFFffffff,
+                  containerColor: _selectedIndex == 5 ? 0xFFffffff : 0xFF000000,
                 ),
               ],
             ),
