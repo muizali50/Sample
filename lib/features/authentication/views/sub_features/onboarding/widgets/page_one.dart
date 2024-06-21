@@ -44,7 +44,7 @@ class _PageOneState extends State<PageOne> {
             child: Image(
               height: 278,
               image: AssetImage(
-                'assets/images/face.png',
+                'assets/images/face.jpeg',
               ),
             ),
           ),

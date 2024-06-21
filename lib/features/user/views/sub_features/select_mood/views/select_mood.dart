@@ -78,15 +78,14 @@ class _SelectMoodScreenState extends State<SelectMoodScreen> {
                         EmojiBox(
                           onTap: () {
                             updateMood(
-                              'normal',
+                              'okay',
                             );
                           },
-                          iconImageAddress: selectedMood == 'normal'
+                          iconImageAddress: selectedMood == 'okay'
                               ? 'assets/icons/s_normal.png'
                               : 'assets/icons/normal.png',
-                          iconColorCode: selectedMood == 'normal'
-                              ? 0xFFB9BF88
-                              : 0xFFF4F2E8,
+                          iconColorCode:
+                              selectedMood == 'okay' ? 0xFFB9BF88 : 0xFFF4F2E8,
                         ),
                       ],
                     ),
@@ -97,27 +96,26 @@ class _SelectMoodScreenState extends State<SelectMoodScreen> {
                         EmojiBox(
                           onTap: () {
                             updateMood(
-                              'confused',
-                            );
-                          },
-                          iconImageAddress: selectedMood == 'confused'
-                              ? 'assets/icons/s_tired.png'
-                              : 'assets/icons/tired.png',
-                          iconColorCode: selectedMood == 'confused'
-                              ? 0xFFB9BF88
-                              : 0xFFF4F2E8,
-                        ),
-                        EmojiBox(
-                          onTap: () {
-                            updateMood(
                               'sad',
                             );
                           },
                           iconImageAddress: selectedMood == 'sad'
+                              ? 'assets/icons/s_tired.png'
+                              : 'assets/icons/tired.png',
+                          iconColorCode:
+                              selectedMood == 'sad' ? 0xFFB9BF88 : 0xFFF4F2E8,
+                        ),
+                        EmojiBox(
+                          onTap: () {
+                            updateMood(
+                              'angry',
+                            );
+                          },
+                          iconImageAddress: selectedMood == 'angry'
                               ? 'assets/icons/s_sad.png'
                               : 'assets/icons/sad.png',
                           iconColorCode:
-                              selectedMood == 'sad' ? 0xFFB9BF88 : 0xFFF4F2E8,
+                              selectedMood == 'angry' ? 0xFFB9BF88 : 0xFFF4F2E8,
                         ),
                       ],
                     ),
@@ -155,7 +153,7 @@ class _SelectMoodScreenState extends State<SelectMoodScreen> {
                       ),
                       child: AppPrimaryButton(
                         buttonColor: 0xFFF4F2E8,
-                        text: 'I don’t feel good!',
+                        text: 'I am feeling $selectedMood!',
                         onTap: () {
                           if (selectedMood.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(

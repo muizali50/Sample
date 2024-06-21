@@ -92,7 +92,7 @@ class _SelectStressorsState extends State<SelectStressors> {
                         gridDelegate: SliverQuiltedGridDelegate(
                           crossAxisCount: 6,
                           mainAxisSpacing: 10,
-                          crossAxisSpacing: 25,
+                          crossAxisSpacing: 5,
                           repeatPattern: QuiltedGridRepeatPattern.same,
                           pattern: [
                             const QuiltedGridTile(1, 3),

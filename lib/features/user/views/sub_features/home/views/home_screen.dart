@@ -93,11 +93,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           IconButton(
                             onPressed: () {},
-                            icon: const ImageIcon(
-                              color: Color(
-                                0xFF573926,
-                              ),
-                              AssetImage(
+                            icon: ImageIcon(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              const AssetImage(
                                 'assets/icons/noti.png',
                               ),
                             ),
@@ -107,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             top: 2,
                             child: Container(
                               padding: const EdgeInsets.all(5),
-                              decoration:  BoxDecoration(
+                              decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Theme.of(context).colorScheme.secondary,
                               ),
@@ -327,15 +325,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Row(
                 children: [
-                  const Text(
+                  Text(
                     'Latest Blogs',
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 22,
                       fontWeight: FontWeight.w800,
-                      color: Color(
-                        0xFF573926,
-                      ),
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   const Spacer(),
@@ -345,7 +341,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       'View all',
                       style: TextStyle(
                         decoration: TextDecoration.underline,
-                        decorationColor: Theme.of(context).colorScheme.secondary,
+                        decorationColor:
+                            Theme.of(context).colorScheme.secondary,
                         fontFamily: 'Inter',
                         fontSize: 12,
                         fontWeight: FontWeight.w700,

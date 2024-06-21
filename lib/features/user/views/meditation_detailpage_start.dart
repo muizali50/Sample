@@ -7,13 +7,14 @@ class MeditationDetailpageStart extends StatefulWidget {
   const MeditationDetailpageStart({super.key});
 
   @override
-  State<MeditationDetailpageStart> createState() => _MeditationDetailpageStartState();
+  State<MeditationDetailpageStart> createState() =>
+      _MeditationDetailpageStartState();
 }
 
 class _MeditationDetailpageStartState extends State<MeditationDetailpageStart> {
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
+    return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -41,27 +42,23 @@ class _MeditationDetailpageStartState extends State<MeditationDetailpageStart> {
                   ),
                 ),
                 Gaps.hGap30,
-                const Text(
+                Text(
                   'Intro to Meditation',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 24,
                     fontWeight: FontWeight.w800,
-                    color: Color(
-                      0xFF573926,
-                    ),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 Gaps.hGap30,
-                const Text(
+                Text(
                   '2-5 Mins',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 20,
                     fontWeight: FontWeight.w400,
-                    color: Color(
-                      0xFF573926,
-                    ),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(

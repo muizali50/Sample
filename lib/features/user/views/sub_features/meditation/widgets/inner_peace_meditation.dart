@@ -26,16 +26,16 @@ class _InnerPeaceMeditationState extends State<InnerPeaceMeditation> {
                   color: const Color(
                     0xFFF2F5DB,
                   ),
-                  child: const Row(
+                  child: Row(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           left: 10,
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'All you do is breathe',
                               style: TextStyle(
                                 fontFamily: 'Inter',
@@ -52,16 +52,14 @@ class _InnerPeaceMeditationState extends State<InnerPeaceMeditation> {
                                 fontFamily: 'Inter',
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
-                                color: Color(
-                                  0xFF573926,
-                                ),
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
                           ],
                         ),
                       ),
                       const Spacer(),
-                      SizedBox(
+                      const SizedBox(
                         height: 90,
                         width: 93,
                         child: Image(

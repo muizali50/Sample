@@ -44,30 +44,26 @@ class _BreathworkState extends State<Breathwork> with TickerProviderStateMixin {
             const SizedBox(
               width: 10,
             ),
-            const Text(
+            Text(
               'Hi',
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 26,
                 fontWeight: FontWeight.w600,
-                color: Color(
-                  0xFF371B34,
-                ),
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             const SizedBox(
               width: 5,
             ),
-            const Text(
+            Text(
               'Sanya!',
               style: TextStyle(
                 decoration: TextDecoration.underline,
                 fontFamily: 'Inter',
                 fontSize: 26,
                 fontWeight: FontWeight.w600,
-                color: Color(
-                  0xFF371B34,
-                ),
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             const Spacer(),
@@ -75,11 +71,9 @@ class _BreathworkState extends State<Breathwork> with TickerProviderStateMixin {
               children: [
                 IconButton(
                   onPressed: () {},
-                  icon: const ImageIcon(
-                    color: Color(
-                      0xFF573926,
-                    ),
-                    AssetImage(
+                  icon: ImageIcon(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    const AssetImage(
                       'assets/icons/noti.png',
                     ),
                   ),
@@ -169,7 +163,7 @@ class _BreathworkState extends State<Breathwork> with TickerProviderStateMixin {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w800,
                                 color: Color(
-                                  0xFF573926,
+                                  0xFFF4F2E8,
                                 ),
                               ),
                             ),
@@ -181,14 +175,14 @@ class _BreathworkState extends State<Breathwork> with TickerProviderStateMixin {
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
                                 color: Color(
-                                  0xFF573926,
+                                  0xFFF4F2E8,
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        Spacer(),
-                        SizedBox(
+                        const Spacer(),
+                        const SizedBox(
                           height: 71,
                           width: 75,
                           child: Image(

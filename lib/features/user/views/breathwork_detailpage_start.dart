@@ -42,27 +42,23 @@ class _BreathworkDetailpageStartState extends State<BreathworkDetailpageStart> {
                   ),
                 ),
                 Gaps.hGap30,
-                const Text(
+                Text(
                   'Deep Breath Dynamics',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 24,
                     fontWeight: FontWeight.w800,
-                    color: Color(
-                      0xFF573926,
-                    ),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 Gaps.hGap30,
-                const Text(
+                Text(
                   '2-5 Mins',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 20,
                     fontWeight: FontWeight.w400,
-                    color: Color(
-                      0xFF573926,
-                    ),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(
