@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mind_labify/features/admin/admin_bloc/admin_bloc.dart';
+import 'package:mind_labify/features/authentication/bloc/authentication_bloc.dart';
 import 'package:mind_labify/features/user/views/meditation_detailpage_start.dart';
 import 'package:mind_labify/features/user/views/sub_features/meditation/widgets/anxiety_meditation.dart';
 import 'package:mind_labify/features/user/views/sub_features/meditation/widgets/inner_peace_meditation.dart';
 import 'package:mind_labify/features/user/views/sub_features/meditation/widgets/sleep_meditation.dart';
 import 'package:mind_labify/features/user/views/sub_features/meditation/widgets/stress_meditation.dart';
+import 'package:mind_labify/user_provider.dart';
 import 'package:mind_labify/utils/gaps.dart';
 
 class Meditation extends StatefulWidget {
@@ -14,6 +18,29 @@ class Meditation extends StatefulWidget {
 }
 
 class _MeditationState extends State<Meditation> with TickerProviderStateMixin {
+  late final AdminBloc adminBloc;
+  late final UserProvider userProvider;
+  late final AuthenticationBloc authenticationBloc;
+
+  @override
+  void initState() {
+    authenticationBloc = context.read<AuthenticationBloc>();
+    userProvider = context.read<UserProvider>();
+    if (userProvider.user == null) {
+      authenticationBloc.add(
+        const GetUser(),
+      );
+    }
+
+    adminBloc = context.read<AdminBloc>();
+    if (adminBloc.meditationVideos.isEmpty) {
+      adminBloc.add(
+        GetMeditationVideo(),
+      );
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 4, vsync: this);
@@ -126,75 +153,104 @@ class _MeditationState extends State<Meditation> with TickerProviderStateMixin {
                   ),
                 ),
                 Gaps.hGap15,
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (
+                BlocBuilder<AdminBloc, AdminState>(
+                  builder: (context, state) {
+                    final filteredVideos = adminBloc.meditationVideos
+                        .where(
+                          (video) => video.mood == userProvider.user!.mood!,
+                        )
+                        .where(
+                          (video) => video.status == 'Active',
+                        )
+                        .toList();
+                    if (state is GettingMeditationVideo) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (state is GetMeditationVideoFailed) {
+                      return Center(
+                        child: Text(state.message),
+                      );
+                    }
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
                           context,
-                        ) =>
-                            const MeditationDetailpageStart(),
+                          MaterialPageRoute(
+                            builder: (
+                              context,
+                            ) =>
+                                const MeditationDetailpageStart(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 21,
+                          vertical: 23,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFD0C958).withOpacity(
+                            0.45,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            20,
+                          ),
+                        ),
+                        child: filteredVideos.isEmpty
+                            ? const Center(
+                                child: Text(
+                                  'no videos',
+                                ),
+                              )
+                            : Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        filteredVideos.first.title.toString(),
+                                        style: const TextStyle(
+                                          fontFamily: 'Inter',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w800,
+                                          color: Color(
+                                            0xFFF4F2E8,
+                                          ),
+                                        ),
+                                      ),
+                                      Gaps.hGap15,
+                                      Text(
+                                        '${filteredVideos.first.duration.toString()} Mins',
+                                        style: const TextStyle(
+                                          fontFamily: 'Inter',
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                          color: Color(
+                                            0xFFF4F2E8,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  SizedBox(
+                                    height: 71,
+                                    width: 75,
+                                    child: Image(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                        filteredVideos.first.videoIcon.toString(),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                       ),
                     );
                   },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 21,
-                      vertical: 23,
-                    ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFD0C958).withOpacity(
-                        0.45,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        20,
-                      ),
-                    ),
-                    child: const Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Calm Focus',
-                              style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w800,
-                                color: Color(
-                                  0xFFF4F2E8,
-                                ),
-                              ),
-                            ),
-                            Gaps.hGap15,
-                            Text(
-                              '20 Mins',
-                              style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: Color(
-                                  0xFFF4F2E8,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Spacer(),
-                        SizedBox(
-                          height: 71,
-                          width: 75,
-                          child: Image(
-                            fit: BoxFit.cover,
-                            image: AssetImage(
-                              'assets/images/calmfocus.png',
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
                 Gaps.hGap20,
                 Container(

@@ -29,7 +29,7 @@ class _AddBreathworkVideosState extends State<AddBreathworkVideos> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _durationController = TextEditingController();
   String category = '';
-  String mood = 'Happy';
+  String mood = 'happy';
   String status = 'Inactive';
   String? videoIcon;
   File? video;
@@ -402,25 +402,25 @@ class _AddBreathworkVideosState extends State<AddBreathworkVideos> {
                         ),
                         items: const [
                           DropdownMenuItem<String>(
-                            value: 'Happy',
+                            value: 'happy',
                             child: Text(
                               'Happy',
                             ),
                           ),
                           DropdownMenuItem<String>(
-                            value: 'Emotional',
+                            value: 'emotional',
                             child: Text(
                               'Emotional',
                             ),
                           ),
                           DropdownMenuItem<String>(
-                            value: 'Confused',
+                            value: 'confused',
                             child: Text(
                               'Confused',
                             ),
                           ),
                           DropdownMenuItem<String>(
-                            value: 'Sad',
+                            value: 'sad',
                             child: Text(
                               'Sad',
                             ),

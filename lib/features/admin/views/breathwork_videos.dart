@@ -236,7 +236,7 @@ class _BreathworkVideosState extends State<BreathworkVideos> {
                                           ),
                                           DataCell(
                                             Text(
-                                              '${breathworkVideos.duration ?? ''} Mins',
+                                              '${breathworkVideos.duration.toString()} Mins',
                                             ),
                                           ),
                                           DataCell(
