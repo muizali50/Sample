@@ -19,9 +19,9 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
   List<StressorModel> stressors = [];
   List<StressorModel> activeStressors = [];
   List<BreathWorkModel> breathWorks = [];
-  // List<BreathWorkModel> activeBreathWorks = [];
+  List<BreathWorkModel> activeBreathWorks = [];
   List<MeditationModel> meditations = [];
-  // List<MeditationModel> activeMeditations = [];
+  List<MeditationModel> activeMeditations = [];
   List<BreathworkVideo> breathworkVideos = [];
   List<MeditationVideo> meditationVideos = [];
   AdminBloc() : super(AdminInitial()) {
@@ -346,6 +346,11 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
               return breathWork;
             },
           ).toList();
+          activeBreathWorks = breathWorks
+              .where(
+                (element) => element.status == 'Active',
+              )
+              .toList();
           emit(
             GetBreathWorkCategorySuccess(
               breathWorks,
@@ -594,6 +599,11 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
               return meditation;
             },
           ).toList();
+          activeMeditations = meditations
+              .where(
+                (element) => element.status == 'Active',
+              )
+              .toList();
           emit(
             GetMeditationCategorySuccess(
               meditations,
