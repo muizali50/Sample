@@ -182,7 +182,9 @@ class _BreathworkState extends State<Breathwork> with TickerProviderStateMixin {
                             builder: (
                               context,
                             ) =>
-                                const BreathworkDetailpageStart(),
+                                 BreathworkDetailpageStart(
+                              breathworkVideos: filteredVideos.first,
+                            ),
                           ),
                         );
                       },
@@ -357,86 +359,105 @@ class _BreathworkState extends State<Breathwork> with TickerProviderStateMixin {
                                             (context, index) {
                                               final video =
                                                   filteredVideos[index];
-                                              return Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                  horizontal: 16,
-                                                  vertical: 16,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    16,
-                                                  ),
-                                                  color: const Color(
-                                                    0xFFE7F6FF,
-                                                  ),
-                                                ),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      video.title.toString(),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: const TextStyle(
-                                                        fontFamily: 'Inter',
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: Color(
-                                                          0xFF191D21,
-                                                        ),
+                                              return InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (
+                                                        context,
+                                                      ) =>
+                                                          BreathworkDetailpageStart(
+                                                        breathworkVideos: video,
                                                       ),
                                                     ),
-                                                    Gaps.hGap05,
-                                                    Container(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        horizontal: 8,
-                                                        vertical: 4,
-                                                      ),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          16,
-                                                        ),
-                                                        color: const Color(
-                                                          0xFFffffff,
-                                                        ),
-                                                      ),
-                                                      child: Text(
-                                                        '${video.duration} mins',
+                                                  );
+                                                },
+                                                child: Container(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                    horizontal: 16,
+                                                    vertical: 16,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      16,
+                                                    ),
+                                                    color: const Color(
+                                                      0xFFE7F6FF,
+                                                    ),
+                                                  ),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        video.title.toString(),
                                                         textAlign:
                                                             TextAlign.center,
                                                         style: const TextStyle(
                                                           fontFamily: 'Inter',
-                                                          fontSize: 12,
+                                                          fontSize: 20,
                                                           fontWeight:
-                                                              FontWeight.w800,
+                                                              FontWeight.w700,
                                                           color: Color(
-                                                            0xFF393939,
+                                                            0xFF191D21,
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    Gaps.hGap10,
-                                                    Center(
-                                                      child: SizedBox(
-                                                        height: 72,
-                                                        width: 100,
-                                                        child: Image(
-                                                          fit: BoxFit.contain,
-                                                          image: NetworkImage(
-                                                            video.videoIcon
-                                                                .toString(),
+                                                      Gaps.hGap05,
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                          horizontal: 8,
+                                                          vertical: 4,
+                                                        ),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                            16,
+                                                          ),
+                                                          color: const Color(
+                                                            0xFFffffff,
+                                                          ),
+                                                        ),
+                                                        child: Text(
+                                                          '${video.duration} mins',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style:
+                                                              const TextStyle(
+                                                            fontFamily: 'Inter',
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w800,
+                                                            color: Color(
+                                                              0xFF393939,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                      Gaps.hGap10,
+                                                      Center(
+                                                        child: SizedBox(
+                                                          height: 72,
+                                                          width: 100,
+                                                          child: Image(
+                                                            fit: BoxFit.contain,
+                                                            image: NetworkImage(
+                                                              video.videoIcon
+                                                                  .toString(),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               );
                                             },

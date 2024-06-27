@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mind_labify/models/app_user.dart';
@@ -881,6 +882,53 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
         }
       },
     );
+    on<UpdateBreathWorkVideoReaction>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          UpdatingBreathworkVideoReaction(),
+        );
+        try {
+          String userId = FirebaseAuth.instance.currentUser!.uid;
+          DocumentReference videoRef = FirebaseFirestore.instance
+              .collection('breathwork_videos')
+              .doc(event.videoId);
+          DocumentSnapshot videoSnapshot = await videoRef.get();
+          if (videoSnapshot.exists) {
+            BreathworkVideo video = BreathworkVideo.fromMap(
+                videoSnapshot.data() as Map<String, dynamic>);
+            if (video.reactions!.containsKey(userId)) {
+              video.reactions![userId]!.add(event.reaction);
+            } else {
+              video.reactions![userId] = [event.reaction];
+            }
+            await videoRef.update(
+              video.toMap(),
+            );
+          }
+          emit(
+            BreathworkVideoReactionUpdated(),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            BreathworkVideoReactionUpdatedFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            BreathworkVideoReactionUpdatedFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
     on<CreateMeditationVideo>(
       (
         event,
@@ -1088,6 +1136,53 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           );
           emit(
             DeletingMeditationVideoFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<UpdateMeditationVideoReaction>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          UpdatingMeditationVideoReaction(),
+        );
+        try {
+          String userId = FirebaseAuth.instance.currentUser!.uid;
+          DocumentReference videoRef = FirebaseFirestore.instance
+              .collection('meditation_videos')
+              .doc(event.videoId);
+          DocumentSnapshot videoSnapshot = await videoRef.get();
+          if (videoSnapshot.exists) {
+            MeditationVideo video = MeditationVideo.fromMap(
+                videoSnapshot.data() as Map<String, dynamic>);
+            if (video.reactions!.containsKey(userId)) {
+              video.reactions![userId]!.add(event.reaction);
+            } else {
+              video.reactions![userId] = [event.reaction];
+            }
+            await videoRef.update(
+              video.toMap(),
+            );
+          }
+          emit(
+            MeditationVideoReactionUpdated(),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            MeditationVideoReactionUpdatedFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            MeditationVideoReactionUpdatedFailed(
               e.toString(),
             ),
           );

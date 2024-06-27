@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mind_labify/features/user/views/meditation_detailpage_submit.dart';
+import 'package:mind_labify/models/meditation_video.dart';
 import 'package:mind_labify/utils/gaps.dart';
 import 'package:mind_labify/widgets/app_primary_button.dart';
+import 'package:video_player/video_player.dart';
 
 class MeditationDetailpageStart extends StatefulWidget {
-  const MeditationDetailpageStart({super.key});
+  final MeditationVideo meditationVideos;
+  const MeditationDetailpageStart({
+    super.key,
+    required this.meditationVideos,
+  });
 
   @override
   State<MeditationDetailpageStart> createState() =>
@@ -12,6 +18,33 @@ class MeditationDetailpageStart extends StatefulWidget {
 }
 
 class _MeditationDetailpageStartState extends State<MeditationDetailpageStart> {
+  late VideoPlayerController _controller;
+  late Future<void> _initializeVideoPlayerFuture;
+  bool _isPlaying = false;
+  bool _showControls = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeVideo();
+  }
+
+  Future<void> _initializeVideo() async {
+    _controller = VideoPlayerController.networkUrl(
+      Uri.parse(
+        widget.meditationVideos.video.toString(),
+      ),
+    );
+    _initializeVideoPlayerFuture = _controller.initialize();
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,24 +59,77 @@ class _MeditationDetailpageStartState extends State<MeditationDetailpageStart> {
           child: Center(
             child: Column(
               children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 45,
-                  ),
-                  color: const Color(
-                    0xFFffffff,
-                  ),
-                  child: const Image(
-                    height: 251,
-                    width: 302,
-                    image: AssetImage(
-                      'assets/images/breath2.png',
-                    ),
-                  ),
+                FutureBuilder(
+                  future: _initializeVideoPlayerFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(
+                            () {
+                              _showControls = !_showControls;
+                            },
+                          );
+                        },
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            SizedBox(
+                              height: 251,
+                              width: double.infinity,
+                              child: VideoPlayer(_controller),
+                            ),
+                            if (_showControls)
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 80.0,
+                                    ),
+                                    child: IconButton(
+                                      onPressed: () {
+                                        setState(
+                                          () {
+                                            if (_controller.value.isPlaying) {
+                                              _controller.pause();
+                                            } else {
+                                              _controller.play();
+                                            }
+                                            _isPlaying = !_isPlaying;
+                                          },
+                                        );
+                                      },
+                                      icon: Icon(
+                                        _controller.value.isPlaying
+                                            ? Icons.pause
+                                            : Icons.play_arrow,
+                                        size: 50,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  VideoProgressIndicator(
+                                    padding: const EdgeInsets.only(
+                                      top: 80,
+                                    ),
+                                    _controller,
+                                    allowScrubbing: true,
+                                  ),
+                                ],
+                              ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
                 ),
                 Gaps.hGap30,
                 Text(
-                  'Intro to Meditation',
+                  widget.meditationVideos.title ?? '',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 24,
@@ -53,7 +139,7 @@ class _MeditationDetailpageStartState extends State<MeditationDetailpageStart> {
                 ),
                 Gaps.hGap30,
                 Text(
-                  '2-5 Mins',
+                  '${widget.meditationVideos.duration ?? ''} Mins',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 20,
@@ -64,25 +150,49 @@ class _MeditationDetailpageStartState extends State<MeditationDetailpageStart> {
                 const SizedBox(
                   height: 144,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 34.0,
-                  ),
-                  child: AppPrimaryButton(
-                    text: 'Start',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (
-                            context,
-                          ) =>
-                              const MeditationDetailpageSubmit(),
+                _isPlaying
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 34.0,
                         ),
-                      );
-                    },
-                  ),
-                ),
+                        child: AppPrimaryButton(
+                          text: 'Done',
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (
+                                  context,
+                                ) =>
+                                     MeditationDetailpageSubmit(
+                                      meditationVideos: widget.meditationVideos,
+                                    ),
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 34.0,
+                        ),
+                        child: AppPrimaryButton(
+                          text: 'Start',
+                          onTap: () {
+                            setState(
+                              () {
+                                if (_isPlaying) {
+                                  _controller.pause();
+                                  _isPlaying = false;
+                                } else {
+                                  _controller.play();
+                                  _isPlaying = true;
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      ),
               ],
             ),
           ),

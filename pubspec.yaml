@@ -80,6 +80,12 @@ dependencies:
 
   # Video Player
   video_player: ^2.8.6
+  
+  # Auto Orientation
+  auto_orientation: ^2.3.1
+
+  # Native Device Orientation
+  native_device_orientation: ^2.0.3
 
 dev_dependencies:
   flutter_test:

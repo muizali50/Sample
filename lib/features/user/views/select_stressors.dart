@@ -36,6 +36,7 @@ class _SelectStressorsState extends State<SelectStressors> {
 
   @override
   Widget build(BuildContext context) {
+    final userBloc = context.watch<UserBloc>();
     return Scaffold(
       backgroundColor: const Color(
         0xFFD5DFD2,

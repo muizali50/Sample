@@ -491,6 +491,22 @@ final class DeletingBreathorkVideoSuccess extends AdminState {
       ];
 }
 
+final class BreathworkVideoReactionUpdated extends AdminState {}
+
+final class UpdatingBreathworkVideoReaction extends AdminState {}
+
+final class BreathworkVideoReactionUpdatedFailed extends AdminState {
+  final String message;
+  const BreathworkVideoReactionUpdatedFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
 final class CreateMeditationVideoFailed extends AdminState {
   final String message;
   const CreateMeditationVideoFailed(
@@ -602,5 +618,21 @@ final class DeletingMeditationVideoSuccess extends AdminState {
   @override
   List<Object> get props => [
         meditationVideoId,
+      ];
+}
+
+final class MeditationVideoReactionUpdated extends AdminState {}
+
+final class UpdatingMeditationVideoReaction extends AdminState {}
+
+final class MeditationVideoReactionUpdatedFailed extends AdminState {
+  final String message;
+  const MeditationVideoReactionUpdatedFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
       ];
 }

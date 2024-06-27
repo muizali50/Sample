@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mind_labify/features/admin/admin_bloc/admin_bloc.dart';
+import 'package:mind_labify/features/user/views/navigation_menu.dart';
+import 'package:mind_labify/models/breathwork_video.dart';
 import 'package:mind_labify/utils/gaps.dart';
 import 'package:mind_labify/widgets/app_primary_button.dart';
 
 class BreathworkDetailpageSubmit extends StatefulWidget {
-  const BreathworkDetailpageSubmit({super.key});
+  final BreathworkVideo breathworkVideos;
+  const BreathworkDetailpageSubmit({
+    super.key,
+    required this.breathworkVideos,
+  });
 
   @override
   State<BreathworkDetailpageSubmit> createState() =>
@@ -12,8 +20,28 @@ class BreathworkDetailpageSubmit extends StatefulWidget {
 
 class _BreathworkDetailpageSubmitState
     extends State<BreathworkDetailpageSubmit> {
+  late final AdminBloc adminBloc;
+
+  String selectedReaction = '';
+  void updateReaction(
+    String reaction,
+  ) {
+    setState(
+      () {
+        selectedReaction = reaction;
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    adminBloc = context.read<AdminBloc>();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final adminBloc = context.watch<AdminBloc>();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
@@ -40,9 +68,9 @@ class _BreathworkDetailpageSubmitState
                   color: const Color(
                     0xFFffffff,
                   ),
-                  child: const Column(
+                  child: Column(
                     children: [
-                      Text(
+                      const Text(
                         "You've just finished:",
                         style: TextStyle(
                           fontFamily: 'Inter',
@@ -53,14 +81,14 @@ class _BreathworkDetailpageSubmitState
                           ),
                         ),
                       ),
-                      Image(
+                      const Image(
                         height: 251,
                         width: 302,
                         image: AssetImage(
                           'assets/images/breath2.png',
                         ),
                       ),
-                      Text(
+                      const Text(
                         'Deep Breath Dynamics',
                         style: TextStyle(
                           fontFamily: 'Inter',
@@ -72,7 +100,7 @@ class _BreathworkDetailpageSubmitState
                         ),
                       ),
                       Gaps.hGap10,
-                      Text(
+                      const Text(
                         '2-5 Mins',
                         style: TextStyle(
                           fontFamily: 'Inter',
@@ -84,7 +112,7 @@ class _BreathworkDetailpageSubmitState
                         ),
                       ),
                       Gaps.hGap40,
-                      Text(
+                      const Text(
                         'How do you feel?',
                         style: TextStyle(
                           fontFamily: 'Inter',
@@ -99,53 +127,81 @@ class _BreathworkDetailpageSubmitState
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image(
-                            height: 50,
-                            color: Color(
-                              0xFF357343,
-                            ),
-                            width: 50,
-                            image: AssetImage(
-                              'assets/icons/s_happy.png',
+                          InkWell(
+                            onTap: () {
+                              updateReaction(
+                                'happy',
+                              );
+                            },
+                            child: const Image(
+                              height: 50,
+                              color: Color(
+                                0xFF357343,
+                              ),
+                              width: 50,
+                              image: AssetImage(
+                                'assets/icons/s_happy.png',
+                              ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
-                          Image(
-                            color: Color(
-                              0xFF656565,
-                            ),
-                            height: 50,
-                            width: 50,
-                            image: AssetImage(
-                              'assets/icons/s_normal.png',
+                          InkWell(
+                            onTap: () {
+                              updateReaction(
+                                'okay',
+                              );
+                            },
+                            child: const Image(
+                              color: Color(
+                                0xFF656565,
+                              ),
+                              height: 50,
+                              width: 50,
+                              image: AssetImage(
+                                'assets/icons/s_normal.png',
+                              ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
-                          Image(
-                            color: Color(
-                              0xFFD79152,
-                            ),
-                            height: 50,
-                            width: 50,
-                            image: AssetImage(
-                              'assets/icons/s_sad.png',
+                          InkWell(
+                            onTap: () {
+                              updateReaction(
+                                'sad',
+                              );
+                            },
+                            child: const Image(
+                              color: Color(
+                                0xFFD79152,
+                              ),
+                              height: 50,
+                              width: 50,
+                              image: AssetImage(
+                                'assets/icons/s_sad.png',
+                              ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
-                          Image(
-                            color: Color(
-                              0xFFFF0303,
-                            ),
-                            height: 50,
-                            width: 50,
-                            image: AssetImage(
-                              'assets/icons/s_tired.png',
+                          InkWell(
+                            onTap: () {
+                              updateReaction(
+                                'angry',
+                              );
+                            },
+                            child: const Image(
+                              color: Color(
+                                0xFFFF0303,
+                              ),
+                              height: 50,
+                              width: 50,
+                              image: AssetImage(
+                                'assets/icons/s_tired.png',
+                              ),
                             ),
                           ),
                         ],
@@ -153,14 +209,72 @@ class _BreathworkDetailpageSubmitState
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 34.0,
-                  ),
-                  child: AppPrimaryButton(
-                    text: 'Submit',
-                    onTap: () {},
-                  ),
+                BlocConsumer<AdminBloc, AdminState>(
+                  listener: (context, state) {
+                    if (state is BreathworkVideoReactionUpdated) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Reaction submitted successfully',
+                          ),
+                        ),
+                      );
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (
+                            context,
+                          ) =>
+                              const BottomNavBar(),
+                        ),
+                      );
+                    } else if (state is BreathworkVideoReactionUpdatedFailed) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            state.message,
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is UpdatingBreathworkVideoReaction) {
+                      return const CircularProgressIndicator();
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 34.0,
+                      ),
+                      child: AppPrimaryButton(
+                        text: 'Submit',
+                        onTap: () {
+                          if (selectedReaction.isEmpty) {
+                            ScaffoldMessenger.of(
+                              context,
+                            ).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Please submit the reaction',
+                                ),
+                              ),
+                            );
+                            return;
+                          }
+                          adminBloc.add(
+                            UpdateBreathWorkVideoReaction(
+                              widget.breathworkVideos.videoId.toString(),
+                              selectedReaction,
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

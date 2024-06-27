@@ -182,6 +182,20 @@ final class DeleteBreathworkVideo extends AdminEvent {
       ];
 }
 
+final class UpdateBreathWorkVideoReaction extends AdminEvent {
+  final String videoId;
+  final String reaction;
+  const UpdateBreathWorkVideoReaction(
+    this.videoId,
+    this.reaction,
+  );
+  @override
+  List<Object> get props => [
+        videoId,
+        reaction,
+      ];
+}
+
 class CreateMeditationVideo extends AdminEvent {
   final MeditationVideo meditationVideo;
   final XFile videoIconFile;
@@ -226,5 +240,20 @@ final class DeleteMeditationVideo extends AdminEvent {
   @override
   List<Object> get props => [
         meditationVideoId,
+      ];
+}
+
+final class UpdateMeditationVideoReaction extends AdminEvent {
+  final String videoId;
+
+  final String reaction;
+  const UpdateMeditationVideoReaction(
+    this.videoId,
+    this.reaction,
+  );
+  @override
+  List<Object> get props => [
+        videoId,
+        reaction,
       ];
 }

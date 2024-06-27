@@ -407,21 +407,21 @@ class _AddMeditationVideoState extends State<AddMeditationVideo> {
                             ),
                           ),
                           DropdownMenuItem<String>(
-                            value: 'emotional',
+                            value: 'okay',
                             child: Text(
-                              'Emotional',
-                            ),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'confused',
-                            child: Text(
-                              'Confused',
+                              'Okay',
                             ),
                           ),
                           DropdownMenuItem<String>(
                             value: 'sad',
                             child: Text(
                               'Sad',
+                            ),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'angry',
+                            child: Text(
+                              'Angry',
                             ),
                           ),
                         ],
