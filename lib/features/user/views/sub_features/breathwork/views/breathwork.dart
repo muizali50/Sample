@@ -174,40 +174,54 @@ class _BreathworkState extends State<Breathwork> with TickerProviderStateMixin {
                         child: Text(state.message),
                       );
                     }
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (
-                              context,
-                            ) =>
-                                 BreathworkDetailpageStart(
-                              breathworkVideos: filteredVideos.first,
+                    return filteredVideos.isEmpty
+                        ? Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 21,
+                              vertical: 23,
                             ),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 21,
-                          vertical: 23,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFD0C958).withOpacity(
-                            0.45,
-                          ),
-                          borderRadius: BorderRadius.circular(
-                            20,
-                          ),
-                        ),
-                        child: filteredVideos.isEmpty
-                            ? const Center(
-                                child: Text(
-                                  'no videos',
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFD0C958).withOpacity(
+                                0.45,
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                20,
+                              ),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'no videos',
+                              ),
+                            ),
+                          )
+                        : InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (
+                                    context,
+                                  ) =>
+                                      BreathworkDetailpageStart(
+                                    breathworkVideos: filteredVideos.first,
+                                  ),
                                 ),
-                              )
-                            : Row(
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 21,
+                                vertical: 23,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFD0C958).withOpacity(
+                                  0.45,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  20,
+                                ),
+                              ),
+                              child: Row(
                                 children: [
                                   Column(
                                     crossAxisAlignment:
@@ -251,8 +265,8 @@ class _BreathworkState extends State<Breathwork> with TickerProviderStateMixin {
                                   ),
                                 ],
                               ),
-                      ),
-                    );
+                            ),
+                          );
                   },
                 ),
                 Gaps.hGap20,

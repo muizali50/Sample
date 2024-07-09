@@ -36,7 +36,6 @@ class _SelectStressorsState extends State<SelectStressors> {
   Widget build(BuildContext context) {
     final userBloc = context.watch<UserBloc>();
     return Scaffold(
-      
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -138,7 +137,7 @@ class _SelectStressorsState extends State<SelectStressors> {
                                             0xFFB9BF88,
                                           )
                                         : const Color(
-                                            0xFFEAEAEA,
+                                            0xFFD4DFD1,
                                           ),
                                     borderRadius: BorderRadius.circular(
                                       50,
