@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +8,6 @@ import 'package:mind_labify/features/admin/views/admin_button.dart';
 import 'package:mind_labify/models/breathwork_video.dart';
 import 'package:mind_labify/utils/gaps.dart';
 import 'package:mind_labify/widgets/app_text_fields.dart';
-import 'package:video_player/video_player.dart';
 
 class AddBreathworkVideos extends StatefulWidget {
   final BreathworkVideo? breathworkVideos;
@@ -28,32 +25,14 @@ class _AddBreathworkVideosState extends State<AddBreathworkVideos> {
   late final AdminBloc adminBloc;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _durationController = TextEditingController();
+  final TextEditingController _videoUrlController = TextEditingController();
   String category = '';
   String mood = 'happy';
   String status = 'Inactive';
   String? videoIcon;
-  File? video;
-  VideoPlayerController? videoPlayerController;
+  // File? video;
+  // VideoPlayerController? videoPlayerController;
   final picker = ImagePicker();
-
-  _pickVideo() async {
-    final pickedVideo = await picker.pickVideo(
-      source: ImageSource.gallery,
-    );
-
-    video = File(pickedVideo!.path);
-    videoPlayerController = VideoPlayerController.networkUrl(
-      Uri.parse(video!.path),
-    )..initialize().then(
-        (_) {
-          setState(
-            () {},
-          );
-          videoPlayerController!.play();
-        },
-      );
-  }
-
   @override
   void initState() {
     adminBloc = context.read<AdminBloc>();
@@ -68,17 +47,7 @@ class _AddBreathworkVideosState extends State<AddBreathworkVideos> {
       category = widget.breathworkVideos!.breathworkCategory ?? '';
       videoIcon = widget.breathworkVideos!.videoIcon ?? '';
       status = widget.breathworkVideos!.status ?? '';
-      video = File(widget.breathworkVideos!.video ?? '');
-      videoPlayerController = VideoPlayerController.networkUrl(
-        Uri.parse(widget.breathworkVideos!.video ?? ''),
-      )..initialize().then(
-          (_) {
-            setState(
-              () {},
-            );
-            videoPlayerController!.play();
-          },
-        );
+      _videoUrlController.text = widget.breathworkVideos!.videoUrl ?? '';
     }
 
     super.initState();
@@ -368,74 +337,86 @@ class _AddBreathworkVideosState extends State<AddBreathworkVideos> {
                   ],
                 ),
                 Gaps.hGap35,
-                Container(
-                  width: 500,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 18,
-                    vertical: 7,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(
-                      0xFFEAEAEA,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 500,
+                      child: AppTextField(
+                        controller: _videoUrlController,
+                        hintText: 'Video Url',
+                      ),
                     ),
-                    borderRadius: BorderRadius.circular(
-                      20,
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Mood',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                          color: Theme.of(context).colorScheme.onSurface,
+                    Container(
+                      width: 500,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 7,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(
+                          0xFFEAEAEA,
+                        ),
+                        borderRadius: BorderRadius.circular(
+                          20,
                         ),
                       ),
-                      const Spacer(),
-                      DropdownButton<String>(
-                        underline: Container(),
-                        value: mood,
-                        icon: const Icon(
-                          Icons.arrow_drop_down_rounded,
-                        ),
-                        items: const [
-                          DropdownMenuItem<String>(
-                            value: 'happy',
-                            child: Text(
-                              'Happy',
+                      child: Row(
+                        children: [
+                          Text(
+                            'Mood',
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
-                          DropdownMenuItem<String>(
-                            value: 'okay',
-                            child: Text(
-                              'Okay',
+                          const Spacer(),
+                          DropdownButton<String>(
+                            underline: Container(),
+                            value: mood,
+                            icon: const Icon(
+                              Icons.arrow_drop_down_rounded,
                             ),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'sad',
-                            child: Text(
-                              'Sad',
-                            ),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'angry',
-                            child: Text(
-                              'Angry',
-                            ),
+                            items: const [
+                              DropdownMenuItem<String>(
+                                value: 'happy',
+                                child: Text(
+                                  'Happy',
+                                ),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: 'okay',
+                                child: Text(
+                                  'Okay',
+                                ),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: 'sad',
+                                child: Text(
+                                  'Sad',
+                                ),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: 'angry',
+                                child: Text(
+                                  'Angry',
+                                ),
+                              ),
+                            ],
+                            onChanged: (String? newValue) {
+                              setState(
+                                () {
+                                  mood = newValue!;
+                                },
+                              );
+                            },
                           ),
                         ],
-                        onChanged: (String? newValue) {
-                          setState(
-                            () {
-                              mood = newValue!;
-                            },
-                          );
-                        },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 Gaps.hGap35,
                 const Text(
@@ -505,74 +486,6 @@ class _AddBreathworkVideosState extends State<AddBreathworkVideos> {
                     videoIcon != null
                         ? Image.network(videoIcon!, width: 50, height: 50)
                         : Container(),
-                  ],
-                ),
-                Gaps.hGap35,
-                const Text(
-                  'Upload Breathwork Video',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                    color: Color(
-                      0xFF371B34,
-                    ),
-                  ),
-                ),
-                Gaps.hGap15,
-                Row(
-                  children: [
-                    DottedBorder(
-                      dashPattern: const [4, 4],
-                      strokeWidth: 2,
-                      color: const Color(
-                        0xFF000000,
-                      ),
-                      child: SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: Center(
-                          child: InkWell(
-                            onTap: () {
-                              _pickVideo();
-                            },
-                            child: Container(
-                              height: 30,
-                              width: 30,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(
-                                  0xFF000000,
-                                ),
-                              ),
-                              child: const Center(
-                                child: Icon(
-                                  color: Color(
-                                    0xFFffffff,
-                                  ),
-                                  Icons.add,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    if (video != null)
-                      videoPlayerController!.value.isInitialized
-                          ? SizedBox(
-                              height: 100,
-                              width: 100,
-                              child: AspectRatio(
-                                aspectRatio:
-                                    videoPlayerController!.value.aspectRatio,
-                                child: VideoPlayer(videoPlayerController!),
-                              ),
-                            )
-                          : const CircularProgressIndicator()
                   ],
                 ),
                 Gaps.hGap35,
@@ -669,11 +582,11 @@ class _AddBreathworkVideosState extends State<AddBreathworkVideos> {
                             );
                             return;
                           }
-                          if (video == null) {
+                          if (_videoUrlController.text.trim().isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
-                                  'Please select the video',
+                                  'Please enter the video url',
                                 ),
                               ),
                             );
@@ -700,31 +613,33 @@ class _AddBreathworkVideosState extends State<AddBreathworkVideos> {
                                   breathworkCategory: category,
                                   mood: mood,
                                   videoIcon: videoIcon,
-                                  video: video!.path,
+                                  videoUrl: _videoUrlController.text,
+                                  // video: video!.path,
                                 ),
                                 videoIcon == widget.breathworkVideos!.videoIcon
                                     ? null
                                     : XFile(videoIcon!),
-                                video!.path == widget.breathworkVideos!.video
-                                    ? null
-                                    : XFile(video!.path),
+                                // video!.path == widget.breathworkVideos!.video
+                                //     ? null
+                                //     : XFile(video!.path),
                               ),
                             );
                           } else {
                             adminBloc.add(
                               CreateBreathWorkVideo(
                                 BreathworkVideo(
-                                  videoId: DateTime.now().toIso8601String(),
-                                  title: _titleController.text,
-                                  status: status,
-                                  duration: _durationController.text,
-                                  breathworkCategory: category,
-                                  mood: mood,
-                                  videoIcon: videoIcon,
-                                  video: video!.path,
-                                ),
+                                    videoId: DateTime.now().toIso8601String(),
+                                    title: _titleController.text,
+                                    status: status,
+                                    duration: _durationController.text,
+                                    breathworkCategory: category,
+                                    mood: mood,
+                                    videoIcon: videoIcon,
+                                    videoUrl: _videoUrlController.text
+                                    // video: video!.path,
+                                    ),
                                 XFile(videoIcon!),
-                                XFile(video!.path),
+                                // XFile(video!.path),
                               ),
                             );
                           }

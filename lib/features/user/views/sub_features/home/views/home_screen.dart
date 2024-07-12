@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mind_labify/features/authentication/bloc/authentication_bloc.dart';
 import 'package:mind_labify/features/user/views/sub_features/home/widgets/explore.dart';
 import 'package:mind_labify/features/user/views/sub_features/home/widgets/quotes_box.dart';
 import 'package:mind_labify/features/user/views/sub_features/home/widgets/weekly_progress_indicator.dart';
+import 'package:mind_labify/user_provider.dart';
 import 'package:mind_labify/utils/gaps.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,8 +15,27 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late final UserProvider userProvider;
+  late final AuthenticationBloc authenticationBloc;
+
+  @override
+  void initState() {
+    authenticationBloc = context.read<AuthenticationBloc>();
+    authenticationBloc.add(
+      const GetUser(),
+    );
+    userProvider = context.read<UserProvider>();
+    if (userProvider.user == null) {
+      authenticationBloc.add(
+        const GetUser(),
+      );
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final UserProvider userProvider = context.read<UserProvider>();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
@@ -60,12 +82,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(
                         width: 10,
                       ),
-                      const Column(
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Hi Sanya!',
-                            style: TextStyle(
+                            'Hi ${userProvider.user?.name ?? ''}!',
+                            style: const TextStyle(
                               fontFamily: 'Inter',
                               fontSize: 17,
                               fontWeight: FontWeight.w600,
@@ -75,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           Gaps.hGap05,
-                          Text(
+                          const Text(
                             'You are feeling Sad today',
                             style: TextStyle(
                               fontFamily: 'Inter',

@@ -6,8 +6,8 @@ class BreathworkVideo {
   String? breathworkCategory;
   String? mood;
   String? videoIcon;
-  String? video;
   Map<String, List<String>>? reactions;
+  String? videoUrl;
 
   BreathworkVideo({
     this.videoId,
@@ -17,8 +17,8 @@ class BreathworkVideo {
     this.duration,
     this.breathworkCategory,
     this.mood,
-    this.video,
     this.reactions,
+    this.videoUrl,
   });
 
   Map<String, dynamic> toMap() {
@@ -30,8 +30,8 @@ class BreathworkVideo {
       'breathworkCategory': breathworkCategory,
       'mood': mood,
       'videoIcon': videoIcon,
-      'video': video,
       'reactions': reactions,
+      'videoUrl': videoUrl,
     };
   }
 
@@ -44,7 +44,6 @@ class BreathworkVideo {
       breathworkCategory: map['breathworkCategory'],
       mood: map['mood'],
       videoIcon: map['videoIcon'],
-      video: map['video'],
       reactions: (map['reactions'] as Map<String, dynamic>?)?.map(
             (key, value) => MapEntry(
               key,
@@ -52,6 +51,7 @@ class BreathworkVideo {
             ),
           ) ??
           {},
+      videoUrl: map['videoUrl'],
     );
   }
 }

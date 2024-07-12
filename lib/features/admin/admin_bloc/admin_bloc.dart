@@ -687,14 +687,14 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           final iconUrl = await ref.getDownloadURL();
           event.breathWorkVideo.videoIcon = iconUrl;
 
-          final videoRef = FirebaseStorage.instance.ref().child(
-                'breathwork_videos/${event.video.path.split('/').last}',
-              );
-          await videoRef.putData(
-            await event.video.readAsBytes(),
-          );
-          final videoUrl = await videoRef.getDownloadURL();
-          event.breathWorkVideo.video = videoUrl;
+          // final videoRef = FirebaseStorage.instance.ref().child(
+          //       'breathwork_videos/${event.video.path.split('/').last}',
+          //     );
+          // await videoRef.putData(
+          //   await event.video.readAsBytes(),
+          // );
+          // final videoUrl = await videoRef.getDownloadURL();
+          // event.breathWorkVideo.video = videoUrl;
           final breathworkVideoCollection =
               FirebaseFirestore.instance.collection(
             'breathwork_videos',
@@ -748,16 +748,16 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
             final iconUrl = await ref.getDownloadURL();
             event.breathWorkVideo.videoIcon = iconUrl;
           }
-          if (event.video != null) {
-            final videoRef = FirebaseStorage.instance.ref().child(
-                  'breathwork_videos/${event.video!.path.split('/').last}',
-                );
-            await videoRef.putData(
-              await event.video!.readAsBytes(),
-            );
-            final videoUrl = await videoRef.getDownloadURL();
-            event.breathWorkVideo.video = videoUrl;
-          }
+          // if (event.video != null) {
+          //   final videoRef = FirebaseStorage.instance.ref().child(
+          //         'breathwork_videos/${event.video!.path.split('/').last}',
+          //       );
+          //   await videoRef.putData(
+          //     await event.video!.readAsBytes(),
+          //   );
+          //   final videoUrl = await videoRef.getDownloadURL();
+          //   event.breathWorkVideo.video = videoUrl;
+          // }
           final breathworkVideoCollection =
               FirebaseFirestore.instance.collection(
             'breathwork_videos',
@@ -947,14 +947,14 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           final iconUrl = await ref.getDownloadURL();
           event.meditationVideo.videoIcon = iconUrl;
 
-          final videoRef = FirebaseStorage.instance.ref().child(
-                'meditation_videos/${event.video.path.split('/').last}',
-              );
-          await videoRef.putData(
-            await event.video.readAsBytes(),
-          );
-          final videoUrl = await videoRef.getDownloadURL();
-          event.meditationVideo.video = videoUrl;
+          // final videoRef = FirebaseStorage.instance.ref().child(
+          //       'meditation_videos/${event.video.path.split('/').last}',
+          //     );
+          // await videoRef.putData(
+          //   await event.video.readAsBytes(),
+          // );
+          // final videoUrl = await videoRef.getDownloadURL();
+          // event.meditationVideo.video = videoUrl;
           final meditationVideoCollection =
               FirebaseFirestore.instance.collection(
             'meditation_videos',
@@ -1008,16 +1008,16 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
             final iconUrl = await ref.getDownloadURL();
             event.meditationVideo.videoIcon = iconUrl;
           }
-          if (event.video != null) {
-            final videoRef = FirebaseStorage.instance.ref().child(
-                  'meditation_videos/${event.video!.path.split('/').last}',
-                );
-            await videoRef.putData(
-              await event.video!.readAsBytes(),
-            );
-            final videoUrl = await videoRef.getDownloadURL();
-            event.meditationVideo.video = videoUrl;
-          }
+          // if (event.video != null) {
+          //   final videoRef = FirebaseStorage.instance.ref().child(
+          //         'meditation_videos/${event.video!.path.split('/').last}',
+          //       );
+          //   await videoRef.putData(
+          //     await event.video!.readAsBytes(),
+          //   );
+          //   final videoUrl = await videoRef.getDownloadURL();
+          //   event.meditationVideo.video = videoUrl;
+          // }
           final meditationVideoCollection =
               FirebaseFirestore.instance.collection(
             'meditation_videos',

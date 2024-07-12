@@ -138,29 +138,24 @@ final class DeleteMeditationCategory extends AdminEvent {
 class CreateBreathWorkVideo extends AdminEvent {
   final BreathworkVideo breathWorkVideo;
   final XFile videoIconFile;
-  final XFile video;
   const CreateBreathWorkVideo(
     this.breathWorkVideo,
     this.videoIconFile,
-    this.video,
   );
 
   @override
   List<Object> get props => [
         breathWorkVideo,
         videoIconFile,
-        video,
       ];
 }
 
 class UpdateBreathWorkVideo extends AdminEvent {
   final BreathworkVideo breathWorkVideo;
   final XFile? videoIconFile;
-  final XFile? video;
   const UpdateBreathWorkVideo(
     this.breathWorkVideo,
     this.videoIconFile,
-    this.video,
   );
 
   @override
@@ -199,29 +194,26 @@ final class UpdateBreathWorkVideoReaction extends AdminEvent {
 class CreateMeditationVideo extends AdminEvent {
   final MeditationVideo meditationVideo;
   final XFile videoIconFile;
-  final XFile video;
+
   const CreateMeditationVideo(
     this.meditationVideo,
     this.videoIconFile,
-    this.video,
   );
 
   @override
   List<Object> get props => [
         meditationVideo,
         videoIconFile,
-        video,
       ];
 }
 
 class UpdateMeditationVideo extends AdminEvent {
   final MeditationVideo meditationVideo;
   final XFile? videoIconFile;
-  final XFile? video;
+
   const UpdateMeditationVideo(
     this.meditationVideo,
     this.videoIconFile,
-    this.video,
   );
 
   @override
@@ -245,7 +237,6 @@ final class DeleteMeditationVideo extends AdminEvent {
 
 final class UpdateMeditationVideoReaction extends AdminEvent {
   final String videoId;
-
   final String reaction;
   const UpdateMeditationVideoReaction(
     this.videoId,
