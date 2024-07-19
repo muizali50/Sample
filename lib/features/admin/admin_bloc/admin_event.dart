@@ -248,3 +248,129 @@ final class UpdateMeditationVideoReaction extends AdminEvent {
         reaction,
       ];
 }
+
+class CreateBlogCategory extends AdminEvent {
+  final BlogCategoryModel blogCategory;
+  final XFile iconFile;
+  const CreateBlogCategory(
+    this.blogCategory,
+    this.iconFile,
+  );
+
+  @override
+  List<Object> get props => [
+        blogCategory,
+        iconFile,
+      ];
+}
+
+final class UpdateBlogCategory extends AdminEvent {
+  final BlogCategoryModel blogCategory;
+  final XFile? iconFile;
+  const UpdateBlogCategory(
+    this.blogCategory,
+    this.iconFile,
+  );
+
+  @override
+  List<Object> get props => [
+        blogCategory,
+      ];
+}
+
+final class GetBlogCategory extends AdminEvent {}
+
+final class DeleteBlogCategory extends AdminEvent {
+  final String blogCategoryId;
+  const DeleteBlogCategory(
+    this.blogCategoryId,
+  );
+  @override
+  List<Object> get props => [
+        blogCategoryId,
+      ];
+}
+
+class CreateBlog extends AdminEvent {
+  final BlogModel blog;
+  final XFile iconFile;
+  const CreateBlog(
+    this.blog,
+    this.iconFile,
+  );
+
+  @override
+  List<Object> get props => [
+        blog,
+        iconFile,
+      ];
+}
+
+final class UpdateBlog extends AdminEvent {
+  final BlogModel blog;
+  final XFile? iconFile;
+  const UpdateBlog(
+    this.blog,
+    this.iconFile,
+  );
+
+  @override
+  List<Object> get props => [
+        blog,
+      ];
+}
+
+final class GetBlog extends AdminEvent {}
+
+final class DeleteBlog extends AdminEvent {
+  final String blogId;
+  const DeleteBlog(
+    this.blogId,
+  );
+  @override
+  List<Object> get props => [
+        blogId,
+      ];
+}
+
+class CreateJournalCategory extends AdminEvent {
+  final JournalCategoryModel journalCategory;
+  final XFile iconFile;
+  const CreateJournalCategory(
+    this.journalCategory,
+    this.iconFile,
+  );
+
+  @override
+  List<Object> get props => [
+        journalCategory,
+        iconFile,
+      ];
+}
+
+final class UpdateJournalCategory extends AdminEvent {
+  final JournalCategoryModel journalCategory;
+  final XFile? iconFile;
+  const UpdateJournalCategory(
+    this.journalCategory,
+    this.iconFile,
+  );
+
+  @override
+  List<Object> get props => [
+        journalCategory,
+      ];
+}
+
+final class GetJournalCategory extends AdminEvent {}
+
+final class DeleteJournalCategory extends AdminEvent {
+  final String journalCategoryId;
+  const DeleteJournalCategory(
+    this.journalCategoryId,
+  );
+  @override
+  List<Object> get props => [
+        journalCategoryId,
+      ];
+}

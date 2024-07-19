@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mind_labify/features/admin/views/all_stressors.dart';
+import 'package:mind_labify/features/admin/views/blog_category.dart';
+import 'package:mind_labify/features/admin/views/blogs.dart';
 import 'package:mind_labify/features/admin/views/breathwork_categories.dart';
 import 'package:mind_labify/features/admin/views/breathwork_videos.dart';
+import 'package:mind_labify/features/admin/views/journal_category.dart';
 import 'package:mind_labify/features/admin/views/meditation_categories.dart';
 import 'package:mind_labify/features/admin/views/meditation_videos.dart';
 import 'package:mind_labify/features/admin/views/sub_features/all_users/views/all_users.dart';
@@ -25,6 +28,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
     const MeditationCategories(),
     const BreathworkVideos(),
     const MeditationVideos(),
+    const BlogCategory(),
+    const Blogs(),
+    const JournalCategory(),
   ];
 
   void _onItemTapped(
@@ -119,6 +125,33 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   title: 'Meditation Videos',
                   titleColor: _selectedIndex == 5 ? 0xFF000000 : 0xFFffffff,
                   containerColor: _selectedIndex == 5 ? 0xFFffffff : 0xFF000000,
+                ),
+                Gaps.hGap20,
+                DashboardFields(
+                  icon: Icons.edit_document,
+                  onTap: () => _onItemTapped(6),
+                  iconColor: _selectedIndex == 6 ? 0xFF000000 : 0xFFffffff,
+                  title: 'Blog Category',
+                  titleColor: _selectedIndex == 6 ? 0xFF000000 : 0xFFffffff,
+                  containerColor: _selectedIndex == 6 ? 0xFFffffff : 0xFF000000,
+                ),
+                Gaps.hGap20,
+                DashboardFields(
+                  icon: Icons.edit_document,
+                  onTap: () => _onItemTapped(7),
+                  iconColor: _selectedIndex == 7 ? 0xFF000000 : 0xFFffffff,
+                  title: 'Blogs',
+                  titleColor: _selectedIndex == 7 ? 0xFF000000 : 0xFFffffff,
+                  containerColor: _selectedIndex == 7 ? 0xFFffffff : 0xFF000000,
+                ),
+                Gaps.hGap20,
+                DashboardFields(
+                  icon: Icons.edit_document,
+                  onTap: () => _onItemTapped(8),
+                  iconColor: _selectedIndex == 8 ? 0xFF000000 : 0xFFffffff,
+                  title: 'Journal Category',
+                  titleColor: _selectedIndex == 8 ? 0xFF000000 : 0xFFffffff,
+                  containerColor: _selectedIndex == 8 ? 0xFFffffff : 0xFF000000,
                 ),
               ],
             ),
