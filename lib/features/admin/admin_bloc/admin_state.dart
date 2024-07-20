@@ -978,3 +978,573 @@ final class DeletingJournalCategorySuccess extends AdminState {
         journalCategoryId,
       ];
 }
+
+final class CreateJournalFailed extends AdminState {
+  final String message;
+  const CreateJournalFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class CreatingJournal extends AdminState {}
+
+final class CreateJournalSuccess extends AdminState {
+  final JournalModel journal;
+  const CreateJournalSuccess(
+    this.journal,
+  );
+
+  @override
+  List<Object> get props => [
+        journal,
+      ];
+}
+
+final class UpdateJournalFailed extends AdminState {
+  final String message;
+  const UpdateJournalFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class UpdatingJournal extends AdminState {}
+
+final class UpdateJournalSuccess extends AdminState {
+  final JournalModel journal;
+  const UpdateJournalSuccess(
+    this.journal,
+  );
+
+  @override
+  List<Object> get props => [
+        journal,
+      ];
+}
+
+final class GetJournalFailed extends AdminState {
+  final String message;
+  const GetJournalFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class GettingJournal extends AdminState {}
+
+final class GetJournalSuccess extends AdminState {
+  final List<JournalModel> journals;
+  const GetJournalSuccess(
+    this.journals,
+  );
+
+  @override
+  List<Object> get props => [
+        journals,
+      ];
+}
+
+final class DeletingJournalFailed extends AdminState {
+  final String message;
+  const DeletingJournalFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class DeletingJournal extends AdminState {
+  final String journalId;
+  const DeletingJournal(
+    this.journalId,
+  );
+
+  @override
+  List<Object> get props => [
+        journalId,
+      ];
+}
+
+final class DeletingJournalSuccess extends AdminState {
+  final String journalId;
+  const DeletingJournalSuccess(
+    this.journalId,
+  );
+
+  @override
+  List<Object> get props => [
+        journalId,
+      ];
+}
+
+final class CreateDeclarationCategoryFailed extends AdminState {
+  final String message;
+  const CreateDeclarationCategoryFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class CreatingDeclarationCategory extends AdminState {}
+
+final class CreateDeclarationCategorySuccess extends AdminState {
+  final DeclarationCategoryModel declarationCategory;
+  const CreateDeclarationCategorySuccess(
+    this.declarationCategory,
+  );
+
+  @override
+  List<Object> get props => [
+        declarationCategory,
+      ];
+}
+
+final class UpdateDeclarationCategoryFailed extends AdminState {
+  final String message;
+  const UpdateDeclarationCategoryFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class UpdatingDeclarationCategory extends AdminState {}
+
+final class UpdateDeclarationCategorySuccess extends AdminState {
+  final DeclarationCategoryModel declarationCategory;
+  const UpdateDeclarationCategorySuccess(
+    this.declarationCategory,
+  );
+
+  @override
+  List<Object> get props => [
+        declarationCategory,
+      ];
+}
+
+final class GetDeclarationCategoryFailed extends AdminState {
+  final String message;
+  const GetDeclarationCategoryFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class GettingDeclarationCategory extends AdminState {}
+
+final class GetDeclarationCategorySuccess extends AdminState {
+  final List<DeclarationCategoryModel> declarationCategories;
+  const GetDeclarationCategorySuccess(
+    this.declarationCategories,
+  );
+
+  @override
+  List<Object> get props => [
+        declarationCategories,
+      ];
+}
+
+final class DeletingDeclarationCategoryFailed extends AdminState {
+  final String message;
+  const DeletingDeclarationCategoryFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class DeletingDeclarationCategory extends AdminState {
+  final String declarationCategoryId;
+  const DeletingDeclarationCategory(
+    this.declarationCategoryId,
+  );
+
+  @override
+  List<Object> get props => [
+        declarationCategoryId,
+      ];
+}
+
+final class DeletingDeclarationCategorySuccess extends AdminState {
+  final String declarationCategoryId;
+  const DeletingDeclarationCategorySuccess(
+    this.declarationCategoryId,
+  );
+
+  @override
+  List<Object> get props => [
+        declarationCategoryId,
+      ];
+}
+
+final class CreateDeclarationFailed extends AdminState {
+  final String message;
+  const CreateDeclarationFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class CreatingDeclaration extends AdminState {}
+
+final class CreateDeclarationSuccess extends AdminState {
+  final DeclarationModel declaration;
+  const CreateDeclarationSuccess(
+    this.declaration,
+  );
+
+  @override
+  List<Object> get props => [
+        declaration,
+      ];
+}
+
+final class UpdateDeclarationFailed extends AdminState {
+  final String message;
+  const UpdateDeclarationFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class UpdatingDeclaration extends AdminState {}
+
+final class UpdateDeclarationSuccess extends AdminState {
+  final DeclarationModel declaration;
+  const UpdateDeclarationSuccess(
+    this.declaration,
+  );
+
+  @override
+  List<Object> get props => [
+        declaration,
+      ];
+}
+
+final class GetDeclarationFailed extends AdminState {
+  final String message;
+  const GetDeclarationFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class GettingDeclaration extends AdminState {}
+
+final class GetDeclarationSuccess extends AdminState {
+  final List<DeclarationModel> declarations;
+  const GetDeclarationSuccess(
+    this.declarations,
+  );
+
+  @override
+  List<Object> get props => [
+        declarations,
+      ];
+}
+
+final class DeletingDeclarationFailed extends AdminState {
+  final String message;
+  const DeletingDeclarationFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class DeletingDeclaration extends AdminState {
+  final String declarationId;
+  const DeletingDeclaration(
+    this.declarationId,
+  );
+
+  @override
+  List<Object> get props => [
+        declarationId,
+      ];
+}
+
+final class DeletingDeclarationSuccess extends AdminState {
+  final String declarationId;
+  const DeletingDeclarationSuccess(
+    this.declarationId,
+  );
+
+  @override
+  List<Object> get props => [
+        declarationId,
+      ];
+}
+
+final class CreateFAQsCategoryFailed extends AdminState {
+  final String message;
+  const CreateFAQsCategoryFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class CreatingFAQsCategory extends AdminState {}
+
+final class CreateFAQsCategorySuccess extends AdminState {
+  final FAQsCategoryModel faqsCategory;
+  const CreateFAQsCategorySuccess(
+    this.faqsCategory,
+  );
+
+  @override
+  List<Object> get props => [
+        faqsCategory,
+      ];
+}
+
+final class UpdateFAQsCategoryFailed extends AdminState {
+  final String message;
+  const UpdateFAQsCategoryFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class UpdatingFAQsCategory extends AdminState {}
+
+final class UpdateFAQsCategorySuccess extends AdminState {
+  final FAQsCategoryModel faqsCategory;
+  const UpdateFAQsCategorySuccess(
+    this.faqsCategory,
+  );
+
+  @override
+  List<Object> get props => [
+        faqsCategory,
+      ];
+}
+
+final class GetFAQsCategoryFailed extends AdminState {
+  final String message;
+  const GetFAQsCategoryFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class GettingFAQsCategory extends AdminState {}
+
+final class GetFAQsCategorySuccess extends AdminState {
+  final List<FAQsCategoryModel> faqsCategories;
+  const GetFAQsCategorySuccess(
+    this.faqsCategories,
+  );
+
+  @override
+  List<Object> get props => [
+        faqsCategories,
+      ];
+}
+
+final class DeletingFAQsCategoryFailed extends AdminState {
+  final String message;
+  const DeletingFAQsCategoryFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class DeletingFAQsCategory extends AdminState {
+  final String faqsCategoryId;
+  const DeletingFAQsCategory(
+    this.faqsCategoryId,
+  );
+
+  @override
+  List<Object> get props => [
+        faqsCategoryId,
+      ];
+}
+
+final class DeletingFAQsCategorySuccess extends AdminState {
+  final String faqsCategoryId;
+  const DeletingFAQsCategorySuccess(
+    this.faqsCategoryId,
+  );
+
+  @override
+  List<Object> get props => [
+        faqsCategoryId,
+      ];
+}
+
+final class CreateFAQsFailed extends AdminState {
+  final String message;
+  const CreateFAQsFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class CreatingFAQs extends AdminState {}
+
+final class CreateFAQsSuccess extends AdminState {
+  final FAQsModel faqs;
+  const CreateFAQsSuccess(
+    this.faqs,
+  );
+
+  @override
+  List<Object> get props => [
+        faqs,
+      ];
+}
+
+final class UpdateFAQsFailed extends AdminState {
+  final String message;
+  const UpdateFAQsFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class UpdatingFAQs extends AdminState {}
+
+final class UpdateFAQsSuccess extends AdminState {
+  final FAQsModel faqs;
+  const UpdateFAQsSuccess(
+    this.faqs,
+  );
+
+  @override
+  List<Object> get props => [
+        faqs,
+      ];
+}
+
+final class GetFAQsFailed extends AdminState {
+  final String message;
+  const GetFAQsFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class GettingFAQs extends AdminState {}
+
+final class GetFAQsSuccess extends AdminState {
+  final List<FAQsModel> faqss;
+  const GetFAQsSuccess(
+    this.faqss,
+  );
+
+  @override
+  List<Object> get props => [
+        faqss,
+      ];
+}
+
+final class DeletingFAQsFailed extends AdminState {
+  final String message;
+  const DeletingFAQsFailed(
+    this.message,
+  );
+
+  @override
+  List<Object> get props => [
+        message,
+      ];
+}
+
+final class DeletingFAQs extends AdminState {
+  final String faqsId;
+  const DeletingFAQs(
+    this.faqsId,
+  );
+
+  @override
+  List<Object> get props => [
+        faqsId,
+      ];
+}
+
+final class DeletingFAQsSuccess extends AdminState {
+  final String faqsId;
+  const DeletingFAQsSuccess(
+    this.faqsId,
+  );
+
+  @override
+  List<Object> get props => [
+        faqsId,
+      ];
+}

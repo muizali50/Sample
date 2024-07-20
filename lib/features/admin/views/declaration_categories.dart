@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mind_labify/features/admin/admin_bloc/admin_bloc.dart';
-import 'package:mind_labify/features/admin/views/add_blogs.dart';
+import 'package:mind_labify/features/admin/views/add_declaration_catagories.dart';
 import 'package:mind_labify/features/admin/views/sub_features/all_users/widgets/search_field.dart';
-import 'package:mind_labify/models/blog_model.dart';
+import 'package:mind_labify/models/declaration_category_model.dart';
 import 'package:mind_labify/utils/gaps.dart';
 
-class Blogs extends StatefulWidget {
-  const Blogs({super.key});
+class DeclarationCategory extends StatefulWidget {
+  const DeclarationCategory({super.key});
 
   @override
-  State<Blogs> createState() => _BlogsState();
+  State<DeclarationCategory> createState() => _DeclarationCategoryState();
 }
 
-class _BlogsState extends State<Blogs> {
+class _DeclarationCategoryState extends State<DeclarationCategory> {
   late final AdminBloc adminBloc;
+  List<DeclarationCategoryModel> filterDeclarationCategoryData = [];
   final TextEditingController searchController = TextEditingController();
-  List<BlogModel> filterBlogs = [];
   String _searchText = '';
 
   @override
   void initState() {
     adminBloc = context.read<AdminBloc>();
-    if (adminBloc.blogs.isEmpty) {
+    if (adminBloc.declarationCategories.isEmpty) {
       adminBloc.add(
-        GetBlog(),
+        GetDeclarationCategory(),
       );
     }
 
@@ -45,11 +45,11 @@ class _BlogsState extends State<Blogs> {
 
   void _filterUsers() {
     if (_searchText.isEmpty) {
-      filterBlogs = adminBloc.blogs;
+      filterDeclarationCategoryData = adminBloc.declarationCategories;
     } else {
-      filterBlogs = adminBloc.blogs
+      filterDeclarationCategoryData = adminBloc.declarationCategories
           .where(
-            (blog) => blog.title!.toLowerCase().contains(
+            (category) => category.name!.toLowerCase().contains(
                   _searchText.toLowerCase(),
                 ),
           )
@@ -95,7 +95,7 @@ class _BlogsState extends State<Blogs> {
                 Row(
                   children: [
                     const Text(
-                      'All Blogs',
+                      'All Declaration Categories',
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 25,
@@ -113,7 +113,8 @@ class _BlogsState extends State<Blogs> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const AddBlogs(),
+                            builder: (context) =>
+                                const AddDeclarationCategory(),
                           ),
                         );
                       },
@@ -131,7 +132,7 @@ class _BlogsState extends State<Blogs> {
                           ),
                         ),
                         child: const Text(
-                          '+ Add Blog',
+                          '+ Add Category',
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 14,
@@ -155,19 +156,19 @@ class _BlogsState extends State<Blogs> {
                 Gaps.hGap30,
                 BlocBuilder<AdminBloc, AdminState>(
                   builder: (context, state) {
-                    if (state is GettingBlog) {
+                    if (state is GettingDeclarationCategory) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
-                    } else if (state is GetBlogFailed) {
+                    } else if (state is GetDeclarationCategoryFailed) {
                       return Center(
                         child: Text(state.message),
                       );
                     }
-                    return adminBloc.blogs.isEmpty
+                    return adminBloc.declarationCategories.isEmpty
                         ? const Center(
                             child: Text(
-                              'No Blogs',
+                              'No Declaration Categories',
                             ),
                           )
                         : DataTable(
@@ -190,7 +191,7 @@ class _BlogsState extends State<Blogs> {
                             columns: const [
                               DataColumn(
                                 label: Text(
-                                  'Title',
+                                  'Name',
                                 ),
                               ),
                               DataColumn(
@@ -200,33 +201,24 @@ class _BlogsState extends State<Blogs> {
                               ),
                               DataColumn(
                                 label: Text(
-                                  'Category',
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
                                   'Actions',
                                 ),
                               ),
                             ],
-                            rows: filterBlogs.isNotEmpty
-                                ? filterBlogs
+                            rows: filterDeclarationCategoryData.isNotEmpty
+                                ? filterDeclarationCategoryData
                                     .map(
-                                      (blogs) => DataRow(
+                                      (declarationCategories) => DataRow(
                                         cells: [
                                           DataCell(
                                             Text(
-                                              blogs.title ?? '',
+                                              declarationCategories.name ?? '',
                                             ),
                                           ),
                                           DataCell(
                                             Text(
-                                              blogs.status ?? '',
-                                            ),
-                                          ),
-                                          DataCell(
-                                            Text(
-                                              blogs.blogCategory ?? '',
+                                              declarationCategories.status ??
+                                                  '',
                                             ),
                                           ),
                                           DataCell(
@@ -238,9 +230,9 @@ class _BlogsState extends State<Blogs> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            AddBlogs(
-                                                          blogs:
-                                                              blogs,
+                                                            AddDeclarationCategory(
+                                                          declarationCategory:
+                                                              declarationCategories,
                                                         ),
                                                       ),
                                                     );
@@ -267,10 +259,10 @@ class _BlogsState extends State<Blogs> {
                                                       builder: (context) {
                                                         return AlertDialog(
                                                           title: const Text(
-                                                            'Delete Blog',
+                                                            'Delete Declaration Category',
                                                           ),
                                                           content: const Text(
-                                                            'Are you sure you want to delete this blog?',
+                                                            'Are you sure you want to delete this declaration category?',
                                                           ),
                                                           actions: [
                                                             TextButton(
@@ -292,8 +284,9 @@ class _BlogsState extends State<Blogs> {
                                                             TextButton(
                                                               onPressed: () {
                                                                 adminBloc.add(
-                                                                  DeleteBlog(
-                                                                    blogs.blogId ??
+                                                                  DeleteDeclarationCategory(
+                                                                    declarationCategories
+                                                                            .declarationCategoryId ??
                                                                         '',
                                                                   ),
                                                                 );
@@ -338,23 +331,19 @@ class _BlogsState extends State<Blogs> {
                                       ),
                                     )
                                     .toList()
-                                : adminBloc.blogs
+                                : adminBloc.declarationCategories
                                     .map(
-                                      (blogs) => DataRow(
+                                      (declarationCategories) => DataRow(
                                         cells: [
                                           DataCell(
                                             Text(
-                                              blogs.title ?? '',
+                                              declarationCategories.name ?? '',
                                             ),
                                           ),
                                           DataCell(
                                             Text(
-                                              blogs.status ?? '',
-                                            ),
-                                          ),
-                                          DataCell(
-                                            Text(
-                                              blogs.blogCategory ?? '',
+                                              declarationCategories.status ??
+                                                  '',
                                             ),
                                           ),
                                           DataCell(
@@ -366,9 +355,9 @@ class _BlogsState extends State<Blogs> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            AddBlogs(
-                                                          blogs:
-                                                              blogs,
+                                                            AddDeclarationCategory(
+                                                          declarationCategory:
+                                                              declarationCategories,
                                                         ),
                                                       ),
                                                     );
@@ -395,10 +384,10 @@ class _BlogsState extends State<Blogs> {
                                                       builder: (context) {
                                                         return AlertDialog(
                                                           title: const Text(
-                                                            'Delete Blog',
+                                                            'Delete Declaration Category',
                                                           ),
                                                           content: const Text(
-                                                            'Are you sure you want to delete this blog?',
+                                                            'Are you sure you want to delete this declaration category?',
                                                           ),
                                                           actions: [
                                                             TextButton(
@@ -420,8 +409,9 @@ class _BlogsState extends State<Blogs> {
                                                             TextButton(
                                                               onPressed: () {
                                                                 adminBloc.add(
-                                                                  DeleteBlog(
-                                                                    blogs.blogId ??
+                                                                  DeleteDeclarationCategory(
+                                                                    declarationCategories
+                                                                            .declarationCategoryId ??
                                                                         '',
                                                                   ),
                                                                 );

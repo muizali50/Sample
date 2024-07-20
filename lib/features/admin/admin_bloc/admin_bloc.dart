@@ -10,7 +10,12 @@ import 'package:mind_labify/models/blog_category_model.dart';
 import 'package:mind_labify/models/blog_model.dart';
 import 'package:mind_labify/models/breathwork_model.dart';
 import 'package:mind_labify/models/breathwork_video.dart';
+import 'package:mind_labify/models/declaration_category_model.dart';
+import 'package:mind_labify/models/declaration_model.dart';
+import 'package:mind_labify/models/faqs_category_model.dart';
+import 'package:mind_labify/models/faqs_model.dart';
 import 'package:mind_labify/models/journal_category_model.dart';
+import 'package:mind_labify/models/journal_model.dart';
 import 'package:mind_labify/models/meditation_model.dart';
 import 'package:mind_labify/models/meditation_video.dart';
 import 'package:mind_labify/models/stressor_model.dart';
@@ -34,6 +39,16 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
   List<BlogModel> activeBlogs = [];
   List<JournalCategoryModel> journalCategories = [];
   List<JournalCategoryModel> activeJournalCategories = [];
+  List<JournalModel> journals = [];
+  List<JournalModel> activeJournals = [];
+  List<DeclarationCategoryModel> declarationCategories = [];
+  List<DeclarationCategoryModel> activeDeclarationCategories = [];
+  List<DeclarationModel> declarations = [];
+  List<DeclarationModel> activeDeclaration = [];
+  List<FAQsCategoryModel> faqsCategories = [];
+  List<FAQsCategoryModel> activefaqsCategories = [];
+  List<FAQsModel> faqss = [];
+  List<FAQsModel> activefaqs = [];
   AdminBloc() : super(AdminInitial()) {
     on<CreateStressor>(
       (
@@ -1589,7 +1604,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
         }
       },
     );
-     on<CreateJournalCategory>(
+    on<CreateJournalCategory>(
       (
         event,
         emit,
@@ -1606,7 +1621,8 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           );
           final iconUrl = await ref.getDownloadURL();
           event.journalCategory.icon = iconUrl;
-          final journalCategoryCollection = FirebaseFirestore.instance.collection(
+          final journalCategoryCollection =
+              FirebaseFirestore.instance.collection(
             'journal_category',
           );
           final result = await journalCategoryCollection.add(
@@ -1646,7 +1662,8 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       ) async {
         GettingJournalCategory();
         try {
-          final journalCategoryCollection = FirebaseFirestore.instance.collection(
+          final journalCategoryCollection =
+              FirebaseFirestore.instance.collection(
             'journal_category',
           );
           final result = await journalCategoryCollection.get();
@@ -1706,7 +1723,8 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
             final iconUrl = await ref.getDownloadURL();
             event.journalCategory.icon = iconUrl;
           }
-          final journalCategoryCollection = FirebaseFirestore.instance.collection(
+          final journalCategoryCollection =
+              FirebaseFirestore.instance.collection(
             'journal_category',
           );
           await journalCategoryCollection
@@ -1718,7 +1736,8 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
               );
           final index = journalCategories.indexWhere(
             (element) =>
-                element.journalCategoryId == event.journalCategory.journalCategoryId,
+                element.journalCategoryId ==
+                event.journalCategory.journalCategoryId,
           );
           journalCategories[index] = event.journalCategory;
           emit(
@@ -1755,7 +1774,8 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           ),
         );
         try {
-          final journalCategoryCollection = FirebaseFirestore.instance.collection(
+          final journalCategoryCollection =
+              FirebaseFirestore.instance.collection(
             'journal_category',
           );
           await journalCategoryCollection.doc(event.journalCategoryId).delete();
@@ -1779,6 +1799,956 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           );
           emit(
             DeletingJournalCategoryFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<CreateJournal>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          CreatingJournal(),
+        );
+        try {
+          final journalCollection = FirebaseFirestore.instance.collection(
+            'journal',
+          );
+          final result = await journalCollection.add(
+            event.journal.toMap(),
+          );
+          event.journal.journalld = result.id;
+          journals.add(
+            event.journal,
+          );
+          emit(
+            CreateJournalSuccess(
+              event.journal,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            CreateJournalFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            CreateJournalFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<GetJournal>(
+      (
+        event,
+        emit,
+      ) async {
+        GettingJournal();
+        try {
+          final journalCollection = FirebaseFirestore.instance.collection(
+            'journal',
+          );
+          final result = await journalCollection.get();
+          journals = result.docs.map(
+            (e) {
+              final journal = JournalModel.fromMap(
+                e.data(),
+              );
+              journal.journalld = e.id;
+              return journal;
+            },
+          ).toList();
+          activeJournals = journals
+              .where(
+                (element) => element.status == 'Active',
+              )
+              .toList();
+          emit(
+            GetJournalSuccess(
+              journals,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            GetJournalFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            GetJournalFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<UpdateJournal>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          UpdatingJournal(),
+        );
+        try {
+          final journalCollection = FirebaseFirestore.instance.collection(
+            'journal',
+          );
+          await journalCollection
+              .doc(
+                event.journal.journalld,
+              )
+              .update(
+                event.journal.toMap(),
+              );
+          final index = journals.indexWhere(
+            (element) => element.journalld == event.journal.journalld,
+          );
+          journals[index] = event.journal;
+          emit(
+            UpdateJournalSuccess(
+              event.journal,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            UpdateJournalFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            UpdateJournalFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<DeleteJournal>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          DeletingJournal(
+            event.journalId,
+          ),
+        );
+        try {
+          final journalCollection = FirebaseFirestore.instance.collection(
+            'journal',
+          );
+          await journalCollection.doc(event.journalId).delete();
+          journals.removeWhere(
+            (element) => element.journalld == event.journalId,
+          );
+          emit(
+            DeletingJournalSuccess(
+              event.journalId,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            DeletingJournalFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            DeletingJournalFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<CreateDeclarationCategory>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          CreatingDeclarationCategory(),
+        );
+        try {
+          final ref = FirebaseStorage.instance.ref().child(
+                'declaration_category_icons/${event.iconFile.path.split('/').last}',
+              );
+          await ref.putData(
+            await event.iconFile.readAsBytes(),
+          );
+          final iconUrl = await ref.getDownloadURL();
+          event.declarationCategory.icon = iconUrl;
+          final declarationCategoryCollection =
+              FirebaseFirestore.instance.collection(
+            'declaration_category',
+          );
+          final result = await declarationCategoryCollection.add(
+            event.declarationCategory.toMap(),
+          );
+          event.declarationCategory.declarationCategoryId = result.id;
+          declarationCategories.add(
+            event.declarationCategory,
+          );
+          emit(
+            CreateDeclarationCategorySuccess(
+              event.declarationCategory,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            CreateDeclarationCategoryFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            CreateDeclarationCategoryFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<GetDeclarationCategory>(
+      (
+        event,
+        emit,
+      ) async {
+        GettingDeclarationCategory();
+        try {
+          final declarationCategoryCollection =
+              FirebaseFirestore.instance.collection(
+            'declaration_category',
+          );
+          final result = await declarationCategoryCollection.get();
+          declarationCategories = result.docs.map(
+            (e) {
+              final declarationCategory = DeclarationCategoryModel.fromMap(
+                e.data(),
+              );
+              declarationCategory.declarationCategoryId = e.id;
+              return declarationCategory;
+            },
+          ).toList();
+          activeDeclarationCategories = declarationCategories
+              .where(
+                (element) => element.status == 'Active',
+              )
+              .toList();
+          emit(
+            GetDeclarationCategorySuccess(
+              declarationCategories,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            GetDeclarationCategoryFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            GetDeclarationCategoryFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<UpdateDeclarationCategory>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          UpdatingDeclarationCategory(),
+        );
+        try {
+          if (event.iconFile != null) {
+            final ref = FirebaseStorage.instance.ref().child(
+                  'declaration_category_icons/${event.iconFile!.path.split('/').last}',
+                );
+            await ref.putData(
+              await event.iconFile!.readAsBytes(),
+            );
+            final iconUrl = await ref.getDownloadURL();
+            event.declarationCategory.icon = iconUrl;
+          }
+          final declarationCategoryCollection =
+              FirebaseFirestore.instance.collection(
+            'declaration_category',
+          );
+          await declarationCategoryCollection
+              .doc(
+                event.declarationCategory.declarationCategoryId,
+              )
+              .update(
+                event.declarationCategory.toMap(),
+              );
+          final index = declarationCategories.indexWhere(
+            (element) =>
+                element.declarationCategoryId ==
+                event.declarationCategory.declarationCategoryId,
+          );
+          declarationCategories[index] = event.declarationCategory;
+          emit(
+            UpdateDeclarationCategorySuccess(
+              event.declarationCategory,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            UpdateDeclarationCategoryFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            UpdateDeclarationCategoryFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<DeleteDeclarationCategory>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          DeletingDeclarationCategory(
+            event.declarationCategoryId,
+          ),
+        );
+        try {
+          final declarationCategoryCollection =
+              FirebaseFirestore.instance.collection(
+            'declaration_category',
+          );
+          await declarationCategoryCollection
+              .doc(event.declarationCategoryId)
+              .delete();
+          declarationCategories.removeWhere(
+            (element) =>
+                element.declarationCategoryId == event.declarationCategoryId,
+          );
+          emit(
+            DeletingDeclarationCategorySuccess(
+              event.declarationCategoryId,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            DeletingDeclarationCategoryFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            DeletingDeclarationCategoryFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<CreateDeclaration>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          CreatingDeclaration(),
+        );
+        try {
+          final ref = FirebaseStorage.instance.ref().child(
+                'declaration_icons/${event.iconFile.path.split('/').last}',
+              );
+          await ref.putData(
+            await event.iconFile.readAsBytes(),
+          );
+          final iconUrl = await ref.getDownloadURL();
+          event.declaration.image = iconUrl;
+          final declarationCollection = FirebaseFirestore.instance.collection(
+            'declaration',
+          );
+          final result = await declarationCollection.add(
+            event.declaration.toMap(),
+          );
+          event.declaration.declarationId = result.id;
+          declarations.add(
+            event.declaration,
+          );
+          emit(
+            CreateDeclarationSuccess(
+              event.declaration,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            CreateDeclarationFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            CreateDeclarationFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<GetDeclaration>(
+      (
+        event,
+        emit,
+      ) async {
+        GettingDeclaration();
+        try {
+          final declarationCollection = FirebaseFirestore.instance.collection(
+            'declaration',
+          );
+          final result = await declarationCollection.get();
+          declarations = result.docs.map(
+            (e) {
+              final declaration = DeclarationModel.fromMap(
+                e.data(),
+              );
+              declaration.declarationId = e.id;
+              return declaration;
+            },
+          ).toList();
+          activeDeclaration = declarations
+              .where(
+                (element) => element.status == 'Active',
+              )
+              .toList();
+          emit(
+            GetDeclarationSuccess(
+              declarations,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            GetDeclarationFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            GetDeclarationFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<UpdateDeclaration>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          UpdatingDeclaration(),
+        );
+        try {
+          if (event.iconFile != null) {
+            final ref = FirebaseStorage.instance.ref().child(
+                  'declaration_icons/${event.iconFile!.path.split('/').last}',
+                );
+            await ref.putData(
+              await event.iconFile!.readAsBytes(),
+            );
+            final iconUrl = await ref.getDownloadURL();
+            event.declaration.image = iconUrl;
+          }
+          final declarationCollection = FirebaseFirestore.instance.collection(
+            'declaration',
+          );
+          await declarationCollection
+              .doc(
+                event.declaration.declarationId,
+              )
+              .update(
+                event.declaration.toMap(),
+              );
+          final index = declarations.indexWhere(
+            (element) =>
+                element.declarationId == event.declaration.declarationId,
+          );
+          declarations[index] = event.declaration;
+          emit(
+            UpdateDeclarationSuccess(
+              event.declaration,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            UpdateDeclarationFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            UpdateDeclarationFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<DeleteDeclaration>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          DeletingDeclaration(
+            event.declarationId,
+          ),
+        );
+        try {
+          final declarationCollection = FirebaseFirestore.instance.collection(
+            'declaration',
+          );
+          await declarationCollection.doc(event.declarationId).delete();
+          declarations.removeWhere(
+            (element) => element.declarationId == event.declarationId,
+          );
+          emit(
+            DeletingDeclarationSuccess(
+              event.declarationId,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            DeletingDeclarationFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            DeletingDeclarationFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<CreateFAQsCategory>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          CreatingFAQsCategory(),
+        );
+        try {
+          final ref = FirebaseStorage.instance.ref().child(
+                'faqs_category_icons/${event.iconFile.path.split('/').last}',
+              );
+          await ref.putData(
+            await event.iconFile.readAsBytes(),
+          );
+          final iconUrl = await ref.getDownloadURL();
+          event.faqsCategory.icon = iconUrl;
+          final faqsCategoryCollection = FirebaseFirestore.instance.collection(
+            'faqs_category',
+          );
+          final result = await faqsCategoryCollection.add(
+            event.faqsCategory.toMap(),
+          );
+          event.faqsCategory.faqsCategoryId = result.id;
+          faqsCategories.add(
+            event.faqsCategory,
+          );
+          emit(
+            CreateFAQsCategorySuccess(
+              event.faqsCategory,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            CreateFAQsCategoryFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            CreateFAQsCategoryFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<GetFAQsCategory>(
+      (
+        event,
+        emit,
+      ) async {
+        GettingFAQsCategory();
+        try {
+          final faqsCategoryCollection = FirebaseFirestore.instance.collection(
+            'faqs_category',
+          );
+          final result = await faqsCategoryCollection.get();
+          faqsCategories = result.docs.map(
+            (e) {
+              final faqsCategory = FAQsCategoryModel.fromMap(
+                e.data(),
+              );
+              faqsCategory.faqsCategoryId = e.id;
+              return faqsCategory;
+            },
+          ).toList();
+          activefaqsCategories = faqsCategories
+              .where(
+                (element) => element.status == 'Active',
+              )
+              .toList();
+          emit(
+            GetFAQsCategorySuccess(
+              faqsCategories,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            GetFAQsCategoryFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            GetFAQsCategoryFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<UpdateFAQsCategory>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          UpdatingFAQsCategory(),
+        );
+        try {
+          if (event.iconFile != null) {
+            final ref = FirebaseStorage.instance.ref().child(
+                  'faqs_category_icons/${event.iconFile!.path.split('/').last}',
+                );
+            await ref.putData(
+              await event.iconFile!.readAsBytes(),
+            );
+            final iconUrl = await ref.getDownloadURL();
+            event.faqsCategory.icon = iconUrl;
+          }
+          final faqsCategoryCollection = FirebaseFirestore.instance.collection(
+            'faqs_category',
+          );
+          await faqsCategoryCollection
+              .doc(
+                event.faqsCategory.faqsCategoryId,
+              )
+              .update(
+                event.faqsCategory.toMap(),
+              );
+          final index = faqsCategories.indexWhere(
+            (element) =>
+                element.faqsCategoryId == event.faqsCategory.faqsCategoryId,
+          );
+          faqsCategories[index] = event.faqsCategory;
+          emit(
+            UpdateFAQsCategorySuccess(
+              event.faqsCategory,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            UpdateFAQsCategoryFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            UpdateFAQsCategoryFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<DeleteFAQsCategory>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          DeletingFAQsCategory(
+            event.faqsCategoryId,
+          ),
+        );
+        try {
+          final faqsCategoryCollection = FirebaseFirestore.instance.collection(
+            'faqs_category',
+          );
+          await faqsCategoryCollection.doc(event.faqsCategoryId).delete();
+          faqsCategories.removeWhere(
+            (element) => element.faqsCategoryId == event.faqsCategoryId,
+          );
+          emit(
+            DeletingFAQsCategorySuccess(
+              event.faqsCategoryId,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            DeletingFAQsCategoryFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            DeletingFAQsCategoryFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<CreateFAQs>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          CreatingFAQs(),
+        );
+        try {
+          final faqsCollection = FirebaseFirestore.instance.collection(
+            'faqs',
+          );
+          final result = await faqsCollection.add(
+            event.faqs.toMap(),
+          );
+          event.faqs.faqsid = result.id;
+          faqss.add(
+            event.faqs,
+          );
+          emit(
+            CreateFAQsSuccess(
+              event.faqs,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            CreateFAQsFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            CreateFAQsFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<GetFAQs>(
+      (
+        event,
+        emit,
+      ) async {
+        GettingFAQs();
+        try {
+          final faqsCollection = FirebaseFirestore.instance.collection(
+            'faqs',
+          );
+          final result = await faqsCollection.get();
+          faqss = result.docs.map(
+            (e) {
+              final faqs = FAQsModel.fromMap(
+                e.data(),
+              );
+              faqs.faqsid = e.id;
+              return faqs;
+            },
+          ).toList();
+          activefaqs = faqss
+              .where(
+                (element) => element.status == 'Active',
+              )
+              .toList();
+          emit(
+            GetFAQsSuccess(
+              faqss,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            GetFAQsFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            GetFAQsFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<UpdateFAQs>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          UpdatingFAQs(),
+        );
+        try {
+          final faqsCollection = FirebaseFirestore.instance.collection(
+            'faqs',
+          );
+          await faqsCollection
+              .doc(
+                event.faqs.faqsid,
+              )
+              .update(
+                event.faqs.toMap(),
+              );
+          final index = faqss.indexWhere(
+            (element) => element.faqsid == event.faqs.faqsid,
+          );
+          faqss[index] = event.faqs;
+          emit(
+            UpdateFAQsSuccess(
+              event.faqs,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            UpdateFAQsFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            UpdateFAQsFailed(
+              e.toString(),
+            ),
+          );
+        }
+      },
+    );
+    on<DeleteFAQs>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          DeletingFAQs(
+            event.faqsId,
+          ),
+        );
+        try {
+          final faqsCollection = FirebaseFirestore.instance.collection(
+            'faqs',
+          );
+          await faqsCollection.doc(event.faqsId).delete();
+          faqss.removeWhere(
+            (element) => element.faqsid == event.faqsId,
+          );
+          emit(
+            DeletingFAQsSuccess(
+              event.faqsId,
+            ),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            DeletingFAQsFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            DeletingFAQsFailed(
               e.toString(),
             ),
           );

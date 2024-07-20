@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mind_labify/features/admin/admin_bloc/admin_bloc.dart';
-import 'package:mind_labify/features/admin/views/add_blogs.dart';
+import 'package:mind_labify/features/admin/views/add_faqs_catagory.dart';
 import 'package:mind_labify/features/admin/views/sub_features/all_users/widgets/search_field.dart';
-import 'package:mind_labify/models/blog_model.dart';
+import 'package:mind_labify/models/faqs_category_model.dart';
 import 'package:mind_labify/utils/gaps.dart';
 
-class Blogs extends StatefulWidget {
-  const Blogs({super.key});
+class FAQsCategory extends StatefulWidget {
+  const FAQsCategory({super.key});
 
   @override
-  State<Blogs> createState() => _BlogsState();
+  State<FAQsCategory> createState() => _FAQsCategoryState();
 }
 
-class _BlogsState extends State<Blogs> {
+class _FAQsCategoryState extends State<FAQsCategory> {
   late final AdminBloc adminBloc;
+  List<FAQsCategoryModel> filterFAQsCategoryData = [];
   final TextEditingController searchController = TextEditingController();
-  List<BlogModel> filterBlogs = [];
   String _searchText = '';
 
   @override
   void initState() {
     adminBloc = context.read<AdminBloc>();
-    if (adminBloc.blogs.isEmpty) {
+    if (adminBloc.faqsCategories.isEmpty) {
       adminBloc.add(
-        GetBlog(),
+        GetFAQsCategory(),
       );
     }
 
@@ -45,11 +45,11 @@ class _BlogsState extends State<Blogs> {
 
   void _filterUsers() {
     if (_searchText.isEmpty) {
-      filterBlogs = adminBloc.blogs;
+      filterFAQsCategoryData = adminBloc.faqsCategories;
     } else {
-      filterBlogs = adminBloc.blogs
+      filterFAQsCategoryData = adminBloc.faqsCategories
           .where(
-            (blog) => blog.title!.toLowerCase().contains(
+            (category) => category.name!.toLowerCase().contains(
                   _searchText.toLowerCase(),
                 ),
           )
@@ -95,7 +95,7 @@ class _BlogsState extends State<Blogs> {
                 Row(
                   children: [
                     const Text(
-                      'All Blogs',
+                      'All FAQs Categories',
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 25,
@@ -113,7 +113,8 @@ class _BlogsState extends State<Blogs> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const AddBlogs(),
+                            builder: (context) =>
+                                const AddFAQsCategory(),
                           ),
                         );
                       },
@@ -131,7 +132,7 @@ class _BlogsState extends State<Blogs> {
                           ),
                         ),
                         child: const Text(
-                          '+ Add Blog',
+                          '+ Add Category',
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 14,
@@ -155,19 +156,19 @@ class _BlogsState extends State<Blogs> {
                 Gaps.hGap30,
                 BlocBuilder<AdminBloc, AdminState>(
                   builder: (context, state) {
-                    if (state is GettingBlog) {
+                    if (state is GettingFAQsCategory) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
-                    } else if (state is GetBlogFailed) {
+                    } else if (state is GetFAQsCategoryFailed) {
                       return Center(
                         child: Text(state.message),
                       );
                     }
-                    return adminBloc.blogs.isEmpty
+                    return adminBloc.faqsCategories.isEmpty
                         ? const Center(
                             child: Text(
-                              'No Blogs',
+                              'No FAQs Categories',
                             ),
                           )
                         : DataTable(
@@ -190,7 +191,7 @@ class _BlogsState extends State<Blogs> {
                             columns: const [
                               DataColumn(
                                 label: Text(
-                                  'Title',
+                                  'Name',
                                 ),
                               ),
                               DataColumn(
@@ -200,33 +201,23 @@ class _BlogsState extends State<Blogs> {
                               ),
                               DataColumn(
                                 label: Text(
-                                  'Category',
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
                                   'Actions',
                                 ),
                               ),
                             ],
-                            rows: filterBlogs.isNotEmpty
-                                ? filterBlogs
+                            rows: filterFAQsCategoryData.isNotEmpty
+                                ? filterFAQsCategoryData
                                     .map(
-                                      (blogs) => DataRow(
+                                      (faqsCategories) => DataRow(
                                         cells: [
                                           DataCell(
                                             Text(
-                                              blogs.title ?? '',
+                                              faqsCategories.name ?? '',
                                             ),
                                           ),
                                           DataCell(
                                             Text(
-                                              blogs.status ?? '',
-                                            ),
-                                          ),
-                                          DataCell(
-                                            Text(
-                                              blogs.blogCategory ?? '',
+                                              faqsCategories.status ?? '',
                                             ),
                                           ),
                                           DataCell(
@@ -238,9 +229,9 @@ class _BlogsState extends State<Blogs> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            AddBlogs(
-                                                          blogs:
-                                                              blogs,
+                                                            AddFAQsCategory(
+                                                          faqsCategory:
+                                                              faqsCategories,
                                                         ),
                                                       ),
                                                     );
@@ -267,10 +258,10 @@ class _BlogsState extends State<Blogs> {
                                                       builder: (context) {
                                                         return AlertDialog(
                                                           title: const Text(
-                                                            'Delete Blog',
+                                                            'Delete FAQs Category',
                                                           ),
                                                           content: const Text(
-                                                            'Are you sure you want to delete this blog?',
+                                                            'Are you sure you want to delete this faqs category?',
                                                           ),
                                                           actions: [
                                                             TextButton(
@@ -292,8 +283,9 @@ class _BlogsState extends State<Blogs> {
                                                             TextButton(
                                                               onPressed: () {
                                                                 adminBloc.add(
-                                                                  DeleteBlog(
-                                                                    blogs.blogId ??
+                                                                  DeleteFAQsCategory(
+                                                                    faqsCategories
+                                                                            .faqsCategoryId ??
                                                                         '',
                                                                   ),
                                                                 );
@@ -338,23 +330,18 @@ class _BlogsState extends State<Blogs> {
                                       ),
                                     )
                                     .toList()
-                                : adminBloc.blogs
+                                : adminBloc.faqsCategories
                                     .map(
-                                      (blogs) => DataRow(
+                                      (faqsCategories) => DataRow(
                                         cells: [
                                           DataCell(
                                             Text(
-                                              blogs.title ?? '',
+                                              faqsCategories.name ?? '',
                                             ),
                                           ),
                                           DataCell(
                                             Text(
-                                              blogs.status ?? '',
-                                            ),
-                                          ),
-                                          DataCell(
-                                            Text(
-                                              blogs.blogCategory ?? '',
+                                              faqsCategories.status ?? '',
                                             ),
                                           ),
                                           DataCell(
@@ -366,9 +353,9 @@ class _BlogsState extends State<Blogs> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            AddBlogs(
-                                                          blogs:
-                                                              blogs,
+                                                            AddFAQsCategory(
+                                                          faqsCategory:
+                                                              faqsCategories,
                                                         ),
                                                       ),
                                                     );
@@ -395,10 +382,10 @@ class _BlogsState extends State<Blogs> {
                                                       builder: (context) {
                                                         return AlertDialog(
                                                           title: const Text(
-                                                            'Delete Blog',
+                                                            'Delete FAQs Category',
                                                           ),
                                                           content: const Text(
-                                                            'Are you sure you want to delete this blog?',
+                                                            'Are you sure you want to delete this faqs category?',
                                                           ),
                                                           actions: [
                                                             TextButton(
@@ -420,8 +407,9 @@ class _BlogsState extends State<Blogs> {
                                                             TextButton(
                                                               onPressed: () {
                                                                 adminBloc.add(
-                                                                  DeleteBlog(
-                                                                    blogs.blogId ??
+                                                                  DeleteFAQsCategory(
+                                                                    faqsCategories
+                                                                            .faqsCategoryId ??
                                                                         '',
                                                                   ),
                                                                 );

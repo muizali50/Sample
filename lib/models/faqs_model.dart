@@ -1,12 +1,12 @@
 class FAQsModel {
-  String? faqsld;
+  String? faqsid;
   String? title;
   String? faqsCategory;
   String? description;
   String? status;
 
   FAQsModel({
-    this.faqsld,
+    this.faqsid,
     this.title,
     this.faqsCategory,
     this.description,
@@ -15,7 +15,7 @@ class FAQsModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'faqsld': faqsld,
+      'faqsid': faqsid,
       'title': title,
       'faqsCategory': faqsCategory,
       'description': description,
@@ -25,7 +25,7 @@ class FAQsModel {
 
   factory FAQsModel.fromMap(Map<String, dynamic> map) {
     return FAQsModel(
-      faqsld: map['faqsld'],
+      faqsid: map['faqsid'],
       title: map['title'],
       faqsCategory: map['faqsCategory'],
       description: map['description'],

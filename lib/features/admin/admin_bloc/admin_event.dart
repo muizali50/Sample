@@ -374,3 +374,203 @@ final class DeleteJournalCategory extends AdminEvent {
         journalCategoryId,
       ];
 }
+
+class CreateJournal extends AdminEvent {
+  final JournalModel journal;
+  const CreateJournal(
+    this.journal,
+  );
+
+  @override
+  List<Object> get props => [
+        journal,
+      ];
+}
+
+final class UpdateJournal extends AdminEvent {
+  final JournalModel journal;
+  const UpdateJournal(
+    this.journal,
+  );
+
+  @override
+  List<Object> get props => [
+        journal,
+      ];
+}
+
+final class GetJournal extends AdminEvent {}
+
+final class DeleteJournal extends AdminEvent {
+  final String journalId;
+  const DeleteJournal(
+    this.journalId,
+  );
+  @override
+  List<Object> get props => [
+        journalId,
+      ];
+}
+
+class CreateDeclarationCategory extends AdminEvent {
+  final DeclarationCategoryModel declarationCategory;
+  final XFile iconFile;
+  const CreateDeclarationCategory(
+    this.declarationCategory,
+    this.iconFile,
+  );
+
+  @override
+  List<Object> get props => [
+        declarationCategory,
+        iconFile,
+      ];
+}
+
+final class UpdateDeclarationCategory extends AdminEvent {
+  final DeclarationCategoryModel declarationCategory;
+  final XFile? iconFile;
+  const UpdateDeclarationCategory(
+    this.declarationCategory,
+    this.iconFile,
+  );
+
+  @override
+  List<Object> get props => [
+        declarationCategory,
+      ];
+}
+
+final class GetDeclarationCategory extends AdminEvent {}
+
+final class DeleteDeclarationCategory extends AdminEvent {
+  final String declarationCategoryId;
+  const DeleteDeclarationCategory(
+    this.declarationCategoryId,
+  );
+  @override
+  List<Object> get props => [
+        declarationCategoryId,
+      ];
+}
+
+class CreateDeclaration extends AdminEvent {
+  final DeclarationModel declaration;
+  final XFile iconFile;
+  const CreateDeclaration(
+    this.declaration,
+    this.iconFile,
+  );
+
+  @override
+  List<Object> get props => [
+        declaration,
+        iconFile,
+      ];
+}
+
+final class UpdateDeclaration extends AdminEvent {
+  final DeclarationModel declaration;
+  final XFile? iconFile;
+  const UpdateDeclaration(
+    this.declaration,
+    this.iconFile,
+  );
+
+  @override
+  List<Object> get props => [
+        declaration,
+      ];
+}
+
+final class GetDeclaration extends AdminEvent {}
+
+final class DeleteDeclaration extends AdminEvent {
+  final String declarationId;
+  const DeleteDeclaration(
+    this.declarationId,
+  );
+  @override
+  List<Object> get props => [
+        declarationId,
+      ];
+}
+
+class CreateFAQsCategory extends AdminEvent {
+  final FAQsCategoryModel faqsCategory;
+  final XFile iconFile;
+  const CreateFAQsCategory(
+    this.faqsCategory,
+    this.iconFile,
+  );
+
+  @override
+  List<Object> get props => [
+        faqsCategory,
+        iconFile,
+      ];
+}
+
+final class UpdateFAQsCategory extends AdminEvent {
+  final FAQsCategoryModel faqsCategory;
+  final XFile? iconFile;
+  const UpdateFAQsCategory(
+    this.faqsCategory,
+    this.iconFile,
+  );
+
+  @override
+  List<Object> get props => [
+        faqsCategory,
+      ];
+}
+
+final class GetFAQsCategory extends AdminEvent {}
+
+final class DeleteFAQsCategory extends AdminEvent {
+  final String faqsCategoryId;
+  const DeleteFAQsCategory(
+    this.faqsCategoryId,
+  );
+  @override
+  List<Object> get props => [
+        faqsCategoryId,
+      ];
+}
+
+class CreateFAQs extends AdminEvent {
+  final FAQsModel faqs;
+  const CreateFAQs(
+    this.faqs,
+  );
+
+  @override
+  List<Object> get props => [
+        faqs,
+      ];
+}
+
+final class UpdateFAQs extends AdminEvent {
+  final FAQsModel faqs;
+  const UpdateFAQs(
+    this.faqs,
+  );
+
+  @override
+  List<Object> get props => [
+        faqs,
+      ];
+}
+
+final class GetFAQs extends AdminEvent {}
+
+final class DeleteFAQs extends AdminEvent {
+  final String faqsId;
+  const DeleteFAQs(
+    this.faqsId,
+  );
+  @override
+  List<Object> get props => [
+        faqsId,
+      ];
+}

@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mind_labify/features/admin/admin_bloc/admin_bloc.dart';
-import 'package:mind_labify/features/admin/views/add_blogs.dart';
+import 'package:mind_labify/features/admin/views/add_faqs.dart';
 import 'package:mind_labify/features/admin/views/sub_features/all_users/widgets/search_field.dart';
-import 'package:mind_labify/models/blog_model.dart';
+import 'package:mind_labify/models/faqs_model.dart';
 import 'package:mind_labify/utils/gaps.dart';
 
-class Blogs extends StatefulWidget {
-  const Blogs({super.key});
+class FAQs extends StatefulWidget {
+  const FAQs({super.key});
 
   @override
-  State<Blogs> createState() => _BlogsState();
+  State<FAQs> createState() => _FAQsState();
 }
 
-class _BlogsState extends State<Blogs> {
+class _FAQsState extends State<FAQs> {
   late final AdminBloc adminBloc;
   final TextEditingController searchController = TextEditingController();
-  List<BlogModel> filterBlogs = [];
+  List<FAQsModel> filterFAQs = [];
   String _searchText = '';
 
   @override
   void initState() {
     adminBloc = context.read<AdminBloc>();
-    if (adminBloc.blogs.isEmpty) {
+    if (adminBloc.faqss.isEmpty) {
       adminBloc.add(
-        GetBlog(),
+        GetFAQs(),
       );
     }
 
@@ -45,11 +45,11 @@ class _BlogsState extends State<Blogs> {
 
   void _filterUsers() {
     if (_searchText.isEmpty) {
-      filterBlogs = adminBloc.blogs;
+      filterFAQs = adminBloc.faqss;
     } else {
-      filterBlogs = adminBloc.blogs
+      filterFAQs = adminBloc.faqss
           .where(
-            (blog) => blog.title!.toLowerCase().contains(
+            (faqs) => faqs.title!.toLowerCase().contains(
                   _searchText.toLowerCase(),
                 ),
           )
@@ -95,7 +95,7 @@ class _BlogsState extends State<Blogs> {
                 Row(
                   children: [
                     const Text(
-                      'All Blogs',
+                      'All FAQs',
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 25,
@@ -113,7 +113,7 @@ class _BlogsState extends State<Blogs> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const AddBlogs(),
+                            builder: (context) => const AddFAQs(),
                           ),
                         );
                       },
@@ -131,7 +131,7 @@ class _BlogsState extends State<Blogs> {
                           ),
                         ),
                         child: const Text(
-                          '+ Add Blog',
+                          '+ Add FAQs',
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 14,
@@ -155,19 +155,19 @@ class _BlogsState extends State<Blogs> {
                 Gaps.hGap30,
                 BlocBuilder<AdminBloc, AdminState>(
                   builder: (context, state) {
-                    if (state is GettingBlog) {
+                    if (state is GettingFAQs) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
-                    } else if (state is GetBlogFailed) {
+                    } else if (state is GetFAQsFailed) {
                       return Center(
                         child: Text(state.message),
                       );
                     }
-                    return adminBloc.blogs.isEmpty
+                    return adminBloc.faqss.isEmpty
                         ? const Center(
                             child: Text(
-                              'No Blogs',
+                              'No FAQs',
                             ),
                           )
                         : DataTable(
@@ -209,24 +209,24 @@ class _BlogsState extends State<Blogs> {
                                 ),
                               ),
                             ],
-                            rows: filterBlogs.isNotEmpty
-                                ? filterBlogs
+                            rows: filterFAQs.isNotEmpty
+                                ? filterFAQs
                                     .map(
-                                      (blogs) => DataRow(
+                                      (faqs) => DataRow(
                                         cells: [
                                           DataCell(
                                             Text(
-                                              blogs.title ?? '',
+                                              faqs.title ?? '',
                                             ),
                                           ),
                                           DataCell(
                                             Text(
-                                              blogs.status ?? '',
+                                              faqs.status ?? '',
                                             ),
                                           ),
                                           DataCell(
                                             Text(
-                                              blogs.blogCategory ?? '',
+                                              faqs.faqsCategory ?? '',
                                             ),
                                           ),
                                           DataCell(
@@ -238,9 +238,8 @@ class _BlogsState extends State<Blogs> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            AddBlogs(
-                                                          blogs:
-                                                              blogs,
+                                                            AddFAQs(
+                                                          faqs: faqs,
                                                         ),
                                                       ),
                                                     );
@@ -267,10 +266,10 @@ class _BlogsState extends State<Blogs> {
                                                       builder: (context) {
                                                         return AlertDialog(
                                                           title: const Text(
-                                                            'Delete Blog',
+                                                            'Delete FAQs',
                                                           ),
                                                           content: const Text(
-                                                            'Are you sure you want to delete this blog?',
+                                                            'Are you sure you want to delete this faqs?',
                                                           ),
                                                           actions: [
                                                             TextButton(
@@ -292,8 +291,8 @@ class _BlogsState extends State<Blogs> {
                                                             TextButton(
                                                               onPressed: () {
                                                                 adminBloc.add(
-                                                                  DeleteBlog(
-                                                                    blogs.blogId ??
+                                                                  DeleteFAQs(
+                                                                    faqs.faqsid ??
                                                                         '',
                                                                   ),
                                                                 );
@@ -338,23 +337,23 @@ class _BlogsState extends State<Blogs> {
                                       ),
                                     )
                                     .toList()
-                                : adminBloc.blogs
+                                : adminBloc.faqss
                                     .map(
-                                      (blogs) => DataRow(
+                                      (faqs) => DataRow(
                                         cells: [
                                           DataCell(
                                             Text(
-                                              blogs.title ?? '',
+                                              faqs.title ?? '',
                                             ),
                                           ),
                                           DataCell(
                                             Text(
-                                              blogs.status ?? '',
+                                              faqs.status ?? '',
                                             ),
                                           ),
                                           DataCell(
                                             Text(
-                                              blogs.blogCategory ?? '',
+                                              faqs.faqsCategory ?? '',
                                             ),
                                           ),
                                           DataCell(
@@ -366,9 +365,8 @@ class _BlogsState extends State<Blogs> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            AddBlogs(
-                                                          blogs:
-                                                              blogs,
+                                                            AddFAQs(
+                                                          faqs: faqs,
                                                         ),
                                                       ),
                                                     );
@@ -395,10 +393,10 @@ class _BlogsState extends State<Blogs> {
                                                       builder: (context) {
                                                         return AlertDialog(
                                                           title: const Text(
-                                                            'Delete Blog',
+                                                            'Delete FAQs',
                                                           ),
                                                           content: const Text(
-                                                            'Are you sure you want to delete this blog?',
+                                                            'Are you sure you want to delete this faqs?',
                                                           ),
                                                           actions: [
                                                             TextButton(
@@ -420,8 +418,8 @@ class _BlogsState extends State<Blogs> {
                                                             TextButton(
                                                               onPressed: () {
                                                                 adminBloc.add(
-                                                                  DeleteBlog(
-                                                                    blogs.blogId ??
+                                                                  DeleteFAQs(
+                                                                    faqs.faqsid ??
                                                                         '',
                                                                   ),
                                                                 );
