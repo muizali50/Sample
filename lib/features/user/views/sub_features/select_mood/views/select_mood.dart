@@ -79,7 +79,9 @@ class _SelectMoodScreenState extends State<SelectMoodScreen> {
                       ),
                       Gaps.hGap15,
                       Container(
-                        padding: const EdgeInsets.all(70,),
+                        padding: const EdgeInsets.all(
+                          70,
+                        ),
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: Color(
@@ -99,8 +101,8 @@ class _SelectMoodScreenState extends State<SelectMoodScreen> {
                                     );
                                   },
                                   iconImageAddress: selectedMood == 'happy'
-                                      ? 'assets/icons/s_happy.png'
-                                      : 'assets/icons/happy.png',
+                                      ? 'assets/icons/s_happy_reaction.png'
+                                      : 'assets/icons/happy_reaction.png',
                                   iconColorCode: selectedMood == 'happy'
                                       ? 0xFFD5DFD2
                                       : 0xFFF4F2E8,
@@ -108,13 +110,13 @@ class _SelectMoodScreenState extends State<SelectMoodScreen> {
                                 EmojiBox(
                                   onTap: () {
                                     updateMood(
-                                      'okay',
+                                      'sad',
                                     );
                                   },
-                                  iconImageAddress: selectedMood == 'okay'
-                                      ? 'assets/icons/s_normal.png'
-                                      : 'assets/icons/normal.png',
-                                  iconColorCode: selectedMood == 'okay'
+                                  iconImageAddress: selectedMood == 'sad'
+                                      ? 'assets/icons/s_sad_reaction.png'
+                                      : 'assets/icons/sad_reaction.png',
+                                  iconColorCode: selectedMood == 'sad'
                                       ? 0xFFD5DFD2
                                       : 0xFFF4F2E8,
                                 ),
@@ -127,26 +129,58 @@ class _SelectMoodScreenState extends State<SelectMoodScreen> {
                                 EmojiBox(
                                   onTap: () {
                                     updateMood(
-                                      'sad',
+                                      'surprise',
                                     );
                                   },
-                                  iconImageAddress: selectedMood == 'sad'
-                                      ? 'assets/icons/s_tired.png'
-                                      : 'assets/icons/tired.png',
-                                  iconColorCode: selectedMood == 'sad'
+                                  iconImageAddress: selectedMood == 'surprise'
+                                      ? 'assets/icons/s_surprise_reaction.png'
+                                      : 'assets/icons/surprise_reaction.png',
+                                  iconColorCode: selectedMood == 'surprise'
                                       ? 0xFFD5DFD2
                                       : 0xFFF4F2E8,
                                 ),
                                 EmojiBox(
                                   onTap: () {
                                     updateMood(
-                                      'angry',
+                                      'fear',
                                     );
                                   },
-                                  iconImageAddress: selectedMood == 'angry'
-                                      ? 'assets/icons/s_sad.png'
-                                      : 'assets/icons/sad.png',
-                                  iconColorCode: selectedMood == 'angry'
+                                  iconImageAddress: selectedMood == 'fear'
+                                      ? 'assets/icons/s_fear_reaction.png'
+                                      : 'assets/icons/fear_reaction.png',
+                                  iconColorCode: selectedMood == 'fear'
+                                      ? 0xFFD5DFD2
+                                      : 0xFFF4F2E8,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                EmojiBox(
+                                  onTap: () {
+                                    updateMood(
+                                      'anger',
+                                    );
+                                  },
+                                  iconImageAddress: selectedMood == 'anger'
+                                      ? 'assets/icons/s_anger_reaction.png'
+                                      : 'assets/icons/anger_reaction.png',
+                                  iconColorCode: selectedMood == 'anger'
+                                      ? 0xFFD5DFD2
+                                      : 0xFFF4F2E8,
+                                ),
+                                EmojiBox(
+                                  onTap: () {
+                                    updateMood(
+                                      'disgust',
+                                    );
+                                  },
+                                  iconImageAddress: selectedMood == 'disgust'
+                                      ? 'assets/icons/s_disgust_reaction.png'
+                                      : 'assets/icons/disgust_reaction.png',
+                                  iconColorCode: selectedMood == 'disgust'
                                       ? 0xFFD5DFD2
                                       : 0xFFF4F2E8,
                                 ),

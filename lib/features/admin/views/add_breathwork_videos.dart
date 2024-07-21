@@ -387,21 +387,33 @@ class _AddBreathworkVideosState extends State<AddBreathworkVideos> {
                                 ),
                               ),
                               DropdownMenuItem<String>(
-                                value: 'okay',
-                                child: Text(
-                                  'Okay',
-                                ),
-                              ),
-                              DropdownMenuItem<String>(
                                 value: 'sad',
                                 child: Text(
                                   'Sad',
                                 ),
                               ),
                               DropdownMenuItem<String>(
-                                value: 'angry',
+                                value: 'surprise',
                                 child: Text(
-                                  'Angry',
+                                  'Surprise',
+                                ),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: 'fear',
+                                child: Text(
+                                  'Fear',
+                                ),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: 'anger',
+                                child: Text(
+                                  'Anger',
+                                ),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: 'disgust',
+                                child: Text(
+                                  'Disgust',
                                 ),
                               ),
                             ],
