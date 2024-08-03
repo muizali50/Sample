@@ -1,39 +1,35 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mind_labify/features/admin/admin_bloc/admin_bloc.dart';
-import 'package:mind_labify/features/user/views/write_journals.dart';
-import 'package:mind_labify/models/journal_model.dart';
+import 'package:mind_labify/models/faqs_model.dart';
 import 'package:mind_labify/utils/gaps.dart';
-import 'package:mind_labify/widgets/app_primary_button.dart';
 import 'package:mind_labify/widgets/app_text_fields.dart';
 
-class JournalScreen extends StatefulWidget {
-  const JournalScreen({super.key});
+class FaqsScreen extends StatefulWidget {
+  const FaqsScreen({super.key});
 
   @override
-  State<JournalScreen> createState() => _JournalScreenState();
+  State<FaqsScreen> createState() => _FaqsScreenState();
 }
 
-class _JournalScreenState extends State<JournalScreen> {
+class _FaqsScreenState extends State<FaqsScreen> {
   late final AdminBloc adminBloc;
   final TextEditingController searchController = TextEditingController();
-  bool _isSearching = false;
   String _searchText = '';
-  List<JournalModel> filterJournalData = [];
+  List<FAQsModel> filterFaqsData = [];
 
   @override
   void initState() {
     adminBloc = context.read<AdminBloc>();
-    if (adminBloc.activeJournalCategories.isEmpty) {
+    if (adminBloc.activefaqsCategories.isEmpty) {
       adminBloc.add(
-        GetJournalCategory(),
+        GetFAQsCategory(),
       );
     }
 
-    if (adminBloc.activeJournals.isEmpty) {
+    if (adminBloc.activefaqs.isEmpty) {
       adminBloc.add(
-        GetJournal(),
+        GetFAQs(),
       );
     }
 
@@ -48,18 +44,18 @@ class _JournalScreenState extends State<JournalScreen> {
     setState(
       () {
         _searchText = searchController.text;
-        _filterJournals();
+        _filterFaqs();
       },
     );
   }
 
-  void _filterJournals() {
+  void _filterFaqs() {
     if (_searchText.isEmpty) {
-      filterJournalData = adminBloc.activeJournals;
+      filterFaqsData = adminBloc.activefaqs;
     } else {
-      filterJournalData = adminBloc.activeJournals
+      filterFaqsData = adminBloc.activefaqs
           .where(
-            (journal) => journal.title!.toLowerCase().contains(
+            (faq) => faq.title!.toLowerCase().contains(
                   _searchText.toLowerCase(),
                 ),
           )
@@ -71,7 +67,7 @@ class _JournalScreenState extends State<JournalScreen> {
     searchController.clear();
     setState(
       () {
-        filterJournalData = adminBloc.activeJournals;
+        filterFaqsData = adminBloc.activefaqs;
       },
     );
   }
@@ -81,22 +77,6 @@ class _JournalScreenState extends State<JournalScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        leading: _isSearching
-            ? IconButton(
-                onPressed: () {
-                  setState(
-                    () {
-                      _isSearching = false;
-                    },
-                  );
-                  clearSearch();
-                },
-                icon: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.black,
-                ),
-              )
-            : null,
         centerTitle: true,
         titleTextStyle: const TextStyle(
           fontFamily: 'Inter',
@@ -106,34 +86,9 @@ class _JournalScreenState extends State<JournalScreen> {
             0xFF371B34,
           ),
         ),
-        title: _isSearching
-            ? SizedBox(
-                height: 55,
-                child: AppTextField(
-                  isAutoFocue: true,
-                  isBorder: true,
-                  controller: searchController,
-                  hintText: 'Search',
-                ),
-              )
-            : const Text(
-                'Journals',
-              ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              setState(
-                () {
-                  _isSearching = true;
-                },
-              );
-            },
-            icon: Icon(
-              color: Theme.of(context).colorScheme.primary,
-              CupertinoIcons.search,
-            ),
-          ),
-        ],
+        title: const Text(
+          'FAQ',
+        ),
         backgroundColor: Colors.transparent,
         scrolledUnderElevation: 0,
         elevation: 0,
@@ -141,29 +96,33 @@ class _JournalScreenState extends State<JournalScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(
-              left: 20.0,
-              right: 20.0,
-              top: 10.0,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15.0,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                AppTextField(
+                  isBorder: true,
+                  controller: searchController,
+                  hintText: 'Search',
+                ),
+                Gaps.hGap20,
                 SizedBox(
                   height: 700,
                   child: BlocBuilder<AdminBloc, AdminState>(
                     builder: (context, state) {
-                      if (state is GettingJournalCategory) {
+                      if (state is GettingFAQsCategory) {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
-                      } else if (state is GetJournalCategoryFailed) {
+                      } else if (state is GetFAQsCategoryFailed) {
                         return Center(
                           child: Text(state.message),
                         );
                       }
                       return DefaultTabController(
-                        length: adminBloc.activeJournalCategories.length,
+                        length: adminBloc.activefaqsCategories.length,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -194,7 +153,7 @@ class _JournalScreenState extends State<JournalScreen> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w800,
                               ),
-                              tabs: adminBloc.activeJournalCategories
+                              tabs: adminBloc.activefaqsCategories
                                   .map(
                                     (category) => Tab(
                                       text: category.name,
@@ -205,11 +164,11 @@ class _JournalScreenState extends State<JournalScreen> {
                             Gaps.hGap10,
                             BlocBuilder<AdminBloc, AdminState>(
                               builder: (context, state) {
-                                if (state is GettingJournal) {
+                                if (state is GettingFAQs) {
                                   return const Center(
                                     child: CircularProgressIndicator(),
                                   );
-                                } else if (state is GetJournalFailed) {
+                                } else if (state is GetFAQsFailed) {
                                   return Center(
                                     child: Text(state.message),
                                   );
@@ -218,88 +177,87 @@ class _JournalScreenState extends State<JournalScreen> {
                                   height: 600,
                                   child: TabBarView(
                                     children:
-                                        adminBloc.activeJournalCategories.map(
+                                        adminBloc.activefaqsCategories.map(
                                       (category) {
-                                        final filteredJournals =
-                                            filterJournalData.isNotEmpty
-                                                ? filterJournalData
+                                        final filteredFaqs =
+                                            filterFaqsData.isNotEmpty
+                                                ? filterFaqsData
                                                     .where(
-                                                      (journal) =>
-                                                          journal
-                                                              .journalCategory ==
+                                                      (faq) =>
+                                                          faq.faqsCategory ==
                                                           category.name,
                                                     )
                                                     .toList()
-                                                : adminBloc.activeJournals
+                                                : adminBloc.activefaqs
                                                     .where(
-                                                      (journal) =>
-                                                          journal
-                                                              .journalCategory ==
+                                                      (faq) =>
+                                                          faq.faqsCategory ==
                                                           category.name,
                                                     )
                                                     .toList();
                                         return ListView.builder(
-                                          itemCount: filteredJournals.length,
+                                          itemCount: filteredFaqs.length,
                                           itemBuilder: (context, index) {
-                                            final journal =
-                                                filteredJournals[index];
+                                            final faq = filteredFaqs[index];
                                             return Container(
                                               margin:
                                                   const EdgeInsets.symmetric(
                                                 vertical: 10,
                                               ),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 12,
-                                                vertical: 15,
-                                              ),
                                               decoration: BoxDecoration(
+                                                color: const Color(
+                                                  0xFFffffff,
+                                                ),
                                                 borderRadius:
                                                     BorderRadius.circular(
-                                                  10,
-                                                ),
-                                                color: const Color(
-                                                  0xFFC8D1D1,
+                                                  12,
                                                 ),
                                               ),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    journal.title.toString(),
-                                                    style: TextStyle(
-                                                      fontFamily: 'Inter',
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .onSurface,
-                                                    ),
+                                              child: ExpansionTile(
+                                                shape: const Border(
+                                                  top: BorderSide.none,
+                                                  bottom: BorderSide.none,
+                                                  left: BorderSide.none,
+                                                  right: BorderSide.none,
+                                                ),
+                                                tilePadding:
+                                                    const EdgeInsets.only(
+                                                  // top: 10,
+                                                  left: 10,
+                                                  right: 10,
+                                                ),
+                                                childrenPadding:
+                                                    const EdgeInsets.only(
+                                                  left: 10,
+                                                  right: 10,
+                                                  bottom: 20,
+                                                ),
+                                                title: Text(
+                                                  faq.title.toString(),
+                                                  style: const TextStyle(
+                                                    fontFamily: 'Inter',
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w700,
                                                   ),
-                                                  Gaps.hGap20,
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                      horizontal: 30.0,
-                                                    ),
-                                                    child: AppPrimaryButton(
-                                                      buttonColor: 0xFFF4F2E8,
-                                                      text: 'Answer',
-                                                      onTap: () {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (
-                                                              context,
-                                                            ) =>
-                                                                WriteJournals(
-                                                              journal: journal,
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
+                                                ),
+                                                children: [
+                                                  const Divider(
+                                                    color: Color.fromARGB(
+                                                        255, 231, 231, 231),
+                                                  ),
+                                                  Gaps.hGap10,
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      faq.description
+                                                          .toString(),
+                                                      style: const TextStyle(
+                                                        fontFamily: 'Inter',
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
                                                     ),
                                                   ),
                                                 ],
@@ -312,13 +270,13 @@ class _JournalScreenState extends State<JournalScreen> {
                                   ),
                                 );
                               },
-                            ),
+                            )
                           ],
                         ),
                       );
                     },
                   ),
-                ),
+                )
               ],
             ),
           ),

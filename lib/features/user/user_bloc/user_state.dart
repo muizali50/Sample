@@ -92,3 +92,25 @@ final class StressorSelectedFailed extends UserState {
         message,
       ];
 }
+
+final class JournalAnswerUpdating extends UserState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class JournalAnswerUpdated extends UserState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class JournalAnswerUpdatedFailed extends UserState {
+  final String message;
+  const JournalAnswerUpdatedFailed(
+    this.message,
+  );
+
+  @override
+  List<Object?> get props => [
+        message,
+      ];
+}

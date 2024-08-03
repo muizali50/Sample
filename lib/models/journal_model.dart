@@ -3,12 +3,14 @@ class JournalModel {
   String? title;
   String? journalCategory;
   String? status;
+  Map<String, String>? answers;
 
   JournalModel({
     this.journalld,
     this.title,
     this.journalCategory,
     this.status,
+    this.answers,
   });
 
   Map<String, dynamic> toMap() {
@@ -17,6 +19,7 @@ class JournalModel {
       'title': title,
       'journalCategory': journalCategory,
       'status': status,
+      'answers': answers,
     };
   }
 
@@ -26,6 +29,7 @@ class JournalModel {
       title: map['title'],
       journalCategory: map['journalCategory'],
       status: map['status'],
+      answers: Map<String, String>.from(map['answers'] ?? {}),
     );
   }
 }

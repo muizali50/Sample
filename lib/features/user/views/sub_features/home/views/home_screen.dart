@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mind_labify/features/admin/views/journal.dart';
 import 'package:mind_labify/features/authentication/bloc/authentication_bloc.dart';
+import 'package:mind_labify/features/user/views/faqs_screen.dart';
 import 'package:mind_labify/features/user/views/journal.dart';
 import 'package:mind_labify/features/user/views/sub_features/home/widgets/explore.dart';
 import 'package:mind_labify/features/user/views/sub_features/home/widgets/quotes_box.dart';
@@ -348,7 +348,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Explore(
                     title: 'Need Help?',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (
+                            context,
+                          ) =>
+                              const FaqsScreen(),
+                        ),
+                      );
+                    },
                   )
                 ],
               ),

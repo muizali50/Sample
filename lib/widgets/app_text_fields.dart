@@ -10,6 +10,8 @@ class AppTextField extends StatefulWidget {
     this.onSubmitted,
     this.validator,
     this.onChanged,
+    this.isBorder = false,
+    this.isAutoFocue = false,
   });
 
   final TextEditingController? controller;
@@ -18,6 +20,8 @@ class AppTextField extends StatefulWidget {
   final Function(String)? onSubmitted;
   final String? Function(String?)? validator;
   final String? Function(String?)? onChanged;
+  final bool isBorder;
+  final bool isAutoFocue;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -34,6 +38,7 @@ class _AppTextFieldState extends State<AppTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofocus: widget.isAutoFocue ? true : false,
       onChanged: widget.onChanged,
       controller: widget.controller,
       obscureText: _isObsecure,
@@ -43,13 +48,21 @@ class _AppTextFieldState extends State<AppTextField> {
           borderRadius: BorderRadius.circular(
             20,
           ),
-          borderSide: BorderSide.none,
+          borderSide: widget.isBorder
+              ? BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                )
+              : BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
             20,
           ),
-          borderSide: BorderSide.none,
+          borderSide: widget.isBorder
+              ? BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                )
+              : BorderSide.none,
         ),
         contentPadding: const EdgeInsets.symmetric(
           vertical: 18,

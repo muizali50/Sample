@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mind_labify/models/journal_model.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
@@ -197,6 +200,47 @@ class UserBloc extends Bloc<UserEvent, UserState> {
               ),
             );
           }
+        }
+      },
+    );
+    on<UpdateJournalAnswer>(
+      (
+        event,
+        emit,
+      ) async {
+        emit(
+          JournalAnswerUpdating(),
+        );
+        try {
+          String userId = FirebaseAuth.instance.currentUser!.uid;
+          DocumentReference journalRef = FirebaseFirestore.instance
+              .collection('journal')
+              .doc(event.journalId);
+          DocumentSnapshot journalSnapshot = await journalRef.get();
+          if (journalSnapshot.exists) {
+            JournalModel journal = JournalModel.fromMap(
+                journalSnapshot.data() as Map<String, dynamic>);
+            journal.answers![userId] = event.answer;
+            await journalRef.update(journal.toMap());
+          }
+          emit(
+            JournalAnswerUpdated(),
+          );
+        } on FirebaseException catch (e) {
+          emit(
+            JournalAnswerUpdatedFailed(
+              e.message ?? '',
+            ),
+          );
+        } catch (e) {
+          log(
+            e.toString(),
+          );
+          emit(
+            JournalAnswerUpdatedFailed(
+              e.toString(),
+            ),
+          );
         }
       },
     );

@@ -47,3 +47,17 @@ final class SelectStressor extends UserEvent {
         stressorsName,
       ];
 }
+
+final class UpdateJournalAnswer extends UserEvent {
+  final String journalId;
+  final String answer;
+  const UpdateJournalAnswer(
+    this.journalId,
+    this.answer,
+  );
+  @override
+  List<Object> get props => [
+        journalId,
+        answer,
+      ];
+}
