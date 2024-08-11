@@ -5,6 +5,7 @@ class DeclarationModel {
   String? description;
   String? image;
   String? status;
+  String? createdBy;
 
   DeclarationModel({
     this.declarationId,
@@ -13,6 +14,7 @@ class DeclarationModel {
     this.description,
     this.image,
     this.status,
+    this.createdBy,
   });
 
   Map<String, dynamic> toMap() {
@@ -23,6 +25,7 @@ class DeclarationModel {
       'description': description,
       'image': image,
       'status': status,
+      'createdBy': createdBy,
     };
   }
 
@@ -34,6 +37,7 @@ class DeclarationModel {
       description: map['description'],
       image: map['image'],
       status: map['status'],
+      createdBy: map['createdBy'],
     );
   }
 }

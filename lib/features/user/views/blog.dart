@@ -282,18 +282,15 @@ class _BlogState extends State<Blog> {
                                                                       .circular(
                                                                 10,
                                                               ),
-                                                              // image: DecorationImage(
-                                                              //   fit: BoxFit.cover,
-                                                              //   image: NetworkImage(
-                                                              //     blog.image.toString(),
-                                                              //   ),
-                                                              // ),
-                                                            ),
-                                                            child: Image(
                                                               image:
-                                                                  NetworkImage(
-                                                                blog.image
-                                                                    .toString(),
+                                                                  DecorationImage(
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                image:
+                                                                    NetworkImage(
+                                                                  blog.image
+                                                                      .toString(),
+                                                                ),
                                                               ),
                                                             ),
                                                           ),

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mind_labify/features/authentication/bloc/authentication_bloc.dart';
 import 'package:mind_labify/features/user/views/faqs_screen.dart';
 import 'package:mind_labify/features/user/views/journal.dart';
+import 'package:mind_labify/features/user/views/positive_declarations_screen.dart';
 import 'package:mind_labify/features/user/views/sub_features/home/widgets/explore.dart';
 import 'package:mind_labify/features/user/views/sub_features/home/widgets/quotes_box.dart';
 import 'package:mind_labify/features/user/views/sub_features/home/widgets/weekly_progress_indicator.dart';
@@ -329,7 +330,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Explore(
                     title: 'Positive Declarations',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (
+                            context,
+                          ) =>
+                              const PositiveDeclarationsScreen(),
+                        ),
+                      );
+                    },
                   )
                 ],
               ),

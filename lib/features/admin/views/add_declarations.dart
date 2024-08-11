@@ -27,6 +27,7 @@ class _AddDeclarationsState extends State<AddDeclarations> {
   final TextEditingController _descriptionController = TextEditingController();
   String category = '';
   String status = 'Inactive';
+  String createdBy = 'admin';
   String? declarationIcon;
   final picker = ImagePicker();
   @override
@@ -42,6 +43,7 @@ class _AddDeclarationsState extends State<AddDeclarations> {
       category = widget.declarations!.declarationCategory ?? '';
       declarationIcon = widget.declarations!.image ?? '';
       status = widget.declarations!.status ?? '';
+      createdBy = widget.declarations!.createdBy ?? '';
     }
 
     super.initState();
@@ -512,6 +514,7 @@ class _AddDeclarationsState extends State<AddDeclarations> {
                                   status: status,
                                   description: _descriptionController.text,
                                   declarationCategory: category,
+                                  createdBy: widget.declarations!.createdBy,
                                   image: declarationIcon,
                                 ),
                                 declarationIcon == widget.declarations!.image
@@ -530,6 +533,7 @@ class _AddDeclarationsState extends State<AddDeclarations> {
                                   description: _descriptionController.text,
                                   declarationCategory: category,
                                   image: declarationIcon,
+                                  createdBy: createdBy,
                                 ),
                                 XFile(declarationIcon!),
                               ),
