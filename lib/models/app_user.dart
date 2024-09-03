@@ -10,6 +10,10 @@ class AppUser {
   String? gender;
   String? mood;
   List<String?>? stressorsName;
+  List<String?>? breathworkWatchedVideos;
+  List<String?>? meditationWatchedVideos;
+  List<String?>? writtenJournals;
+  DateTime? weekStartDate;
 
   AppUser({
     required this.uid,
@@ -21,6 +25,10 @@ class AppUser {
     this.gender,
     this.mood,
     this.stressorsName,
+    this.breathworkWatchedVideos,
+    this.weekStartDate,
+    this.meditationWatchedVideos,
+    this.writtenJournals,
   });
 
   AppUser copyWith({
@@ -32,6 +40,10 @@ class AppUser {
     String? gender,
     String? mood,
     List<String?>? stressorsName,
+    List<String?>? breathworkWatchedVideos,
+    DateTime? weekStartDate,
+    List<String?>? meditationWatchedVideos,
+    List<String?>? writtenJournals,
   }) {
     return AppUser(
       uid: uid ?? uid,
@@ -43,6 +55,12 @@ class AppUser {
       gender: gender ?? this.gender,
       mood: mood ?? this.mood,
       stressorsName: stressorsName ?? this.stressorsName,
+      breathworkWatchedVideos:
+          breathworkWatchedVideos ?? this.breathworkWatchedVideos,
+      weekStartDate: weekStartDate ?? this.weekStartDate,
+      meditationWatchedVideos:
+          meditationWatchedVideos ?? this.meditationWatchedVideos,
+      writtenJournals: writtenJournals ?? this.writtenJournals,
     );
   }
 
@@ -65,6 +83,22 @@ class AppUser {
               map['stressorsName'],
             )
           : [],
+      breathworkWatchedVideos: map['breathworkWatchedVideos'] != null
+          ? List<String>.from(
+              map['breathworkWatchedVideos'],
+            )
+          : [],
+      weekStartDate: map['weekStartDate']?.toDate(),
+      meditationWatchedVideos: map['meditationWatchedVideos'] != null
+          ? List<String>.from(
+              map['meditationWatchedVideos'],
+            )
+          : [],
+      writtenJournals: map['writtenJournals'] != null
+          ? List<String>.from(
+              map['writtenJournals'],
+            )
+          : [],
     );
   }
   Map<String, dynamic> toMap() {
@@ -78,6 +112,10 @@ class AppUser {
       'gender': gender,
       'mood': mood,
       'stressorsName': stressorsName,
+      'breathworkWatchedVideos': breathworkWatchedVideos,
+      'weekStartDate': weekStartDate,
+      'meditationWatchedVideos': meditationWatchedVideos,
+      'writtenJournals': writtenJournals,
     };
   }
 }

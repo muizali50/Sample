@@ -2243,6 +2243,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       ) async {
         GettingDeclaration();
         try {
+          String userId = FirebaseAuth.instance.currentUser!.uid;
           final declarationCollection = FirebaseFirestore.instance.collection(
             'declaration',
           );
@@ -2259,6 +2260,9 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           activeDeclaration = declarations
               .where(
                 (element) => element.status == 'Active',
+              )
+              .where(
+                (doc) => doc.createdBy == 'admin' || doc.createdBy == userId,
               )
               .toList();
           emit(

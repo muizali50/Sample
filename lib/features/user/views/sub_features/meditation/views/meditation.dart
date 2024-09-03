@@ -5,6 +5,7 @@ import 'package:mind_labify/features/authentication/bloc/authentication_bloc.dar
 import 'package:mind_labify/features/user/views/meditation_detailpage_start.dart';
 import 'package:mind_labify/user_provider.dart';
 import 'package:mind_labify/utils/gaps.dart';
+import 'package:provider/provider.dart';
 
 class Meditation extends StatefulWidget {
   const Meditation({super.key});
@@ -84,15 +85,19 @@ class _MeditationState extends State<Meditation> with TickerProviderStateMixin {
             const SizedBox(
               width: 5,
             ),
-            Text(
-              'Sanya!',
-              style: TextStyle(
-                decoration: TextDecoration.underline,
-                fontFamily: 'Inter',
-                fontSize: 26,
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
+           Consumer<UserProvider>(
+              builder: (context, userProvider, child) {
+                return Text(
+                  '${userProvider.user?.name}!',
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontFamily: 'Inter',
+                    fontSize: 26,
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                );
+              },
             ),
             const Spacer(),
             Stack(

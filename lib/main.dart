@@ -45,6 +45,12 @@ class MyApp extends StatelessWidget {
           create: (context) => UserBloc(),
         ),
         BlocProvider(
+          create: (context) => UserBloc()
+            ..add(
+              LoadBreathworkWatchedVideo(),
+            ),
+        ),
+        BlocProvider(
           create: (context) => AdminBloc(),
         ),
       ],
@@ -66,8 +72,7 @@ class MyApp extends StatelessWidget {
               secondary: Color(0xFFC0BA59),
             ),
           ),
-          home: 
-          FirebaseAuth.instance.currentUser == null
+          home: FirebaseAuth.instance.currentUser == null
               ? kIsWeb
                   ? const LoginScreen()
                   : const OnboardingScreen()

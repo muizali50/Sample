@@ -6,6 +6,7 @@ class DeclarationModel {
   String? image;
   String? status;
   String? createdBy;
+  List<String>? isFavorite;
 
   DeclarationModel({
     this.declarationId,
@@ -15,6 +16,7 @@ class DeclarationModel {
     this.image,
     this.status,
     this.createdBy,
+    this.isFavorite,
   });
 
   Map<String, dynamic> toMap() {
@@ -26,6 +28,7 @@ class DeclarationModel {
       'image': image,
       'status': status,
       'createdBy': createdBy,
+      'isFavorite': isFavorite,
     };
   }
 
@@ -38,6 +41,9 @@ class DeclarationModel {
       image: map['image'],
       status: map['status'],
       createdBy: map['createdBy'],
+      isFavorite: List<String>.from(
+        map['isFavorite'] ?? [],
+      ),
     );
   }
 }

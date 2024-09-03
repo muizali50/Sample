@@ -61,3 +61,55 @@ final class UpdateJournalAnswer extends UserEvent {
         answer,
       ];
 }
+
+final class AddFavouriteDeclaration extends UserEvent {
+  final String declarationId;
+  final String userId;
+  const AddFavouriteDeclaration(
+    this.declarationId,
+    this.userId,
+  );
+  @override
+  List<Object?> get props => [
+        declarationId,
+        userId,
+      ];
+}
+
+class LoadBreathworkWatchedVideo extends UserEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class BreathWorkVideoWatched extends UserEvent {
+  final String videoId;
+  const BreathWorkVideoWatched(
+    this.videoId,
+  );
+  @override
+  List<Object?> get props => [
+        videoId,
+      ];
+}
+
+class MeditationVideoWatched extends UserEvent {
+  final String videoId;
+  const MeditationVideoWatched(
+    this.videoId,
+  );
+  @override
+  List<Object?> get props => [
+        videoId,
+      ];
+}
+
+class WriteJournal extends UserEvent {
+  final String journalId;
+  const WriteJournal(
+    this.journalId,
+  );
+  @override
+  List<Object?> get props => [
+        journalId,
+      ];
+}

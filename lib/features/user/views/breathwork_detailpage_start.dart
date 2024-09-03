@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mind_labify/features/user/user_bloc/user_bloc.dart';
 import 'package:mind_labify/features/user/views/breathwork_detailpage_submit.dart';
 import 'package:mind_labify/models/breathwork_video.dart';
 import 'package:mind_labify/utils/gaps.dart';
@@ -65,62 +67,63 @@ class _BreathworkDetailpageStartState extends State<BreathworkDetailpageStart> {
 
   @override
   Widget build(BuildContext context) {
+    final userBloc = context.read<UserBloc>();
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        appBar: !_isFullscreen
-            ? AppBar(
-                backgroundColor: Colors.transparent,
-                scrolledUnderElevation: 0,
-                elevation: 0,
-              )
-            : null,
-        body: YoutubePlayerBuilder(
-          player: YoutubePlayer(
-            controller: _controller,
-            showVideoProgressIndicator: true,
-            onReady: () {
-              _controller.addListener(() {});
-            },
-          ),
-          builder: (context, player) {
-            return Column(
-              children: [
-                player,
-                if (!_isFullscreen) Gaps.hGap30,
-                if (!_isFullscreen)
-                  Text(
-                    widget.breathworkVideos.title ?? '',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 24,
-                      fontWeight: FontWeight.w800,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: !_isFullscreen
+          ? AppBar(
+              backgroundColor: Colors.transparent,
+              scrolledUnderElevation: 0,
+              elevation: 0,
+            )
+          : null,
+      body: YoutubePlayerBuilder(
+        player: YoutubePlayer(
+          controller: _controller,
+          showVideoProgressIndicator: true,
+          onReady: () {
+            _controller.addListener(() {});
+          },
+        ),
+        builder: (context, player) {
+          return Column(
+            children: [
+              player,
+              if (!_isFullscreen) Gaps.hGap30,
+              if (!_isFullscreen)
+                Text(
+                  widget.breathworkVideos.title ?? '',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 24,
+                    fontWeight: FontWeight.w800,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
-                if (!_isFullscreen) Gaps.hGap30,
-                if (!_isFullscreen)
-                  Text(
-                    '${widget.breathworkVideos.duration ?? ''} Mins',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w400,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
+                ),
+              if (!_isFullscreen) Gaps.hGap30,
+              if (!_isFullscreen)
+                Text(
+                  '${widget.breathworkVideos.duration ?? ''} Mins',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
-                if (!_isFullscreen)
-                  const SizedBox(
-                    height: 144,
-                  ),
-                if (!_isFullscreen)
-                  _isStarted
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 34.0,
-                          ),
-                          child: AppPrimaryButton(
-                            text: 'Done',
-                            onTap: () {
+                ),
+              if (!_isFullscreen)
+                const SizedBox(
+                  height: 144,
+                ),
+              if (!_isFullscreen)
+                _isStarted
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 34.0,
+                        ),
+                        child: BlocConsumer<UserBloc, UserState>(
+                          listener: (context, state) {
+                            if (state is BreathworkWatchedVideoLoaded) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -132,27 +135,57 @@ class _BreathworkDetailpageStartState extends State<BreathworkDetailpageStart> {
                                   ),
                                 ),
                               );
-                            },
-                          ),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 34.0,
-                          ),
-                          child: AppPrimaryButton(
-                            text: 'Start',
-                            onTap: () {
-                              setState(
-                                () {
-                                  _controller.play();
-                                },
+                            } else if (state
+                                is BreathworkWatchedVideoLoadingError) {
+                              ScaffoldMessenger.of(
+                                context,
+                              ).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    state.message,
+                                  ),
+                                ),
                               );
-                            },
-                          ),
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state is BreathworkWatchedVideoLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            return AppPrimaryButton(
+                              text: 'Done',
+                              onTap: () {
+                                userBloc.add(
+                                  BreathWorkVideoWatched(
+                                    widget.breathworkVideos.videoId ?? '',
+                                  ),
+                                );
+                              },
+                            );
+                          },
                         ),
-              ],
-            );
-          },
-        ));
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 34.0,
+                        ),
+                        child: AppPrimaryButton(
+                          text: 'Start',
+                          onTap: () {
+                            setState(
+                              () {
+                                _controller.play();
+                              },
+                            );
+                          },
+                        ),
+                      ),
+            ],
+          );
+        },
+      ),
+    );
   }
 }

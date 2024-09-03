@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mind_labify/features/admin/admin_bloc/admin_bloc.dart';
 import 'package:mind_labify/features/user/views/create_declaration_screen.dart';
+import 'package:mind_labify/features/user/views/declaration_detail_screen.dart';
 import 'package:mind_labify/models/declaration_model.dart';
 import 'package:mind_labify/utils/gaps.dart';
 import 'package:mind_labify/widgets/app_text_fields.dart';
@@ -285,56 +286,76 @@ class _PositiveDeclarationsScreenState
                                               itemBuilder: (context, index) {
                                                 final declaration =
                                                     filteredDeclarations[index];
-                                                return Container(
-                                                  padding: const EdgeInsets.all(
-                                                    5.0,
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                    color: const Color(
-                                                      0xffffffff,
+                                                return InkWell(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (
+                                                          context,
+                                                        ) =>
+                                                            DeclarationDetailScreen(
+                                                          declaration:
+                                                              declaration,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                      5.0,
                                                     ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      8.0,
+                                                    decoration: BoxDecoration(
+                                                      color: const Color(
+                                                        0xffffffff,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        8.0,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Container(
-                                                        height: 110,
-                                                        width: 140,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                            10,
-                                                          ),
-                                                          image:
-                                                              DecorationImage(
-                                                            fit: BoxFit.cover,
-                                                            image: NetworkImage(
-                                                              declaration.image
-                                                                  .toString(),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Container(
+                                                          height: 110,
+                                                          width: 140,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                              10,
+                                                            ),
+                                                            image:
+                                                                DecorationImage(
+                                                              fit: BoxFit.cover,
+                                                              image:
+                                                                  NetworkImage(
+                                                                declaration
+                                                                    .image
+                                                                    .toString(),
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      Gaps.hGap10,
-                                                      Text(
-                                                        declaration.title
-                                                            .toString(),
-                                                        style: const TextStyle(
-                                                          fontFamily: 'Inter',
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w800,
+                                                        Gaps.hGap10,
+                                                        Text(
+                                                          declaration.title
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                            fontFamily: 'Inter',
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w800,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
                                                 );
                                               },

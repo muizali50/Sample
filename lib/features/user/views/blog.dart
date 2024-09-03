@@ -8,7 +8,11 @@ import 'package:mind_labify/utils/gaps.dart';
 import 'package:mind_labify/widgets/app_text_fields.dart';
 
 class Blog extends StatefulWidget {
-  const Blog({super.key});
+  final bool? fromHomePage;
+  const Blog({
+    super.key,
+    this.fromHomePage,
+  });
 
   @override
   State<Blog> createState() => _BlogState();
@@ -80,7 +84,7 @@ class _BlogState extends State<Blog> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: widget.fromHomePage == true ? true : false,
         leading: _isSearching
             ? IconButton(
                 onPressed: () {

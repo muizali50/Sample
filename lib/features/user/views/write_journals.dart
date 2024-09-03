@@ -24,7 +24,9 @@ class _WriteJournalsState extends State<WriteJournals> {
   @override
   void initState() {
     String userId = FirebaseAuth.instance.currentUser!.uid;
-    answerController.text = widget.journal!.answers![userId] ?? '';
+    if (widget.journal!.answers![userId] != null) {
+      answerController.text = widget.journal!.answers![userId] ?? '';
+    }
     super.initState();
   }
 
@@ -106,7 +108,8 @@ class _WriteJournalsState extends State<WriteJournals> {
                   children: [
                     BlocConsumer<UserBloc, UserState>(
                       listener: (context, state) {
-                        if (state is JournalAnswerUpdated) {
+                        if (state is JournalAnswerUpdated ||
+                            state is WriteJournalLoaded) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text(
@@ -128,10 +131,21 @@ class _WriteJournalsState extends State<WriteJournals> {
                               ),
                             ),
                           );
+                        } else if (state is WriteJournalLoadingError) {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                state.message,
+                              ),
+                            ),
+                          );
                         }
                       },
                       builder: (context, state) {
-                        if (state is JournalAnswerUpdating) {
+                        if (state is JournalAnswerUpdating ||
+                            state is WriteJournalLoading) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
@@ -157,6 +171,11 @@ class _WriteJournalsState extends State<WriteJournals> {
                                 UpdateJournalAnswer(
                                   widget.journal!.journalld ?? '',
                                   answerController.text,
+                                ),
+                              );
+                              userBloc.add(
+                                WriteJournal(
+                                  widget.journal!.journalld ?? '',
                                 ),
                               );
                             },

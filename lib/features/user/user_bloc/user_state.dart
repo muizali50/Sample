@@ -114,3 +114,121 @@ final class JournalAnswerUpdatedFailed extends UserState {
         message,
       ];
 }
+
+final class FavouriteDeclarationAdding extends UserState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class FavouriteDeclarationAdded extends UserState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class FavouriteDeclarationAddedFailed extends UserState {
+  final String message;
+  const FavouriteDeclarationAddedFailed(
+    this.message,
+  );
+
+  @override
+  List<Object?> get props => [
+        message,
+      ];
+}
+
+class BreathworkWatchedVideoLoading extends UserState {
+  @override
+  List<Object?> get props => [];
+}
+
+class BreathworkWatchedVideoLoaded extends UserState {
+  final AppUser user;
+  final double progress;
+
+  const BreathworkWatchedVideoLoaded(
+    this.user,
+    this.progress,
+  );
+  @override
+  List<Object?> get props => [
+        user,
+        progress,
+      ];
+}
+
+class BreathworkWatchedVideoLoadingError extends UserState {
+  final String message;
+
+  const BreathworkWatchedVideoLoadingError({
+    required this.message,
+  });
+  @override
+  List<Object?> get props => [
+        message,
+      ];
+}
+
+class MeditationWatchedVideoLoading extends UserState {
+  @override
+  List<Object?> get props => [];
+}
+
+class MeditationWatchedVideoLoaded extends UserState {
+  final AppUser user;
+  final double progress;
+
+  const MeditationWatchedVideoLoaded(
+    this.user,
+    this.progress,
+  );
+  @override
+  List<Object?> get props => [
+        user,
+        progress,
+      ];
+}
+
+class MeditationWatchedVideoLoadingError extends UserState {
+  final String message;
+
+  const MeditationWatchedVideoLoadingError({
+    required this.message,
+  });
+  @override
+  List<Object?> get props => [
+        message,
+      ];
+}
+
+class WriteJournalLoading extends UserState {
+  @override
+  List<Object?> get props => [];
+}
+
+class WriteJournalLoaded extends UserState {
+  final AppUser user;
+  final double progress;
+
+  const WriteJournalLoaded(
+    this.user,
+    this.progress,
+  );
+  @override
+  List<Object?> get props => [
+        user,
+        progress,
+      ];
+}
+
+class WriteJournalLoadingError extends UserState {
+  final String message;
+
+  const WriteJournalLoadingError({
+    required this.message,
+  });
+  @override
+  List<Object?> get props => [
+        message,
+      ];
+}

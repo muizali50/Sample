@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mind_labify/features/user/user_bloc/user_bloc.dart';
 import 'package:mind_labify/features/user/views/meditation_detailpage_submit.dart';
 import 'package:mind_labify/models/meditation_video.dart';
 import 'package:mind_labify/utils/gaps.dart';
@@ -65,6 +67,7 @@ class _MeditationDetailpageStartState extends State<MeditationDetailpageStart> {
 
   @override
   Widget build(BuildContext context) {
+    final userBloc = context.read<UserBloc>();
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: !_isFullscreen
@@ -118,19 +121,48 @@ class _MeditationDetailpageStartState extends State<MeditationDetailpageStart> {
                           padding: const EdgeInsets.symmetric(
                             horizontal: 34.0,
                           ),
-                          child: AppPrimaryButton(
-                            text: 'Done',
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (
-                                    context,
-                                  ) =>
-                                      MeditationDetailpageSubmit(
-                                    meditationVideos: widget.meditationVideos,
+                          child: BlocConsumer<UserBloc, UserState>(
+                            listener: (context, state) {
+                              if (state is MeditationWatchedVideoLoaded) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (
+                                      context,
+                                    ) =>
+                                        MeditationDetailpageSubmit(
+                                      meditationVideos: widget.meditationVideos,
+                                    ),
                                   ),
-                                ),
+                                );
+                              } else if (state
+                                  is MeditationWatchedVideoLoadingError) {
+                                ScaffoldMessenger.of(
+                                  context,
+                                ).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      state.message,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            builder: (context, state) {
+                              if (state is MeditationWatchedVideoLoading) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              return AppPrimaryButton(
+                                text: 'Done',
+                                onTap: () {
+                                  userBloc.add(
+                                    MeditationVideoWatched(
+                                      widget.meditationVideos.videoId ?? '',
+                                    ),
+                                  );
+                                },
                               );
                             },
                           ),

@@ -7,11 +7,15 @@ class WeeklyProgressIndicator extends StatefulWidget {
     required this.title,
     required this.indicatorValue,
     required this.progressPercentage,
+    this.fontSize = 12,
+    this.fontWeight = FontWeight.w400,
   });
 
   final String title;
   final double indicatorValue;
   final String progressPercentage;
+  final double fontSize;
+  final FontWeight fontWeight;
 
   @override
   State<WeeklyProgressIndicator> createState() =>
@@ -26,11 +30,11 @@ class _WeeklyProgressIndicatorState extends State<WeeklyProgressIndicator> {
       children: [
         Text(
           widget.title,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Inter',
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
-            color: Color(
+            fontSize: widget.fontSize,
+            fontWeight: widget.fontWeight,
+            color: const Color(
               0xFF000000,
             ),
           ),
